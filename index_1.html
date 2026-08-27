@@ -1,0 +1,2764 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>과학 구술면접 마스터 · GMS학원 이은정 강사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --navy:#1b2a4a; --navy2:#0f1830; --gold:#b8902f; --gold-light:#e9d9a8;
+  --paper:#f6f1e6; --paper2:#eef1f6; --card:#ffffff; --ink:#1b2230; --sub:#6b7280;
+  --good:#2f7d5b; --good-bg:#e7f3ec; --bad:#b3432b; --bad-bg:#fbeae5; --line:#e6ddc8;
+  --rec:#c0392b;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Noto Sans KR',sans-serif;color:var(--ink);
+  background:
+    radial-gradient(1200px 400px at 50% -10%, #24345c 0%, transparent 60%),
+    linear-gradient(180deg,var(--navy2) 0%, var(--navy) 220px, var(--paper) 220px, var(--paper2) 100%);
+  min-height:100vh;padding-bottom:50px;}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 60px;}
+.hero{text-align:center;padding:34px 10px 26px;color:#fff;}
+.hero .eyebrow{font-size:12px;letter-spacing:2px;color:var(--gold-light);font-weight:700;text-transform:uppercase;}
+.hero h1{font-family:'Noto Serif KR',serif;font-size:26px;margin:8px 0 8px;font-weight:900;letter-spacing:-.5px;}
+.hero p{font-size:13px;color:#c6cede;margin:0;}
+.mic-badge{width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a4d7a,var(--navy2));
+  border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;}
+.card{background:var(--card);border-radius:18px;box-shadow:0 14px 34px rgba(20,20,40,.14);padding:22px 20px;margin-bottom:16px;border:1px solid var(--line);}
+h2.card-title{font-family:'Noto Serif KR',serif;font-size:19px;margin:0 0 4px;color:var(--navy);font-weight:700;}
+.card-sub{font-size:12.5px;color:var(--sub);margin:0 0 14px;}
+label.field-label{display:block;font-size:13.5px;font-weight:700;margin:16px 0 8px;color:var(--ink);}
+input[type=text],input[type=password]{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;background:#fffdf8;font-family:inherit;}
+input[type=text]:focus,input[type=password]:focus{outline:2px solid var(--navy);}
+.chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.chip{border:1.5px solid var(--line);border-radius:14px;padding:12px;text-align:center;cursor:pointer;background:#fffdf8;transition:.15s;}
+.chip b{display:block;font-size:14px;}
+.chip small{color:var(--sub);font-size:11px;}
+.chip.active{border-color:var(--gold);background:#fbf3df;box-shadow:0 0 0 2px rgba(184,144,47,.18) inset;}
+.opt-row{display:flex;gap:8px;flex-wrap:wrap;}
+.opt-chip{flex:1;min-width:64px;text-align:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 6px;font-size:13px;font-weight:700;cursor:pointer;background:#fffdf8;color:var(--sub);}
+.opt-chip.active{border-color:var(--navy);background:#eef1f6;color:var(--navy);}
+.toggle-row{display:flex;align-items:center;gap:8px;margin:14px 0 4px;font-size:13.5px;}
+.toggle-row input{width:18px;height:18px;}
+.mode-card{border:1.6px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;cursor:pointer;background:#fffdf8;}
+.mode-card.active{border-color:var(--navy);background:#eef1f6;box-shadow:0 0 0 2px rgba(27,42,74,.12) inset;}
+.mode-card.disabled{opacity:.5;cursor:not-allowed;}
+.mode-card .mt{font-weight:800;font-size:15px;}
+.mode-card .md{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.5;}
+.btn{display:block;width:100%;text-align:center;padding:15px;border-radius:14px;font-weight:800;font-size:15.5px;border:none;cursor:pointer;box-sizing:border-box;}
+.btn-primary{background:linear-gradient(90deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 10px 20px rgba(15,24,48,.28);}
+.btn-gold{background:linear-gradient(90deg,#c9a53c,var(--gold));color:#3a2c05;box-shadow:0 8px 16px rgba(184,144,47,.3);}
+.btn-outline{background:#fff;border:1.6px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:#f0eee6;color:var(--ink);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.row2{display:flex;gap:10px;margin-top:10px;}
+.row2 .btn{flex:1;}
+.small-note{font-size:12px;color:var(--sub);text-align:center;margin-top:10px;line-height:1.6;}
+.hidden{display:none !important;}
+
+.progressbar{height:6px;border-radius:4px;background:#e2ddcb;overflow:hidden;margin-bottom:10px;}
+.progressbar-inner{height:100%;background:linear-gradient(90deg,var(--gold),var(--navy));transition:width .3s ease;}
+.meta-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--sub);margin-bottom:14px;}
+.answer-timer{display:inline-block;background:#eef1f6;color:var(--navy);font-weight:800;font-size:13px;padding:8px 14px;border-radius:20px;margin-bottom:14px;}
+.answer-timer.urgent{background:var(--bad-bg);color:var(--bad);}
+.cat-tag{display:inline-block;background:var(--navy);color:#fff;font-weight:700;font-size:12px;padding:5px 12px;border-radius:20px;}
+.name-tag{font-size:12.5px;color:var(--sub);}
+
+.qcard{position:relative;background:linear-gradient(180deg,#fffdf8,#fff);border:1.5px solid var(--gold-light);border-radius:16px;padding:22px 20px 20px;margin-bottom:16px;}
+.qtext.reading{background:linear-gradient(90deg,rgba(184,144,47,.18),rgba(184,144,47,.05));border-radius:8px;animation:ttsPulse 1.2s ease-in-out infinite;}
+@keyframes ttsPulse{0%,100%{opacity:1;}50%{opacity:.72;}}
+.prep-num{font-size:34px;font-weight:800;color:var(--navy);margin:6px 0 14px;}
+.kb-mic-hint{display:none;text-align:center;background:linear-gradient(180deg,#fff8e6,#fff);border:2px solid var(--gold);border-radius:12px;padding:14px;margin-bottom:10px;animation:kbHintPulse 1s ease-in-out infinite;}
+.kb-mic-hint.show{display:block;}
+.kb-mic-hint .arrow{font-size:26px;}
+@keyframes kbHintPulse{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.qcard::before{content:"Q";position:absolute;top:-14px;left:18px;background:var(--gold);color:#3a2c05;font-family:'Noto Serif KR',serif;font-weight:900;font-size:14px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.15);}
+.qtext{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;line-height:1.55;margin:10px 0 0;color:var(--navy);}
+
+.rec-zone{border:1.5px dashed var(--line);border-radius:16px;padding:18px;text-align:center;background:#fbf9f3;margin-bottom:14px;}
+.mic-btn{width:74px;height:74px;border-radius:50%;border:none;cursor:pointer;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#3a4d7a,var(--navy2));box-shadow:0 10px 22px rgba(15,24,48,.3);transition:.15s;}
+.mic-btn.recording{background:radial-gradient(circle at 35% 30%,#e05b47,var(--rec));animation:pulse 1.4s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(192,57,43,.45);}70%{box-shadow:0 0 0 18px rgba(192,57,43,0);}100%{box-shadow:0 0 0 0 rgba(192,57,43,0);}}
+.rec-status{font-size:12.5px;font-weight:700;color:var(--sub);min-height:18px;white-space:pre-line;}
+.rec-status.on{color:var(--rec);}
+.rec-status.err{color:var(--bad);}
+.waveform{display:flex;align-items:flex-end;justify-content:center;gap:3px;height:22px;margin:8px 0 2px;}
+.waveform span{width:3px;background:var(--rec);border-radius:2px;animation:wave 1s infinite ease-in-out;}
+.waveform span:nth-child(1){animation-delay:0s;} .waveform span:nth-child(2){animation-delay:.1s;}
+.waveform span:nth-child(3){animation-delay:.2s;} .waveform span:nth-child(4){animation-delay:.3s;}
+.waveform span:nth-child(5){animation-delay:.4s;} .waveform span:nth-child(6){animation-delay:.5s;}
+.waveform span:nth-child(7){animation-delay:.6s;}
+@keyframes wave{0%,100%{height:5px;}50%{height:22px;}}
+
+textarea.answer-box{width:100%;min-height:110px;padding:14px;border-radius:14px;border:1.5px solid var(--line);font-size:15px;font-family:inherit;background:#fff;resize:vertical;line-height:1.6;}
+textarea.answer-box:focus{outline:2px solid var(--navy);}
+.answer-label{display:flex;justify-content:space-between;align-items:center;margin:14px 0 6px;}
+.answer-label span{font-size:13.5px;font-weight:700;}
+.char-count{font-size:11.5px;color:var(--sub);}
+
+.giveup{display:block;text-align:center;color:var(--sub);font-size:12.5px;margin-top:14px;text-decoration:underline;cursor:pointer;}
+
+.score-wrap{text-align:center;margin:6px 0 4px;}
+.score-ring{width:150px;height:150px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;}
+.score-num{font-family:'Noto Serif KR',serif;font-size:44px;font-weight:900;line-height:1;}
+.score-max{font-size:12px;color:var(--sub);margin-top:2px;}
+.tier-label{text-align:center;font-weight:800;font-size:16px;border-radius:14px;padding:12px;margin:6px 0 16px;}
+.tier-perfect{background:linear-gradient(135deg,#ffe9a8,#e9c65e);color:#5a4200;}
+.tier-good{background:var(--good-bg);color:var(--good);}
+.tier-mid{background:#fdf2e0;color:#a8631a;}
+.tier-low{background:var(--bad-bg);color:var(--bad);}
+
+.kw-section{margin-top:6px;}
+.kw-title{font-size:13.5px;font-weight:700;margin:14px 0 8px;color:var(--ink);}
+.kw-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.kw-chip{border-radius:20px;padding:7px 13px;font-size:12.5px;font-weight:700;}
+.kw-chip.ok{background:var(--good-bg);color:var(--good);border:1px solid #bfe3cd;}
+.kw-chip.miss{background:var(--bad-bg);color:var(--bad);border:1px solid #f2c9bd;}
+
+.ans-box{border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.65;margin:10px 0;}
+.ans-box.mine{background:#eef1f6;color:var(--navy);}
+.ans-box.model{background:#fbf3df;color:#5a4200;}
+.ans-box b{display:block;margin-bottom:6px;font-size:13px;letter-spacing:.3px;}
+
+.result-list{margin-top:4px;}
+.result-item{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line);margin-bottom:8px;background:#fffdf8;}
+.result-item .ri-q{font-size:13px;flex:1;padding-right:10px;line-height:1.4;}
+.result-item .ri-score{font-weight:900;font-size:15px;min-width:52px;text-align:right;}
+.avg-big{text-align:center;font-family:'Noto Serif KR',serif;font-size:52px;font-weight:900;color:var(--navy);margin:4px 0 0;}
+.avg-sub{text-align:center;color:var(--sub);font-size:13px;margin-bottom:16px;}
+
+.warnbox{background:#fdf2e0;border-radius:12px;padding:12px 14px;font-size:12.5px;color:#7a5a1a;margin-bottom:14px;line-height:1.65;white-space:pre-line;}
+.infobox{background:#eef1f6;border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--navy);margin-bottom:14px;line-height:1.65;white-space:pre-line;}
+.footer-copy{text-align:center;color:#9aa0ac;font-size:11.5px;margin-top:22px;}
+.hist-item{border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:9px;background:#fffdf8;cursor:pointer;}
+.hist-top{display:flex;justify-content:space-between;font-weight:700;font-size:13.5px;}
+.hist-sub{font-size:11.5px;color:var(--sub);margin-top:3px;}
+
+.wrongitem{border:1.5px solid var(--line);border-radius:14px;padding:14px 15px;margin-bottom:10px;background:#fffdf8;}
+.wrongitem .wq{font-weight:700;margin-bottom:6px;font-size:14px;color:var(--navy);}
+.wrongitem .wmeta{font-size:11px;color:var(--sub);margin-bottom:8px;}
+.wrongitem .wa{color:var(--bad);font-size:13px;margin-bottom:4px;}
+.wrongitem .wc{color:var(--good);font-size:13px;}
+
+.tabbar{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:14px;overflow-x:auto;}
+.tabbtn{flex:1;text-align:center;padding:10px 4px;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;}
+.tabbtn.active{color:var(--navy);border-color:var(--gold);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--line);}
+th{color:var(--sub);font-weight:700;background:#fbf9f3;}
+tr.clickable{cursor:pointer;}
+tr.clickable:active{background:#f4eeee;}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(10,15,30,.55);display:flex;align-items:center;justify-content:center;z-index:1200;padding:24px;}
+.modal-overlay.hidden{display:none !important;}
+.modal-box{background:#fff;border-radius:20px;padding:24px 20px;max-width:340px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);}
+.modal-box p{font-size:14.5px;line-height:1.6;margin:0 0 18px;text-align:center;color:var(--ink);white-space:pre-line;}@media print{
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; padding:20px; }
+  #printArea .print-item{ break-inside:avoid; page-break-inside:avoid; }
+}
+.print-item{ break-inside:avoid; page-break-inside:avoid; border:1px solid #ccc;border-radius:6px;padding:10px 12px;margin-bottom:8px; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="mic-badge">🎙️</div>
+  <div class="eyebrow">GMS학원 이은정 강사 · 자사·특목·과고반 대비</div>
+  <h1>중등 과학 구술면접 마스터</h1>
+  <p>질문을 읽고 실제 면접처럼 목소리로 답해보세요</p>
+</div>
+<div class="wrap" id="app"></div>
+<div id="printArea" class="hidden"></div>
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal-box">
+    <p id="modalMsg"></p>
+    <div class="row2" id="modalBtns"></div>
+  </div>
+</div>
+
+<script>
+/* ===================== 문제 은행 ===================== */
+const QUESTIONS = [
+{id:'E1',cat:'지구과학',grade:'중1',q:'지구 내부의 층상 구조를 설명하시오.',
+ a:'지구 내부는 지진파 연구를 통해 지각, 맨틀, 외핵, 내핵의 네 층으로 구분됩니다. 지각과 맨틀의 경계를 모호면이라고 하며, 외핵은 액체 상태, 내핵은 고체 상태로 추정됩니다.',
+ kw:[{l:'지각',a:['지각']},{l:'맨틀',a:['맨틀']},{l:'외핵',a:['외핵']},{l:'내핵',a:['내핵']},{l:'지진파 연구',a:['지진파']}]},
+{id:'E2',cat:'지구과학',grade:'중1',q:'화성암을 화산암과 심성암으로 분류하는 기준은 무엇인가요?',
+ a:'마그마가 식는 속도에 따라 결정 크기가 달라지는데, 지표 부근에서 빠르게 식어 결정이 작은 암석을 화산암, 지하 깊은 곳에서 천천히 식어 결정이 큰 암석을 심성암이라고 합니다.',
+ kw:[{l:'화산암',a:['화산암']},{l:'심성암',a:['심성암']},{l:'냉각 속도',a:['냉각','식는 속도','식는속도']},{l:'결정 크기',a:['결정 크기','결정크기']}]},
+{id:'E3',cat:'지구과학',grade:'중1',q:'퇴적암이 만들어지는 과정을 설명하시오.',
+ a:'풍화와 침식으로 생긴 퇴적물이 물이나 바람에 의해 운반되어 쌓이고, 다져지고 굳어지는 속성 작용을 거쳐 퇴적암이 만들어집니다.',
+ kw:[{l:'퇴적물',a:['퇴적물']},{l:'운반',a:['운반']},{l:'다져짐',a:['다져','다짐']},{l:'굳어짐(속성작용)',a:['굳어','속성','교결']}]},
+{id:'E4',cat:'지구과학',grade:'중1',q:'변성암은 어떻게 생성되나요?',
+ a:'기존의 암석이 지하 깊은 곳에서 높은 열이나 압력을 받아 조직이나 광물 성분이 변하면서 생성됩니다.',
+ kw:[{l:'열',a:['열']},{l:'압력',a:['압력']},{l:'조직·광물 변화',a:['조직','광물','재결정']},{l:'기존 암석',a:['기존 암석','기존암석']}]},
+{id:'E5',cat:'지구과학',grade:'중1',q:'대륙 이동설의 증거를 두 가지 이상 말해보세요.',
+ a:'해안선 모양의 일치, 여러 대륙에서 발견되는 같은 종류의 화석 분포, 빙하 흔적의 방향 일치, 멀리 떨어진 지층의 연속성 등이 증거로 제시됩니다.',
+ kw:[{l:'해안선 일치',a:['해안선']},{l:'화석 분포',a:['화석']},{l:'빙하 흔적',a:['빙하']},{l:'지층의 연속성',a:['지층','연속']}]},
+{id:'E6',cat:'지구과학',grade:'중1',q:'화산대와 지진대가 특정 지역에 집중되는 까닭은 무엇인가요?',
+ a:'화산과 지진은 판의 경계에서 판들이 서로 부딪히거나 어긋나면서 일어나기 때문에, 화산대와 지진대는 대체로 판의 경계와 일치합니다.',
+ kw:[{l:'판',a:['판']},{l:'판의 경계',a:['판의 경계','판경계']},{l:'판의 운동(충돌·어긋남)',a:['운동','충돌','어긋']}]},
+{id:'E7',cat:'지구과학',grade:'중2',q:'대류권에서 높이 올라갈수록 기온이 낮아지는 까닭은?',
+ a:'대류권은 지표면에서 방출되는 에너지를 받아 데워지는데, 높이 올라갈수록 지표에서 방출된 에너지가 적게 도달하기 때문에 기온이 낮아집니다.',
+ kw:[{l:'지표 복사 에너지',a:['지표','복사']},{l:'높이 올라갈수록',a:['높이','올라갈수록']},{l:'에너지가 적게 도달',a:['적게 도달','감소']}]},
+{id:'E8',cat:'지구과학',grade:'중3',q:'온실 효과의 원리를 설명하시오.',
+ a:'대기 중의 온실 기체가 지구에서 방출되는 복사 에너지의 일부를 흡수했다가 지표로 다시 방출하여, 대기가 없을 때보다 지구의 평균 기온을 높게 유지시키는 현상입니다.',
+ kw:[{l:'온실 기체',a:['온실 기체','온실기체']},{l:'지구 복사 에너지 흡수',a:['흡수']},{l:'재방출',a:['재방출','다시 방출','방출']},{l:'기온 상승(높게 유지)',a:['기온','높게 유지','상승']}]},
+{id:'E9',cat:'지구과학',grade:'중3',q:'이슬점과 상대 습도의 관계를 설명하시오.',
+ a:'이슬점은 공기가 냉각되어 포화 상태가 되는 온도이며, 상대 습도는 현재 기온의 포화 수증기량에 대한 실제 수증기량의 비율입니다. 현재 기온이 이슬점에 가까울수록 상대 습도는 높아집니다.',
+ kw:[{l:'이슬점(포화 상태)',a:['이슬점']},{l:'포화',a:['포화']},{l:'상대 습도',a:['상대 습도','상대습도']},{l:'수증기량의 비율',a:['수증기량','비율']}]},
+{id:'E10',cat:'지구과학',grade:'중3',q:'구름이 생성되는 과정을 설명하시오.',
+ a:'공기 덩어리가 상승하면 단열 팽창하여 기온이 낮아지고, 기온이 이슬점에 도달하면 수증기가 응결하여 작은 물방울이나 얼음 알갱이가 되며, 이것이 모여 구름을 이룹니다.',
+ kw:[{l:'공기 상승',a:['상승']},{l:'단열 팽창',a:['단열 팽창','단열팽창']},{l:'기온 하강',a:['기온 하강','기온이 낮아']},{l:'이슬점 도달',a:['이슬점']},{l:'수증기 응결',a:['응결']}]},
+{id:'E11',cat:'지구과학',grade:'중2',q:'일식과 월식이 일어나는 위치의 차이를 설명하시오.',
+ a:'일식은 태양-달-지구 순서로 일직선에 놓여 달이 태양을 가릴 때 삭에서 일어나고, 월식은 태양-지구-달 순서로 놓여 달이 지구 그림자에 들어갈 때 망에서 일어납니다.',
+ kw:[{l:'일식: 태양-달-지구',a:['태양-달-지구','태양 달 지구']},{l:'월식: 태양-지구-달',a:['태양-지구-달','태양 지구 달']},{l:'삭',a:['삭']},{l:'망',a:['망']}]},
+{id:'E12',cat:'지구과학',grade:'중2',q:'지구형 행성과 목성형 행성의 차이를 설명하시오.',
+ a:'지구형 행성은 크기와 질량이 작고 평균 밀도가 크며 단단한 지각으로 이루어져 있는 반면, 목성형 행성은 크기와 질량이 크고 평균 밀도가 작으며 가벼운 기체로 이루어져 있습니다.',
+ kw:[{l:'지구형: 크기 작음',a:['지구형']},{l:'목성형: 크기 큼',a:['목성형']},{l:'밀도 차이',a:['밀도']},{l:'기체 구성',a:['기체']}]},
+{id:'P1',cat:'물리',grade:'중1',q:'무게와 질량의 차이를 설명하시오.',
+ a:'질량은 물체가 가진 고유한 양으로 장소에 관계없이 일정하지만, 무게는 물체에 작용하는 중력의 크기로 측정 장소에 따라 달라집니다.',
+ kw:[{l:'질량: 고유한 양',a:['고유']},{l:'질량: 장소 무관',a:['장소에 관계없이','일정']},{l:'무게: 중력의 크기',a:['중력']},{l:'무게: 장소에 따라 변화',a:['장소에 따라','달라']}]},
+{id:'P2',cat:'물리',grade:'중1',q:'탄성력의 방향과 크기를 설명하시오.',
+ a:'탄성력은 변형된 물체가 원래 모양으로 되돌아가려는 힘으로, 물체에 작용한 힘과 반대 방향으로 작용하며 크기는 변형이 클수록 커집니다.',
+ kw:[{l:'원래 모양으로 되돌아가려는 힘',a:['원래 모양','되돌아']},{l:'작용한 힘과 반대 방향',a:['반대 방향','반대방향']},{l:'변형이 클수록 커짐',a:['변형','클수록']}]},
+{id:'P3',cat:'물리',grade:'중1',q:'마찰력이 작용하는 방향을 설명하시오.',
+ a:'마찰력은 두 물체의 접촉면에서 물체의 운동을 방해하는 방향, 즉 물체가 미끄러지는 방향과 반대 방향으로 작용합니다.',
+ kw:[{l:'접촉면',a:['접촉면']},{l:'운동을 방해',a:['방해']},{l:'반대 방향',a:['반대 방향','반대방향']}]},
+{id:'P4',cat:'물리',grade:'중1',q:'부력이 생기는 원리를 설명하시오.',
+ a:'부력은 유체 속에 잠긴 물체를 위로 밀어 올리는 힘으로, 물체가 유체 속에서 밀어낸 유체의 무게와 같은 크기로 작용합니다.',
+ kw:[{l:'유체',a:['유체']},{l:'위로 밀어 올리는 힘',a:['위로','밀어 올']},{l:'밀어낸 유체의 무게',a:['밀어낸','유체의 무게']}]},
+{id:'P5',cat:'물리',grade:'중1',q:'보일 법칙을 설명하시오.',
+ a:'온도가 일정할 때 일정량의 기체의 부피는 압력에 반비례한다는 법칙으로, 압력을 높이면 기체 입자 사이의 거리가 가까워져 부피가 줄어듭니다.',
+ kw:[{l:'온도 일정',a:['온도가 일정','온도 일정']},{l:'압력에 반비례',a:['반비례']},{l:'압력↑ 부피↓',a:['압력을 높이','부피가 줄어','부피 감소']}]},
+{id:'P6',cat:'물리',grade:'중1',q:'융해가 일어날 때 입자 배열은 어떻게 달라지나요?',
+ a:'고체가 액체로 융해되면 입자의 운동이 활발해져 입자 사이의 인력이 약해지고 거리가 멀어지면서 배열이 불규칙해지고 부피가 늘어납니다.',
+ kw:[{l:'입자 운동 활발',a:['운동이 활발','활발']},{l:'인력 약화',a:['인력']},{l:'입자 사이 거리 멀어짐',a:['거리','멀어']},{l:'부피 증가',a:['부피가 늘어','부피 증가']}]},
+{id:'P7',cat:'물리',grade:'중1',q:'빛의 삼원색과 백색광의 관계를 설명하시오.',
+ a:'빛의 삼원색은 빨간색, 초록색, 파란색이며, 이 세 가지 색의 빛이 적절히 합성되면 백색광이 됩니다.',
+ kw:[{l:'빨간색·초록색·파란색',a:['빨간','초록','파란']},{l:'합성',a:['합성']},{l:'백색광',a:['백색광']}]},
+{id:'P8',cat:'물리',grade:'중1',q:'파동에서 횡파와 종파의 차이를 설명하시오.',
+ a:'횡파는 매질의 진동 방향과 파동의 진행 방향이 서로 수직인 파동이고, 종파는 매질의 진동 방향과 파동의 진행 방향이 서로 나란한 파동입니다.',
+ kw:[{l:'횡파',a:['횡파']},{l:'종파',a:['종파']},{l:'진동 방향과 진행 방향이 수직(횡파)',a:['수직']},{l:'진동 방향과 진행 방향이 나란(종파)',a:['나란']}]},
+{id:'P9',cat:'물리',grade:'중3',q:'역학적 에너지 보존 법칙을 자유 낙하 운동을 예로 들어 설명하시오.',
+ a:'물체가 자유 낙하할 때 높이가 낮아지면서 위치 에너지는 감소하고, 속력이 빨라지면서 운동 에너지는 증가하는데, 공기 저항이 없다면 두 에너지의 합인 역학적 에너지는 일정하게 보존됩니다.',
+ kw:[{l:'위치 에너지 감소',a:['위치 에너지']},{l:'운동 에너지 증가',a:['운동 에너지']},{l:'역학적 에너지 보존',a:['역학적 에너지','보존']},{l:'자유 낙하',a:['자유 낙하','자유낙하']}]},
+{id:'P10',cat:'물리',grade:'중2',q:'옴의 법칙, 즉 전류·전압·저항의 관계를 설명하시오.',
+ a:'도선에 흐르는 전류의 세기는 저항에 걸린 전압에 비례하고 저항의 크기에는 반비례하며, 전류는 전압을 저항으로 나눈 값으로 나타냅니다.',
+ kw:[{l:'전압에 비례',a:['전압','비례']},{l:'저항에 반비례',a:['저항','반비례']},{l:'전류=전압/저항',a:['전류']}]},
+{id:'C1',cat:'화학',grade:'중2',q:'순물질과 혼합물의 차이를 설명하시오.',
+ a:'순물질은 한 종류의 물질로만 이루어진 물질이고, 혼합물은 두 종류 이상의 순물질이 성질이 변하지 않은 채 섞여 있는 물질입니다.',
+ kw:[{l:'순물질: 한 종류',a:['한 종류','한종류']},{l:'혼합물: 두 종류 이상',a:['두 종류','두종류','섞']},{l:'성질이 그대로 유지',a:['성질','그대로']}]},
+{id:'C2',cat:'화학',grade:'중1',q:'원자의 구조를 설명하시오.',
+ a:'원자는 중심에 있는 (+)전하를 띠는 원자핵과 그 주위를 움직이는 (-)전하를 띠는 전자로 이루어져 있으며, 전체적으로 전기적 중성을 띱니다.',
+ kw:[{l:'원자핵(+전하)',a:['원자핵']},{l:'전자(-전하)',a:['전자']},{l:'전기적 중성',a:['중성']}]},
+{id:'C3',cat:'화학',grade:'중2',q:'양이온과 음이온이 생성되는 원리를 설명하시오.',
+ a:'중성인 원자가 전자를 잃으면 (+)전하를 띠는 양이온이 되고, 전자를 얻으면 (-)전하를 띠는 음이온이 됩니다.',
+ kw:[{l:'전자를 잃음 → 양이온',a:['전자를 잃','양이온']},{l:'전자를 얻음 → 음이온',a:['전자를 얻','음이온']}]},
+{id:'C4',cat:'화학',grade:'중2',q:'앙금 생성 반응이란 무엇인가요?',
+ a:'두 수용액을 섞었을 때 각 수용액에 들어있던 이온들이 서로 반응하여 물에 잘 녹지 않는 앙금을 생성하는 반응입니다.',
+ kw:[{l:'두 수용액을 섞음',a:['수용액']},{l:'이온이 반응',a:['이온']},{l:'물에 잘 녹지 않는 앙금',a:['앙금','녹지 않']}]},
+{id:'C5',cat:'화학',grade:'중2',q:'밀도란 무엇이며 어떤 특징을 가지나요?',
+ a:'밀도는 단위 부피당 질량으로, 물질의 양에 관계없이 물질마다 고유한 값을 가지므로 물질을 구별하는 데 이용됩니다.',
+ kw:[{l:'단위 부피당 질량',a:['부피','질량']},{l:'물질마다 고유한 값',a:['고유']},{l:'물질 구별에 이용',a:['구별']}]},
+{id:'C6',cat:'화학',grade:'중2',q:'용해도는 무엇이며 온도와 어떤 관계가 있나요?',
+ a:'용해도는 일정한 온도에서 용매 100g에 최대로 녹을 수 있는 용질의 g 수이며, 고체의 용해도는 일반적으로 온도가 높을수록 증가합니다.',
+ kw:[{l:'용매 100g',a:['용매']},{l:'최대로 녹는 양',a:['최대로 녹']},{l:'온도가 높을수록 증가(고체)',a:['온도가 높','증가']}]},
+{id:'C7',cat:'화학',grade:'중2',q:'순물질과 혼합물의 녹는점 차이를 설명하시오.',
+ a:'순물질은 녹는점이 일정하지만, 혼합물은 성분 물질에 따라 녹는점이 일정하지 않기 때문에 이를 이용해 순물질과 혼합물을 구별할 수 있습니다.',
+ kw:[{l:'순물질: 녹는점 일정',a:['순물질','일정']},{l:'혼합물: 녹는점 일정하지 않음',a:['혼합물','일정하지 않']},{l:'구별에 이용',a:['구별']}]},
+{id:'C8',cat:'화학',grade:'중3',q:'질량 보존 법칙이 성립하는 까닭을 설명하시오.',
+ a:'화학 반응이 일어나도 반응에 참여하는 원자의 종류와 개수가 변하지 않기 때문에 반응 전후 물질의 총 질량은 항상 보존됩니다.',
+ kw:[{l:'원자의 종류와 개수 불변',a:['원자','종류','개수']},{l:'반응 전후 총 질량 동일',a:['총 질량','질량이 같','보존']}]},
+{id:'C9',cat:'화학',grade:'중3',q:'발열 반응과 흡열 반응의 차이를 설명하시오.',
+ a:'발열 반응은 화학 반응이 일어날 때 에너지를 방출하여 주위 온도가 높아지는 반응이고, 흡열 반응은 에너지를 흡수하여 주위 온도가 낮아지는 반응입니다.',
+ kw:[{l:'발열: 에너지 방출',a:['방출']},{l:'발열: 온도 상승',a:['온도가 높아','상승']},{l:'흡열: 에너지 흡수',a:['흡수']},{l:'흡열: 온도 하강',a:['온도가 낮아','하강']}]},
+{id:'C10',cat:'화학',grade:'중2',q:'크로마토그래피의 원리를 설명하시오.',
+ a:'혼합물을 이루는 성분 물질이 용매를 따라 이동하는 속도 차이를 이용하여 성분 물질을 분리하는 방법입니다.',
+ kw:[{l:'이동 속도 차이',a:['이동 속도','속도 차이']},{l:'용매',a:['용매']},{l:'성분 물질 분리',a:['분리']}]},
+{id:'B1',cat:'생물',grade:'중1',q:'생물 다양성의 세 가지 유형을 설명하시오.',
+ a:'생물 다양성은 한 지역에 사는 생물종의 다양한 정도를 나타내는 종 다양성, 같은 종 내 개체들의 유전자가 다양한 정도를 나타내는 유전적 다양성, 한 지역에 존재하는 생태계의 다양한 정도를 나타내는 생태계 다양성을 모두 포함합니다.',
+ kw:[{l:'종 다양성',a:['종 다양성','종다양성']},{l:'유전적 다양성',a:['유전적 다양성','유전적다양성']},{l:'생태계 다양성',a:['생태계 다양성','생태계다양성']}]},
+{id:'B2',cat:'생물',grade:'중2',q:'광합성이 무엇인가요?',
+ a:'식물이 엽록체에서 빛에너지를 이용하여 이산화탄소와 물로부터 포도당과 산소를 만드는 과정입니다.',
+ kw:[{l:'엽록체',a:['엽록체']},{l:'빛에너지',a:['빛에너지','빛 에너지']},{l:'이산화탄소',a:['이산화탄소']},{l:'물',a:['물']},{l:'포도당',a:['포도당']},{l:'산소',a:['산소']}]},
+{id:'B3',cat:'생물',grade:'중2',q:'증산 작용과 기공의 여닫이 관계를 설명하시오.',
+ a:'증산 작용은 식물체 안의 물이 기공을 통해 수증기로 빠져나가는 현상으로, 빛이 강할 때 공변세포가 팽창해 기공이 열리면서 증산 작용이 활발해집니다.',
+ kw:[{l:'물이 수증기로 배출',a:['수증기']},{l:'기공',a:['기공']},{l:'공변세포',a:['공변세포']},{l:'빛이 강할 때 열림',a:['빛이 강','열림','열려']}]},
+{id:'B4',cat:'생물',grade:'중2',q:'광합성과 호흡의 관계를 설명하시오.',
+ a:'광합성으로 만들어진 포도당과 산소는 호흡에 이용되고, 호흡으로 생성된 이산화탄소와 물은 다시 광합성에 이용되는 상호 보완적인 관계입니다.',
+ kw:[{l:'광합성 산물이 호흡에 이용',a:['광합성','호흡에']},{l:'호흡 산물이 광합성에 이용',a:['호흡','광합성에']},{l:'상호 관계(순환)',a:['상호','순환']}]},
+{id:'B5',cat:'생물',grade:'중2',q:'소장의 구조가 영양소 흡수에 적합한 까닭을 설명하시오.',
+ a:'소장 안쪽 벽에는 주름과 융털이 많아 표면적이 매우 넓어지므로 영양소를 효율적으로 흡수할 수 있습니다.',
+ kw:[{l:'융털',a:['융털']},{l:'표면적 증가',a:['표면적']},{l:'효율적 흡수',a:['흡수']}]},
+{id:'B6',cat:'생물',grade:'중1',q:'혈액을 구성하는 성분과 그 기능을 설명하시오.',
+ a:'혈액은 적혈구, 백혈구, 혈소판의 혈구 성분과 혈장으로 구성되며, 적혈구는 산소 운반, 백혈구는 식균 작용과 몸의 방어, 혈소판은 혈액 응고를 담당합니다.',
+ kw:[{l:'적혈구 - 산소 운반',a:['적혈구']},{l:'백혈구 - 식균·방어',a:['백혈구']},{l:'혈소판 - 혈액 응고',a:['혈소판']}]},
+{id:'B7',cat:'생물',grade:'중2',q:'체순환과 폐순환의 경로를 설명하시오.',
+ a:'체순환은 좌심실에서 나온 혈액이 온몸을 돌고 우심방으로 돌아오는 순환이고, 폐순환은 우심실에서 나온 혈액이 폐를 거쳐 좌심방으로 돌아오는 순환입니다.',
+ kw:[{l:'체순환: 좌심실→온몸→우심방',a:['좌심실','온몸']},{l:'폐순환: 우심실→폐→좌심방',a:['우심실','폐']}]},
+{id:'B8',cat:'생물',grade:'중2',q:'호흡 운동이 일어나는 원리를 설명하시오.',
+ a:'갈비뼈가 올라가고 횡격막이 내려가면 흉강의 부피가 커지면서 압력이 낮아져 공기가 폐 안으로 들어오고, 반대로 흉강 부피가 작아지면 압력이 높아져 공기가 밖으로 나갑니다.',
+ kw:[{l:'갈비뼈·횡격막의 움직임',a:['갈비뼈','횡격막']},{l:'흉강 부피 변화',a:['흉강']},{l:'압력 변화',a:['압력']},{l:'공기 이동',a:['공기']}]},
+{id:'B9',cat:'생물',grade:'중2',q:'오줌이 생성되는 과정을 설명하시오.',
+ a:'콩팥의 사구체에서 보먼주머니로 혈액 성분 중 크기가 작은 물질이 여과되고, 세뇨관에서 몸에 필요한 물질이 재흡수되며, 여과되지 않은 노폐물이 분비되어 오줌이 만들어집니다.',
+ kw:[{l:'여과(사구체→보먼주머니)',a:['여과']},{l:'재흡수(세뇨관)',a:['재흡수']},{l:'분비',a:['분비']}]},
+{id:'B10',cat:'생물',grade:'중3',q:'뉴런을 통해 자극이 전달되는 경로를 설명하시오.',
+ a:'자극은 감각 기관에서 감각 뉴런을 거쳐 연합 뉴런인 뇌나 척수로 전달되어 판단이 이루어지고, 운동 뉴런을 통해 반응 기관으로 명령이 전달됩니다.',
+ kw:[{l:'감각 뉴런',a:['감각 뉴런','감각뉴런']},{l:'연합 뉴런(뇌·척수)',a:['연합 뉴런','연합뉴런']},{l:'운동 뉴런',a:['운동 뉴런','운동뉴런']},{l:'반응 기관',a:['반응 기관','반응기관']}]},
+{id:'B11',cat:'생물',grade:'중3',q:'무조건 반사와 의식적 반응의 차이를 설명하시오.',
+ a:'무조건 반사는 자극이 대뇌에 도달하기 전에 척수나 연수 같은 중추에서 처리되어 매우 빠르게 일어나는 무의식적 반응이고, 의식적 반응은 자극이 대뇌까지 전달되어 판단을 거친 후 일어나는 반응입니다.',
+ kw:[{l:'무조건 반사: 척수·연수 조절',a:['척수','연수']},{l:'무조건 반사: 무의식적·빠름',a:['무의식','빠르']},{l:'의식적 반응: 대뇌 판단',a:['대뇌','판단']}]},
+{id:'B12',cat:'생물',grade:'중3',q:'체세포 분열과 생식세포 분열의 차이를 설명하시오.',
+ a:'체세포 분열은 한 번 분열하여 모세포와 염색체 수가 같은 딸세포 2개를 만들지만, 생식세포 분열은 두 번 연속 분열하여 염색체 수가 절반으로 줄어든 딸세포 4개를 만듭니다.',
+ kw:[{l:'체세포 분열: 1회, 염색체 수 동일',a:['체세포','1회','같']},{l:'생식세포 분열: 2회 연속',a:['생식세포','2회','연속']},{l:'염색체 수 절반, 딸세포 4개',a:['절반','4개']}]},
+{id:'E13',cat:'지구과학',grade:'중2',q:'지구계란 무엇이며 어떤 구성 요소로 이루어져 있나요?',
+ a:'지구계는 서로 영향을 주고받는 지권, 수권, 기권, 생물권, 외권의 다섯 가지 구성 요소로 이루어진 지구 전체를 말합니다.',
+ kw:[{l:'지권',a:['지권']},{l:'수권',a:['수권']},{l:'기권',a:['기권']},{l:'생물권',a:['생물권']},{l:'외권',a:['외권']}]},
+{id:'E14',cat:'지구과학',grade:'중1',q:'조암 광물이란 무엇이며 대표적인 종류는 무엇인가요?',
+ a:'암석을 이루는 주요 광물을 조암 광물이라고 하며, 장석, 석영, 휘석, 흑운모, 각섬석 등이 있고 부피비로는 장석과 석영이 가장 많습니다.',
+ kw:[{l:'암석을 이루는 주요 광물',a:['암석을 이루는','조암']},{l:'장석',a:['장석']},{l:'석영',a:['석영']}]},
+{id:'E15',cat:'지구과학',grade:'중1',q:'광물을 구별하는 방법에는 어떤 것들이 있나요?',
+ a:'광물 고유의 겉보기 색, 광물 가루의 색인 조흔색, 단단한 정도인 굳기, 염산과의 반응 여부, 자철석 같은 자성 등으로 광물을 구별할 수 있습니다.',
+ kw:[{l:'색',a:['색']},{l:'조흔색',a:['조흔색']},{l:'굳기',a:['굳기']},{l:'염산 반응',a:['염산']},{l:'자성',a:['자성']}]},
+{id:'E16',cat:'지구과학',grade:'중1',q:'풍화 작용이란 무엇이며 토양은 어떤 순서로 만들어지나요?',
+ a:'풍화는 암석이 물, 공기, 생물 등의 작용으로 잘게 부서지고 분해되는 현상이며, 기반암이 오랜 시간 풍화를 받아 모질물, 표토, 심토의 순서로 토양이 만들어집니다.',
+ kw:[{l:'암석이 잘게 부서짐(풍화)',a:['부서','분해']},{l:'기반암',a:['기반암']},{l:'모질물·표토·심토 순',a:['모질물','표토','심토']}]},
+{id:'E17',cat:'지구과학',grade:'중2',q:'대류권, 성층권, 중간권, 열권을 기온 변화를 기준으로 구분하여 설명하시오.',
+ a:'대류권은 높이 올라갈수록 기온이 낮아지고, 성층권은 오존층이 자외선을 흡수해 기온이 높아지며, 중간권은 다시 기온이 낮아지고, 열권은 태양 에너지를 직접 받아 기온이 높아집니다.',
+ kw:[{l:'대류권: 기온 하강',a:['대류권']},{l:'성층권: 오존층, 기온 상승',a:['성층권','오존층']},{l:'중간권: 기온 하강',a:['중간권']},{l:'열권: 기온 상승',a:['열권']}]},
+{id:'E18',cat:'지구과학',grade:'중2',q:'지구의 복사 평형이란 무엇인가요?',
+ a:'지구가 흡수하는 태양 복사 에너지의 양과 지구가 방출하는 지구 복사 에너지의 양이 같아서 지구의 평균 기온이 일정하게 유지되는 상태를 말합니다.',
+ kw:[{l:'흡수량과 방출량이 같음',a:['흡수','방출','같']},{l:'기온이 일정하게 유지',a:['기온','일정']}]},
+{id:'E19',cat:'지구과학',grade:'중3',q:'강수 과정에서 병합설과 빙정설의 차이를 설명하시오.',
+ a:'병합설은 저위도 지방에서 물방울들이 서로 부딪혀 커지면서 비가 내리는 과정이고, 빙정설은 중위도나 고위도 지방에서 얼음 알갱이가 커져 떨어지며 녹아서 비나 눈이 되는 과정입니다.',
+ kw:[{l:'병합설: 물방울 충돌(저위도)',a:['병합설','저위도']},{l:'빙정설: 얼음 알갱이(중·고위도)',a:['빙정설','얼음']}]},
+{id:'E20',cat:'지구과학',grade:'중2',q:'바람이 부는 원리를 설명하시오.',
+ a:'같은 태양 복사 에너지를 받아도 지표면의 온도 차이로 기압 차이가 생기고, 바람은 기압이 높은 곳에서 낮은 곳으로 붑니다.',
+ kw:[{l:'온도 차이',a:['온도 차이','온도차이']},{l:'기압 차이',a:['기압 차이','기압차이']},{l:'고기압에서 저기압으로',a:['높은 곳에서 낮은','고기압']}]},
+{id:'E21',cat:'지구과학',grade:'중3',q:'해륙풍이 생기는 원리를 설명하시오.',
+ a:'낮에는 육지가 빨리 데워져 기압이 낮아지므로 바다에서 육지로 해풍이 불고, 밤에는 육지가 빨리 식어 기압이 높아지므로 육지에서 바다로 육풍이 붑니다.',
+ kw:[{l:'낮: 해풍(바다→육지)',a:['해풍']},{l:'밤: 육풍(육지→바다)',a:['육풍']},{l:'가열·냉각 속도 차이',a:['빨리 데워','빨리 식']}]},
+{id:'E22',cat:'지구과학',grade:'중3',q:'한랭 전선과 온난 전선의 차이를 설명하시오.',
+ a:'한랭 전선은 찬 기단이 따뜻한 기단 아래를 파고들며 만들어져 적운형 구름과 소나기성 비를 좁은 지역에 내리고, 온난 전선은 따뜻한 기단이 찬 기단 위로 올라가며 만들어져 층운형 구름과 지속적인 비를 넓은 지역에 내립니다.',
+ kw:[{l:'한랭 전선: 적운형·소나기·좁은 지역',a:['한랭','적운형','소나기']},{l:'온난 전선: 층운형·지속적·넓은 지역',a:['온난','층운형','지속적']}]},
+{id:'E23',cat:'지구과학',grade:'중3',q:'온대 저기압 주변의 날씨 특징을 설명하시오.',
+ a:'온대 저기압 중심의 남동쪽에는 온난 전선이, 남서쪽에는 한랭 전선이 발달하며, 편서풍의 영향으로 저기압 전체가 서에서 동으로 이동합니다.',
+ kw:[{l:'남동쪽 온난 전선',a:['남동쪽','온난']},{l:'남서쪽 한랭 전선',a:['남서쪽','한랭']},{l:'편서풍의 영향으로 서→동 이동',a:['편서풍','서에서 동']}]},
+{id:'E24',cat:'지구과학',grade:'중2',q:'에라토스테네스가 지구의 크기를 측정한 원리를 설명하시오.',
+ a:'하짓날 정오에 시에네와 알렉산드리아에서 생기는 그림자 각도 차이를 측정하고, 두 지점 사이의 거리와 엇각의 원리를 이용해 지구 둘레를 계산했습니다.',
+ kw:[{l:'그림자 각도 차이',a:['그림자','각도']},{l:'두 지점 사이의 거리',a:['거리']},{l:'엇각(부채꼴)의 원리',a:['엇각','부채꼴']}]},
+{id:'E25',cat:'지구과학',grade:'중2',q:'지구의 자전과 공전으로 나타나는 현상을 각각 설명하시오.',
+ a:'지구의 자전으로는 낮과 밤이 반복되고 천체의 일주 운동이 나타나며, 지구의 공전으로는 계절에 따라 별자리가 달라지고 태양의 연주 운동이 나타납니다.',
+ kw:[{l:'자전: 낮과 밤, 일주 운동',a:['자전']},{l:'공전: 계절별 별자리, 연주 운동',a:['공전']}]},
+{id:'E26',cat:'지구과학',grade:'중2',q:'달의 위상 변화가 나타나는 까닭을 설명하시오.',
+ a:'달이 지구 주위를 공전하면서 태양, 지구, 달의 상대적인 위치가 달라지기 때문에 지구에서 보이는 달의 모양이 삭에서 초승달, 상현달, 보름달, 하현달, 그믐달 순으로 변합니다.',
+ kw:[{l:'달의 공전',a:['공전']},{l:'태양·지구·달의 상대적 위치 변화',a:['상대적','위치']},{l:'위상이 순서대로 변함',a:['위상','순서']}]},
+{id:'E27',cat:'지구과학',grade:'중2',q:'태양 표면에서 관찰되는 흑점과 쌀알무늬는 무엇인가요?',
+ a:'흑점은 주변보다 온도가 낮아 어둡게 보이는 반점이고, 쌀알무늬는 대류에 의해 광구 표면에 쌀알을 뿌린 것처럼 보이는 무늬입니다.',
+ kw:[{l:'흑점: 온도가 낮아 어둡게 보임',a:['흑점']},{l:'쌀알무늬: 대류',a:['쌀알무늬','대류']}]},
+{id:'E28',cat:'지구과학',grade:'중2',q:'태양의 대기에서 나타나는 채층, 코로나, 홍염, 플레어를 설명하시오.',
+ a:'채층은 광구 바로 위의 얇은 대기층이고, 코로나는 채층 바깥의 희박하지만 온도가 매우 높은 대기이며, 홍염은 채층에서 코로나로 솟아오르는 고온의 가스 기둥, 플레어는 흑점 주변에서 에너지가 폭발적으로 방출되는 현상입니다.',
+ kw:[{l:'채층',a:['채층']},{l:'코로나',a:['코로나']},{l:'홍염',a:['홍염']},{l:'플레어',a:['플레어']}]},
+{id:'E29',cat:'지구과학',grade:'중3',q:'연주 시차를 이용해 별까지의 거리를 어떻게 구하나요?',
+ a:'지구에서 6개월 간격으로 별을 관측했을 때 생기는 시차의 절반을 연주 시차라고 하며, 별까지의 거리는 연주 시차에 반비례합니다.',
+ kw:[{l:'6개월 간격 관측',a:['6개월']},{l:'시차의 절반',a:['시차','절반']},{l:'거리는 연주 시차에 반비례',a:['반비례']}]},
+{id:'E30',cat:'지구과학',grade:'중3',q:'겉보기 등급과 절대 등급의 차이를 설명하시오.',
+ a:'겉보기 등급은 거리를 고려하지 않고 눈에 보이는 밝기를 나타낸 것이고, 절대 등급은 별이 10파섹 거리에 있다고 가정했을 때의 밝기를 나타낸 것으로 실제 밝기를 비교할 수 있습니다.',
+ kw:[{l:'겉보기 등급: 거리 고려 안 함',a:['겉보기 등급']},{l:'절대 등급: 10pc 가정, 실제 밝기 비교',a:['절대 등급','10']}]},
+{id:'E31',cat:'지구과학',grade:'중2',q:'우리은하의 모양과 태양계의 위치를 설명하시오.',
+ a:'우리은하는 옆에서 보면 중심부가 부풀어 있는 납작한 원반 모양이고, 태양계는 우리은하 중심에서 벗어난 나선팔에 위치합니다.',
+ kw:[{l:'납작한 원반 모양',a:['원반']},{l:'나선팔',a:['나선팔']},{l:'중심에서 벗어난 위치',a:['벗어나','중심에서']}]},
+{id:'E32',cat:'지구과학',grade:'중3',q:'허블은 외부 은하 관측을 통해 무엇을 알아냈나요?',
+ a:'대부분의 외부 은하가 우리은하로부터 멀어지고 있으며 멀리 있는 은하일수록 더 빨리 멀어진다는 사실을 알아내어 우주가 팽창하고 있음을 밝혔습니다.',
+ kw:[{l:'은하들이 서로 멀어짐',a:['멀어']},{l:'멀리 있을수록 더 빨리 멀어짐',a:['멀수록','빨리']},{l:'우주 팽창',a:['우주 팽창','팽창']}]},
+{id:'E33',cat:'지구과학',grade:'중2',q:'해수의 연직 수온 분포에 따라 혼합층, 수온약층, 심해층을 구분하여 설명하시오.',
+ a:'혼합층은 태양 복사 에너지와 바람의 영향으로 수온이 높고 일정한 층이고, 수온약층은 깊어질수록 수온이 급격히 낮아지는 층이며, 심해층은 태양 에너지의 영향을 거의 받지 않아 수온이 낮고 일정한 층입니다.',
+ kw:[{l:'혼합층: 수온 높고 일정',a:['혼합층']},{l:'수온약층: 급격히 낮아짐',a:['수온약층']},{l:'심해층: 낮고 일정',a:['심해층']}]},
+{id:'E34',cat:'지구과학',grade:'중2',q:'염분비 일정 법칙을 설명하시오.',
+ a:'해수에 녹아 있는 염류들 사이의 비율은 지역이나 계절에 관계없이 염분과 상관없이 항상 일정하다는 법칙입니다.',
+ kw:[{l:'염류들 사이의 비율',a:['염류','비율']},{l:'염분과 관계없이 항상 일정',a:['관계없이','일정']}]},
+{id:'E35',cat:'지구과학',grade:'중2',q:'난류와 한류의 차이와 우리나라 주변 해류가 미치는 영향을 설명하시오.',
+ a:'난류는 저위도에서 고위도로 흐르는 따뜻한 해류이고 한류는 고위도에서 저위도로 흐르는 차가운 해류로, 우리나라 주변에서는 난류와 한류가 만나는 조경 수역을 이루어 좋은 어장이 형성됩니다.',
+ kw:[{l:'난류: 저위도→고위도, 따뜻함',a:['난류']},{l:'한류: 고위도→저위도, 차가움',a:['한류']},{l:'조경 수역',a:['조경 수역','조경수역']}]},
+{id:'E36',cat:'지구과학',grade:'중2',q:'조석 현상에서 만조와 간조, 사리와 조금을 설명하시오.',
+ a:'밀물로 해수면이 가장 높아진 때를 만조, 썰물로 가장 낮아진 때를 간조라고 하며, 한 달 중 조차가 가장 크게 나타날 때를 사리, 가장 작게 나타날 때를 조금이라고 합니다.',
+ kw:[{l:'만조: 해수면 가장 높음',a:['만조']},{l:'간조: 해수면 가장 낮음',a:['간조']},{l:'사리: 조차 최대',a:['사리']},{l:'조금: 조차 최소',a:['조금']}]},
+{id:'P11',cat:'물리',grade:'중1',q:'무게를 측정하는 원리와 질량을 측정하는 원리의 차이를 설명하시오.',
+ a:'무게는 물체를 아래로 당기는 중력의 크기를 용수철저울 등으로 측정하고, 질량은 양팔저울 등으로 표준 물체와 비교하여 측정합니다.',
+ kw:[{l:'무게: 중력의 크기, 용수철저울',a:['중력','용수철']},{l:'질량: 표준 물체와 비교, 양팔저울',a:['비교','양팔저울']}]},
+{id:'P12',cat:'물리',grade:'중1',q:'마찰력을 크게 하거나 작게 하는 예를 각각 들어보세요.',
+ a:'미끄럼을 방지하기 위해 신발 밑창을 거칠게 만드는 것은 마찰력을 크게 하는 예이고, 스키나 스노보드처럼 표면을 매끄럽게 하여 잘 미끄러지게 하는 것은 마찰력을 작게 하는 예입니다.',
+ kw:[{l:'마찰력을 크게 하는 예',a:['크게']},{l:'마찰력을 작게 하는 예',a:['작게']}]},
+{id:'P13',cat:'물리',grade:'중1',q:'부력의 크기가 무게보다 클 때와 작을 때 물체는 각각 어떻게 되나요?',
+ a:'부력이 무게보다 크면 물체가 위로 떠오르고, 부력이 무게보다 작으면 물체가 가라앉습니다.',
+ kw:[{l:'부력이 무게보다 크면 뜸',a:['크면','떠오']},{l:'부력이 무게보다 작으면 가라앉음',a:['작으면','가라앉']}]},
+{id:'P14',cat:'물리',grade:'중2',q:'온도, 물질의 상태, 입자의 질량에 따라 입자의 운동은 어떻게 달라지나요?',
+ a:'온도가 높을수록, 물질의 상태가 고체보다 액체, 액체보다 기체일수록, 입자의 질량이 작을수록 입자의 운동이 더 활발해집니다.',
+ kw:[{l:'온도 높을수록 활발',a:['온도']},{l:'기체 상태일수록 활발',a:['기체']},{l:'질량 작을수록 활발',a:['질량']}]},
+{id:'P15',cat:'물리',grade:'중1',q:'증발과 확산의 차이를 설명하시오.',
+ a:'증발은 액체 표면에서 액체를 이루는 입자가 스스로 운동해 기체로 변하는 현상이고, 확산은 물질을 이루는 입자가 스스로 운동해 모든 방향으로 퍼져 나가는 현상입니다.',
+ kw:[{l:'증발: 액체 표면에서 기체로',a:['증발']},{l:'확산: 모든 방향으로 퍼짐',a:['확산','퍼져']}]},
+{id:'P16',cat:'물리',grade:'중1',q:'기체의 압력이 커지는 요인을 설명하시오.',
+ a:'기체 입자의 수가 많을수록, 기체의 부피가 작을수록, 기체의 온도가 높을수록 기체 입자가 충돌하는 횟수와 세기가 늘어나 기체의 압력이 커집니다.',
+ kw:[{l:'입자 수가 많을수록',a:['입자','수']},{l:'부피가 작을수록',a:['부피']},{l:'온도가 높을수록',a:['온도']}]},
+{id:'P17',cat:'물리',grade:'중1',q:'샤를 법칙을 설명하시오.',
+ a:'압력이 일정할 때 일정량의 기체의 부피는 온도가 높아지면 일정한 비율로 늘어난다는 법칙으로, 기체 입자의 운동이 활발해져 충돌 횟수와 세기가 커지기 때문에 나타납니다.',
+ kw:[{l:'압력 일정',a:['압력이 일정','압력 일정']},{l:'온도 상승 → 부피 증가',a:['온도가 높아','부피가 늘어','부피 증가']}]},
+{id:'P18',cat:'물리',grade:'중1',q:'물질의 세 가지 상태에서 입자의 배열 차이를 설명하시오.',
+ a:'고체는 입자가 규칙적으로 촘촘히 배열되어 있고, 액체는 고체보다 불규칙하게 배열되어 있으며, 기체는 입자 사이의 거리가 매우 멀고 매우 불규칙하게 배열되어 있습니다.',
+ kw:[{l:'고체: 규칙적, 촘촘',a:['고체']},{l:'액체: 고체보다 불규칙',a:['액체']},{l:'기체: 매우 불규칙, 거리 멀다',a:['기체']}]},
+{id:'P19',cat:'물리',grade:'중1',q:'기화와 액화가 일어날 때 입자 배열의 변화를 설명하시오.',
+ a:'기화가 일어날 때는 입자 사이의 거리가 매우 멀어지며 부피가 크게 늘어나고, 액화가 일어날 때는 반대로 입자 사이의 거리가 가까워지며 부피가 크게 줄어듭니다.',
+ kw:[{l:'기화: 거리 멀어짐, 부피 증가',a:['기화']},{l:'액화: 거리 가까워짐, 부피 감소',a:['액화']}]},
+{id:'P20',cat:'물리',grade:'중2',q:'녹는점과 끓는점이 물질의 특성이 되는 까닭을 설명하시오.',
+ a:'순물질은 양이나 가열 세기와 관계없이 녹는점과 끓는점이 항상 일정하지만, 물질의 종류에 따라 그 값이 다르기 때문에 물질을 구별하는 특성으로 이용됩니다.',
+ kw:[{l:'순물질은 항상 일정',a:['일정']},{l:'물질마다 값이 다름',a:['다름','물질마다']},{l:'물질 구별에 이용',a:['구별']}]},
+{id:'P21',cat:'물리',grade:'중1',q:'물질이 상태 변화를 할 때 열에너지를 흡수하는 경우와 방출하는 경우를 각각 설명하시오.',
+ a:'융해, 기화, 승화(고체에서 기체로)가 일어날 때는 열에너지를 흡수하고, 응고, 액화, 승화(기체에서 고체로)가 일어날 때는 열에너지를 방출합니다.',
+ kw:[{l:'흡수: 융해, 기화',a:['흡수']},{l:'방출: 응고, 액화',a:['방출']}]},
+{id:'P22',cat:'물리',grade:'중1',q:'백색광이 프리즘을 통과하면 어떻게 되나요?',
+ a:'백색광은 여러 가지 색의 빛이 고르게 합성되어 있는 빛으로, 프리즘을 통과하면 굴절하는 정도가 색마다 달라 여러 가지 색의 빛으로 나누어집니다.',
+ kw:[{l:'여러 색의 빛이 합성된 것',a:['합성']},{l:'프리즘 통과',a:['프리즘']},{l:'여러 색으로 나누어짐',a:['나누어']}]},
+{id:'P23',cat:'물리',grade:'중3',q:'물체가 백색광 아래에서 특정 색으로 보이는 원리를 설명하시오.',
+ a:'물체에서 반사된 빛의 색이 눈에 들어와 그 색으로 보이는 것으로, 모든 색의 빛이 반사되면 흰색으로, 모든 색의 빛이 흡수되면 검은색으로 보입니다.',
+ kw:[{l:'반사된 빛의 색',a:['반사']},{l:'모두 반사되면 흰색',a:['흰색']},{l:'모두 흡수되면 검은색',a:['검은색']}]},
+{id:'P24',cat:'물리',grade:'중3',q:'평면거울에 상이 생기는 원리와 상의 특징을 설명하시오.',
+ a:'물체에서 반사된 빛이 평면거울에서 반사되어 눈에 들어오면 거울 뒤로 빛을 연장한 곳에 상이 보이는데, 이 상은 물체와 크기가 같고 거울 면을 기준으로 대칭인 위치에 생깁니다.',
+ kw:[{l:'반사된 빛이 거울 뒤로 연장',a:['거울 뒤','연장']},{l:'물체와 크기가 같음',a:['크기가 같']},{l:'거울 면 기준 대칭 위치',a:['대칭']}]},
+{id:'P25',cat:'물리',grade:'중1',q:'오목 거울과 볼록 거울에서 생기는 상의 특징을 비교하시오.',
+ a:'볼록 거울은 항상 물체보다 작고 바로 선 상이 생기고, 오목 거울은 물체가 초점보다 가까우면 크고 바로 선 상이, 초점보다 멀면 작고 거꾸로 선 상이 생깁니다.',
+ kw:[{l:'볼록 거울: 항상 작고 바로 선 상',a:['볼록']},{l:'오목 거울: 초점 기준으로 상이 달라짐',a:['오목','초점']}]},
+{id:'P26',cat:'물리',grade:'중3',q:'빛의 굴절이 일어나는 까닭을 설명하시오.',
+ a:'빛이 한 물질에서 다른 물질로 진행할 때 두 물질에서 빛의 속력이 다르기 때문에 경계면에서 진행 방향이 꺾이는 굴절이 일어납니다.',
+ kw:[{l:'물질에 따라 빛의 속력이 다름',a:['속력이 다']},{l:'경계면에서 진행 방향이 꺾임',a:['경계면','꺾']}]},
+{id:'P27',cat:'물리',grade:'중1',q:'횡파와 종파의 예를 각각 들어보세요.',
+ a:'횡파에는 물결파, 전자기파 등이 있고, 종파에는 소리, 지진파의 P파 등이 있습니다.',
+ kw:[{l:'횡파의 예 (물결파, 전자기파 등)',a:['물결파','전자기파']},{l:'종파의 예 (소리, P파 등)',a:['소리','지진파','p파']}]},
+{id:'P28',cat:'물리',grade:'중1',q:'소리의 3요소를 설명하시오.',
+ a:'소리의 크기는 진폭과 관련 있고, 소리의 높낮이는 진동수와 관련 있으며, 음색은 파형과 관련 있습니다.',
+ kw:[{l:'크기 - 진폭',a:['진폭']},{l:'높낮이 - 진동수',a:['진동수']},{l:'음색 - 파형',a:['음색','파형']}]},
+{id:'P29',cat:'물리',grade:'중2',q:'저항의 직렬연결과 병렬연결에서 전류와 전압의 차이를 설명하시오.',
+ a:'직렬연결은 각 저항에 흐르는 전류의 세기가 같고 전체 전압은 각 저항에 걸린 전압의 합이지만, 병렬연결은 각 저항에 걸리는 전압이 같고 전체 전류는 각 저항에 흐르는 전류의 합입니다.',
+ kw:[{l:'직렬: 전류 일정, 전압은 합',a:['직렬']},{l:'병렬: 전압 일정, 전류는 합',a:['병렬']}]},
+{id:'P30',cat:'물리',grade:'중2',q:'정전기 유도 현상을 설명하시오.',
+ a:'대전체를 도체 가까이 가져가면 대전체와 가까운 쪽에는 대전체와 다른 종류의 전하가, 먼 쪽에는 같은 종류의 전하가 유도되는 현상입니다.',
+ kw:[{l:'대전체를 가까이 가져감',a:['대전체']},{l:'가까운 쪽: 다른 전하',a:['가까운','다른']},{l:'먼 쪽: 같은 전하',a:['먼','같은']}]},
+{id:'P31',cat:'물리',grade:'중2',q:'코일 주위에 자기장이 생기는 원리와 전자석의 특징을 설명하시오.',
+ a:'코일에 전류를 흘려주면 코일 주위에 자기장이 생기는데, 철심을 넣은 코일에 전류를 흐르게 해 만든 전자석은 전류가 흐를 때만 자석이 되고 전류의 세기와 감은 수로 자기장의 세기를 조절할 수 있습니다.',
+ kw:[{l:'코일에 전류를 흘림',a:['코일','전류']},{l:'철심을 넣은 전자석',a:['철심','전자석']},{l:'전류가 흐를 때만 자석이 됨',a:['흐를 때만']},{l:'세기 조절 가능',a:['조절']}]},
+{id:'P32',cat:'물리',grade:'중2',q:'전동기가 회전하는 원리를 설명하시오.',
+ a:'자석 사이에 놓인 코일에 전류가 흐르면 코일이 자기장 속에서 자기력을 받는데, 정류자에 의해 전류의 방향이 주기적으로 바뀌면서 코일이 계속 같은 방향으로 회전합니다.',
+ kw:[{l:'자기장 속에서 자기력을 받음',a:['자기장','자기력']},{l:'정류자',a:['정류자']},{l:'전류 방향이 바뀌며 계속 회전',a:['방향이 바뀌','계속']}]},
+{id:'P33',cat:'물리',grade:'중3',q:'등속 운동을 하는 물체의 시간-이동거리 그래프와 시간-속력 그래프의 형태를 설명하시오.',
+ a:'등속 운동에서는 속력이 일정하므로 시간-이동거리 그래프는 원점을 지나는 직선이고, 시간-속력 그래프는 시간축과 나란한 직선 형태로 나타납니다.',
+ kw:[{l:'시간-이동거리: 원점 지나는 직선',a:['원점','직선']},{l:'시간-속력: 시간축과 나란한 직선',a:['시간축','나란']}]},
+{id:'P34',cat:'물리',grade:'중3',q:'자유 낙하 운동에서 속력은 시간에 따라 어떻게 변하나요?',
+ a:'자유 낙하 운동을 하는 물체는 중력만 받아 속력이 1초마다 9.8m/s씩 일정하게 증가하며, 속력은 9.8과 걸린 시간을 곱한 값입니다.',
+ kw:[{l:'중력만 작용',a:['중력만']},{l:'속력이 시간에 비례하여 증가',a:['비례','증가']},{l:'9.8',a:['9.8']}]},
+{id:'P35',cat:'물리',grade:'중3',q:'과학에서 말하는 "일"의 정의와 일의 양을 구하는 방법을 설명하시오.',
+ a:'과학에서 일은 물체에 힘이 작용하여 힘의 방향으로 물체가 이동했을 때 성립하며, 일의 양은 힘의 크기와 힘의 방향으로 이동한 거리를 곱하여 구합니다.',
+ kw:[{l:'힘의 방향으로 이동',a:['힘의 방향']},{l:'일 = 힘 × 이동 거리',a:['이동 거리','곱']}]},
+{id:'P36',cat:'물리',grade:'중3',q:'중력에 의한 위치 에너지와 운동 에너지는 각각 무엇에 비례하나요?',
+ a:'중력에 의한 위치 에너지는 물체의 질량과 높이에 각각 비례하고, 운동 에너지는 물체의 질량에 비례하며 속력의 제곱에 비례합니다.',
+ kw:[{l:'위치 에너지: 질량과 높이에 비례',a:['위치 에너지']},{l:'운동 에너지: 질량과 속력의 제곱에 비례',a:['운동 에너지','제곱']}]},
+{id:'P37',cat:'물리',grade:'중1',q:'열의 이동 방법인 전도, 대류, 복사를 설명하시오.',
+ a:'전도는 입자가 이웃한 입자에 열을 차례로 전달하는 방법이고, 대류는 액체나 기체 입자가 직접 이동해 열을 전달하는 방법이며, 복사는 물질의 도움 없이 열이 직접 이동하는 방법입니다.',
+ kw:[{l:'전도: 입자가 차례로 전달',a:['전도']},{l:'대류: 입자가 직접 이동',a:['대류']},{l:'복사: 물질의 도움 없이 이동',a:['복사']}]},
+{id:'P38',cat:'물리',grade:'중3',q:'비열이 큰 물질의 온도 변화 특징과 이를 이용한 예를 설명하시오.',
+ a:'비열이 큰 물질은 같은 열량을 가해도 온도 변화가 작은데, 물은 비열이 매우 커서 바다가 지구의 급격한 기온 변화를 막아주고 해안 지방의 일교차를 작게 해줍니다.',
+ kw:[{l:'비열이 클수록 온도 변화가 작음',a:['비열','온도 변화']},{l:'물의 비열이 큼',a:['물']},{l:'해안 지방의 일교차를 작게 함',a:['일교차']}]},
+{id:'P39',cat:'물리',grade:'중3',q:'열팽창이 일어나는 원리를 설명하시오.',
+ a:'온도가 높아지면 물질을 이루는 입자의 운동이 활발해져 입자 사이의 거리가 멀어지므로 물체의 길이나 부피가 늘어나는 열팽창이 일어납니다.',
+ kw:[{l:'입자 운동이 활발해짐',a:['입자','운동']},{l:'입자 사이 거리가 멀어짐',a:['거리']},{l:'부피(길이)가 늘어남',a:['부피','늘어']}]},
+{id:'C11',cat:'화학',grade:'중2',q:'라부아지에가 물 분해 실험을 통해 증명한 것은 무엇인가요?',
+ a:'물을 구성하는 수소와 산소가 원소이며, 물은 원소가 아니라 화합물이라는 것을 증명했습니다.',
+ kw:[{l:'수소와 산소가 원소',a:['수소','산소']},{l:'물은 화합물(원소가 아님)',a:['화합물','원소가 아니']}]},
+{id:'C12',cat:'화학',grade:'중2',q:'순물질과 홑원소 물질, 화합물의 관계를 설명하시오.',
+ a:'순물질은 한 종류의 물질로만 이루어진 것으로, 한 종류의 원소로 이루어진 홑원소 물질과 두 종류 이상의 원소로 이루어진 화합물로 나뉩니다.',
+ kw:[{l:'순물질',a:['순물질']},{l:'홑원소 물질(한 종류 원소)',a:['홑원소']},{l:'화합물(두 종류 이상 원소)',a:['화합물']}]},
+{id:'C13',cat:'화학',grade:'중2',q:'불꽃 반응을 이용해 원소를 확인하는 방법과 한계를 설명하시오.',
+ a:'금속 원소가 포함된 물질에 불을 붙이면 원소마다 특정한 불꽃 반응 색이 나타나는데, 이 방법으로 일부 금속 원소를 간단하게 확인할 수 있지만 비금속 원소는 확인할 수 없습니다.',
+ kw:[{l:'금속 원소마다 다른 불꽃 반응 색',a:['금속','불꽃']},{l:'비금속 원소는 확인 불가',a:['비금속']}]},
+{id:'C14',cat:'화학',grade:'중2',q:'선 스펙트럼을 이용해 물질 속 원소를 확인할 수 있는 까닭을 설명하시오.',
+ a:'물질에 포함된 각 원소는 고유한 위치와 색, 개수의 선 스펙트럼을 나타내기 때문에, 불꽃 반응 색이 비슷한 원소도 선 스펙트럼으로 구별할 수 있습니다.',
+ kw:[{l:'원소마다 고유한 선 스펙트럼',a:['고유','선 스펙트럼']},{l:'불꽃 반응이 비슷해도 구별 가능',a:['비슷','구별']}]},
+{id:'C15',cat:'화학',grade:'중2',q:'분자란 무엇이며 분자식은 무엇을 나타내나요?',
+ a:'분자는 독립된 입자로 존재하며 물질의 성질을 나타내는 가장 작은 입자이고, 분자식은 원소 기호를 이용해 분자를 이루는 원자의 종류와 수를 나타낸 식입니다.',
+ kw:[{l:'물질의 성질을 나타내는 가장 작은 입자',a:['성질','가장 작은']},{l:'원자의 종류와 수를 나타냄',a:['종류와 수']}]},
+{id:'C16',cat:'화학',grade:'중2',q:'전해질과 비전해질의 차이를 설명하시오.',
+ a:'전해질은 물에 녹아 양이온과 음이온으로 나누어져 수용액 상태에서 전류가 흐르는 물질이고, 비전해질은 물에 녹아도 이온으로 나누어지지 않아 전류가 흐르지 않는 물질입니다.',
+ kw:[{l:'전해질: 이온으로 나뉘어 전류가 흐름',a:['전해질','전류가 흐']},{l:'비전해질: 전류가 흐르지 않음',a:['비전해질']}]},
+{id:'C17',cat:'화학',grade:'중2',q:'전류를 흘려주었을 때 양이온과 음이온이 이동하는 방향을 설명하시오.',
+ a:'수용액에 전류를 흘려주면 양이온은 (-)극 쪽으로, 음이온은 (+)극 쪽으로 이동합니다.',
+ kw:[{l:'양이온은 (-)극으로 이동',a:['양이온']},{l:'음이온은 (+)극으로 이동',a:['음이온']}]},
+{id:'C18',cat:'화학',grade:'중2',q:'밀도가 다른 두 물질을 섞었을 때 어떤 물질이 위로 뜨나요?',
+ a:'밀도가 큰 물질은 밀도가 작은 물질 아래로 가라앉고, 밀도가 작은 물질은 큰 물질 위로 뜹니다.',
+ kw:[{l:'밀도가 큰 물질은 가라앉음',a:['가라앉']},{l:'밀도가 작은 물질은 뜸',a:['뜸','떠오']}]},
+{id:'C19',cat:'화학',grade:'중2',q:'용해도 곡선을 이용해 냉각 시 석출되는 용질의 양을 구하는 방법을 설명하시오.',
+ a:'용해도 곡선에서 온도를 낮추었을 때 석출되는 용질의 양은 처음 녹아 있던 용질의 양에서 냉각된 온도의 용해도만큼 녹을 수 있는 양을 뺀 값입니다.',
+ kw:[{l:'처음 용질의 양에서 뺌',a:['처음','용질']},{l:'냉각된 온도의 용해도',a:['냉각','용해도']}]},
+{id:'C20',cat:'화학',grade:'중2',q:'순물질과 혼합물의 끓는점 차이를 설명하시오.',
+ a:'순물질은 양이나 가열 세기와 관계없이 끓는점이 일정하지만, 혼합물은 끓는점이 일정하지 않고 성분에 따라 범위로 나타나 도달하는 시간도 다릅니다.',
+ kw:[{l:'순물질: 끓는점 일정',a:['순물질']},{l:'혼합물: 끓는점 일정하지 않음',a:['혼합물']}]},
+{id:'C21',cat:'화학',grade:'중2',q:'외부 압력에 따라 끓는점이 어떻게 달라지나요?',
+ a:'외부 압력이 낮아지면 끓는점이 낮아지고, 외부 압력이 높아지면 끓는점이 높아지는데, 높은 산에서 밥을 지으면 설익는 것과 압력밥솥으로 밥을 빨리 짓는 것이 그 예입니다.',
+ kw:[{l:'압력이 낮으면 끓는점이 낮아짐',a:['낮으면','낮아']},{l:'압력이 높으면 끓는점이 높아짐',a:['높으면','높아']}]},
+{id:'C22',cat:'화학',grade:'중2',q:'밀도 차이를 이용해 고체 혼합물을 분리하는 방법의 예를 들어보세요.',
+ a:'밀도가 중간 정도인 액체에 고체 혼합물을 넣으면 밀도가 큰 물질은 가라앉고 작은 물질은 떠오르는 원리를 이용하며, 신선한 달걀과 오래된 달걀을 소금물로 구별하는 것이 예입니다.',
+ kw:[{l:'밀도가 중간인 액체 이용',a:['중간']},{l:'가라앉음과 뜸으로 분리',a:['가라앉','뜸']}]},
+{id:'C23',cat:'화학',grade:'중2',q:'증류와 분별 증류의 원리를 설명하시오.',
+ a:'끓는점 차이가 큰 액체 혼합물을 가열해 먼저 끓어 나오는 기체를 냉각해 순수한 액체를 얻는 것을 증류라 하고, 여러 성분을 끓는점 차이로 각각 분리해 내는 것을 분별 증류라고 합니다.',
+ kw:[{l:'끓는점 차이',a:['끓는점 차이']},{l:'먼저 끓는 물질부터 분리',a:['먼저']},{l:'냉각해 액체를 얻음',a:['냉각']}]},
+{id:'C24',cat:'화학',grade:'중2',q:'재결정의 원리를 설명하시오.',
+ a:'불순물이 포함된 고체 물질을 높은 온도의 용매에 녹인 뒤 서서히 냉각시켜 온도에 따른 용해도 차이를 이용해 순수한 결정을 얻는 방법입니다.',
+ kw:[{l:'높은 온도 용매에 녹임',a:['높은 온도']},{l:'서서히 냉각',a:['냉각']},{l:'용해도 차이 이용',a:['용해도']}]},
+{id:'C25',cat:'화학',grade:'중3',q:'물리 변화와 화학 변화의 차이를 설명하시오.',
+ a:'물리 변화는 물질의 고유한 성질은 변하지 않으면서 모양이나 상태만 변하는 현상이고, 화학 변화는 물질의 성질이 전혀 다른 새로운 물질로 변하는 현상입니다.',
+ kw:[{l:'물리 변화: 성질은 그대로, 모양·상태만 변함',a:['물리 변화']},{l:'화학 변화: 새로운 물질로 성질이 변함',a:['화학 변화','새로운 물질']}]},
+{id:'C26',cat:'화학',grade:'중1',q:'화학 반응식을 작성하는 방법을 설명하시오.',
+ a:'반응물을 화살표 왼쪽에, 생성물을 화살표 오른쪽에 화학식으로 쓰고, 화살표 양쪽의 원자 종류와 개수가 같도록 계수를 가장 간단한 정수비로 맞춥니다.',
+ kw:[{l:'반응물은 왼쪽, 생성물은 오른쪽',a:['왼쪽','오른쪽']},{l:'원자 개수가 같도록 계수를 맞춤',a:['원자','개수','계수']}]},
+{id:'C27',cat:'화학',grade:'중3',q:'기체 반응 법칙을 설명하시오.',
+ a:'일정한 온도와 압력에서 기체가 반응하여 새로운 기체를 생성할 때 반응하거나 생성되는 기체의 부피 사이에는 간단한 정수비가 성립한다는 법칙입니다.',
+ kw:[{l:'일정한 온도와 압력',a:['온도와 압력']},{l:'기체의 부피 사이에 정수비 성립',a:['부피','정수비']}]},
+{id:'C28',cat:'화학',grade:'중2',q:'일정 성분비 법칙을 설명하시오.',
+ a:'화합물을 구성하는 성분 원소 사이에는 항상 일정한 질량비가 성립한다는 법칙으로, 성분 원소의 원자들이 항상 일정한 개수비로 결합하기 때문에 성립합니다.',
+ kw:[{l:'성분 원소 사이의 질량비가 일정',a:['질량비','일정']},{l:'원자들이 일정한 개수비로 결합',a:['개수비','결합']}]},
+{id:'B13',cat:'생물',grade:'중1',q:'변이가 생물 다양성에 미치는 영향을 설명하시오.',
+ a:'같은 종에서 나타나는 다양한 특성인 변이는 유전적 다양성과 관련이 있으며, 환경에 적합한 변이를 가진 개체가 살아남아 번식하면서 생물 다양성이 높아집니다.',
+ kw:[{l:'유전자 차이로 나타남',a:['유전자']},{l:'환경에 적합한 개체가 생존',a:['환경','생존']},{l:'생물 다양성 증가',a:['다양성']}]},
+{id:'B14',cat:'생물',grade:'중1',q:'생물을 분류하는 기본 단위와 분류 단계를 설명하시오.',
+ a:'생물을 분류하는 기본 단위는 종이며, 종은 자연 상태에서 짝짓기를 해 생식 능력이 있는 자손을 낳을 수 있는 개체들의 무리를 말하고, 종에서 계까지 종<속<과<목<강<문<계 순으로 분류 단계가 커집니다.',
+ kw:[{l:'종이 기본 단위',a:['종']},{l:'짝짓기해 생식 능력 있는 자손',a:['짝짓기','생식']},{l:'종<속<과<목<강<문<계',a:['속','과','목','강','문','계']}]},
+{id:'B15',cat:'생물',grade:'중1',q:'생물 5계에는 어떤 것들이 있나요?',
+ a:'생물은 핵막의 유무, 세포 수, 광합성 여부 등에 따라 원핵생물계, 원생생물계, 식물계, 균계, 동물계의 다섯 계로 분류됩니다.',
+ kw:[{l:'원핵생물계',a:['원핵생물계']},{l:'원생생물계',a:['원생생물계']},{l:'식물계',a:['식물계']},{l:'균계',a:['균계']},{l:'동물계',a:['동물계']}]},
+{id:'B16',cat:'생물',grade:'중2',q:'식물계와 균계는 광합성 여부에서 어떤 차이가 있나요?',
+ a:'식물계와 균계 모두 세포벽이 있지만, 식물계는 엽록체가 있어 광합성으로 스스로 양분을 만드는 반면 균계는 엽록체가 없어 광합성을 하지 못하고 대부분 죽은 생물을 분해해 양분을 얻습니다.',
+ kw:[{l:'식물계: 엽록체 있음, 광합성',a:['식물계','엽록체']},{l:'균계: 엽록체 없음, 분해로 양분 흡수',a:['균계','분해']}]},
+{id:'B17',cat:'생물',grade:'중1',q:'생물 다양성이 감소하는 주요 원인과 보전 대책을 설명하시오.',
+ a:'서식지 파괴와 단편화, 불법 포획과 남획, 외래종의 유입, 환경 오염이 주된 원인이며, 서식지를 보전하고 불법 포획을 금지하며 외래종 유입을 방지하는 것이 보전 대책입니다.',
+ kw:[{l:'서식지 파괴',a:['서식지']},{l:'남획(불법 포획)',a:['남획','포획']},{l:'외래종 유입',a:['외래종']},{l:'환경 오염',a:['오염']}]},
+{id:'B18',cat:'생물',grade:'중2',q:'엽록체와 엽록소의 역할을 설명하시오.',
+ a:'엽록체는 광합성이 일어나는 장소이며, 그 안에 있는 초록색 색소인 엽록소가 빛에너지를 흡수하여 광합성이 일어나게 합니다.',
+ kw:[{l:'엽록체: 광합성이 일어나는 장소',a:['엽록체']},{l:'엽록소: 빛에너지를 흡수하는 색소',a:['엽록소']}]},
+{id:'B19',cat:'생물',grade:'중2',q:'빛의 세기, 이산화 탄소의 농도, 온도가 광합성량에 미치는 영향을 설명하시오.',
+ a:'빛의 세기와 이산화 탄소의 농도는 증가할수록 광합성량이 증가하다가 어느 정도 이상에서는 일정해지고, 온도는 높아질수록 증가하다가 일정 온도 이상에서는 오히려 감소합니다.',
+ kw:[{l:'빛의 세기: 증가하다 일정',a:['빛']},{l:'이산화 탄소 농도: 증가하다 일정',a:['이산화 탄소']},{l:'온도: 증가하다 감소',a:['온도']}]},
+{id:'B20',cat:'생물',grade:'중2',q:'낮과 밤에 식물에서 기체 출입이 어떻게 다른가요?',
+ a:'낮에는 광합성량이 호흡량보다 많아 이산화 탄소를 흡수하고 산소를 방출하지만, 밤에는 호흡만 일어나 산소를 흡수하고 이산화 탄소를 방출합니다.',
+ kw:[{l:'낮: 이산화 탄소 흡수, 산소 방출',a:['낮']},{l:'밤: 산소 흡수, 이산화 탄소 방출',a:['밤']}]},
+{id:'B21',cat:'생물',grade:'중2',q:'식물의 호흡이 일어나는 장소와 광합성과의 관계를 설명하시오.',
+ a:'식물의 호흡은 세포의 미토콘드리아에서 살아있는 모든 세포에서 항상 일어나며, 광합성으로 생성된 물질을 호흡에 이용하고 호흡으로 생성된 물질을 광합성에 이용하는 상호 관계에 있습니다.',
+ kw:[{l:'미토콘드리아',a:['미토콘드리아']},{l:'모든 살아있는 세포에서 일어남',a:['모든','살아있는']},{l:'광합성과 서로 물질을 주고받음',a:['상호','주고받']}]},
+{id:'B22',cat:'생물',grade:'중2',q:'생물체의 구성 단계를 순서대로 설명하시오.',
+ a:'생물체는 세포가 모여 조직을 이루고, 조직이 모여 기관을 이루며, 기관이 모여 개체가 되는 세포-조직-기관-개체의 단계로 구성됩니다.',
+ kw:[{l:'세포',a:['세포']},{l:'조직',a:['조직']},{l:'기관',a:['기관']},{l:'개체',a:['개체']}]},
+{id:'B23',cat:'생물',grade:'중2',q:'3대 영양소인 탄수화물, 단백질, 지방의 역할과 에너지원을 비교하시오.',
+ a:'탄수화물과 단백질은 1g당 4kcal, 지방은 1g당 9kcal의 에너지를 내며, 탄수화물은 주 에너지원, 단백질은 몸의 주성분, 지방은 에너지를 저장하는 역할을 합니다.',
+ kw:[{l:'탄수화물: 4kcal, 주 에너지원',a:['탄수화물']},{l:'단백질: 4kcal, 몸의 구성 성분',a:['단백질']},{l:'지방: 9kcal, 에너지 저장',a:['지방']}]},
+{id:'B24',cat:'생물',grade:'중2',q:'3대 영양소를 검출하는 반응을 각각 설명하시오.',
+ a:'녹말은 아이오딘-아이오딘화 칼륨 용액으로 청람색 반응을, 포도당은 베네딕트 용액으로 황적색 반응을, 단백질은 뷰렛 용액으로 보라색 반응을 확인합니다.',
+ kw:[{l:'녹말: 아이오딘 반응, 청람색',a:['아이오딘','청람색']},{l:'포도당: 베네딕트 반응, 황적색',a:['베네딕트','황적색']},{l:'단백질: 뷰렛 반응, 보라색',a:['뷰렛','보라색']}]},
+{id:'B25',cat:'생물',grade:'중2',q:'기계적 소화와 화학적 소화의 차이를 설명하시오.',
+ a:'기계적 소화는 소화 기관의 물리적 운동으로 음식물을 잘게 부수는 것이고, 화학적 소화는 소화 효소로 영양소를 다른 물질로 분해하는 것입니다.',
+ kw:[{l:'기계적 소화: 물리적 운동',a:['기계적','물리적']},{l:'화학적 소화: 소화 효소',a:['화학적','효소']}]},
+{id:'B26',cat:'생물',grade:'중2',q:'위와 이자에서 분비되는 소화액과 소화 효소를 설명하시오.',
+ a:'위에서는 위액 속 펩신이 단백질을 분해하고, 이자에서는 이자액 속 아밀레이스, 트립신, 라이페이스가 각각 탄수화물, 단백질, 지방을 분해합니다.',
+ kw:[{l:'위: 펩신, 단백질 분해',a:['펩신']},{l:'이자: 아밀레이스(탄수화물)',a:['아밀레이스']},{l:'이자: 트립신(단백질), 라이페이스(지방)',a:['트립신','라이페이스']}]},
+{id:'B27',cat:'생물',grade:'중2',q:'세포 호흡이 무엇이며 어디에서 일어나나요?',
+ a:'세포 호흡은 세포에서 영양소가 산소와 반응하여 생명 활동에 필요한 에너지를 얻는 과정으로, 주로 미토콘드리아에서 일어나며 발생한 에너지의 일부는 열로도 방출됩니다.',
+ kw:[{l:'영양소와 산소가 반응',a:['영양소','산소']},{l:'에너지를 얻는 과정',a:['에너지']},{l:'미토콘드리아',a:['미토콘드리아']}]},
+{id:'B28',cat:'생물',grade:'중3',q:'뉴런의 구조를 설명하시오.',
+ a:'뉴런은 핵과 세포질이 있는 신경 세포체, 다른 뉴런이나 감각 기관으로부터 자극을 받아들이는 가지 돌기, 자극을 다른 뉴런이나 기관으로 전달하는 축삭 돌기로 이루어져 있습니다.',
+ kw:[{l:'신경 세포체',a:['신경 세포체','세포체']},{l:'가지 돌기: 자극을 받아들임',a:['가지 돌기']},{l:'축삭 돌기: 자극을 전달',a:['축삭 돌기']}]},
+{id:'B29',cat:'생물',grade:'중3',q:'중추 신경계와 말초 신경계의 구성과 역할을 설명하시오.',
+ a:'중추 신경계는 뇌와 척수로 이루어져 자극을 판단하고 명령을 내리며, 말초 신경계는 감각 신경과 운동 신경으로 이루어져 중추 신경계와 몸의 각 부분을 연결합니다.',
+ kw:[{l:'중추 신경계: 뇌와 척수, 판단',a:['중추','뇌','척수']},{l:'말초 신경계: 감각·운동 신경, 연결',a:['말초','연결']}]},
+{id:'B30',cat:'생물',grade:'중2',q:'대뇌, 소뇌, 연수의 기능을 각각 설명하시오.',
+ a:'대뇌는 복잡한 정신 활동과 감각, 운동을 조절하는 중추이고, 소뇌는 몸의 균형과 자세를 유지하도록 조절하며, 연수는 심장 박동, 호흡 운동 같은 생명 활동을 조절하는 중추입니다.',
+ kw:[{l:'대뇌: 정신 활동, 감각·운동 조절',a:['대뇌']},{l:'소뇌: 균형과 자세',a:['소뇌','균형']},{l:'연수: 생명 활동 조절(심장박동,호흡)',a:['연수']}]},
+{id:'B31',cat:'생물',grade:'중3',q:'체성 신경과 자율 신경의 차이를 설명하시오.',
+ a:'체성 신경은 대뇌의 명령을 골격근으로 전달해 의지대로 운동이 일어나게 하는 신경이고, 자율 신경은 대뇌의 직접적인 명령 없이 내장 기관의 기능을 자율적으로 조절하는 신경입니다.',
+ kw:[{l:'체성 신경: 대뇌 명령, 골격근, 의지대로',a:['체성','골격근']},{l:'자율 신경: 내장 기관, 자율적 조절',a:['자율','내장']}]},
+{id:'B32',cat:'생물',grade:'중2',q:'교감 신경과 부교감 신경이 심장 박동에 미치는 영향을 설명하시오.',
+ a:'교감 신경은 몸이 위기 상황에 대처하도록 심장 박동을 촉진시키고, 부교감 신경은 몸을 안정된 상태로 되돌리기 위해 심장 박동을 억제시킵니다.',
+ kw:[{l:'교감 신경: 촉진, 위기 대처',a:['교감']},{l:'부교감 신경: 억제, 안정',a:['부교감']}]},
+{id:'B33',cat:'생물',grade:'중3',q:'호르몬과 신경의 신호 전달 방식의 차이를 설명하시오.',
+ a:'호르몬은 혈액을 통해 전달되어 속도는 느리지만 효과가 오래 지속되고 작용 범위가 넓은 반면, 신경은 뉴런을 통해 전달되어 속도는 빠르지만 효과가 일시적이고 작용 범위가 좁습니다.',
+ kw:[{l:'호르몬: 혈액, 느림, 넓고 지속적',a:['호르몬','혈액']},{l:'신경: 뉴런, 빠름, 좁고 일시적',a:['신경','뉴런']}]},
+{id:'B34',cat:'생물',grade:'중3',q:'체온이 낮아졌을 때 몸에서 일어나는 항상성 조절 과정을 설명하시오.',
+ a:'추울 때는 피부 근처 혈관이 수축해 열 발산량이 줄고, 근육이 떨리며 티록신 분비량이 증가해 세포 호흡을 촉진함으로써 열 발생량을 늘려 체온을 일정하게 유지합니다.',
+ kw:[{l:'혈관이 수축함',a:['혈관']},{l:'근육이 떨림',a:['근육']},{l:'티록신 분비 증가로 열 발생 증가',a:['티록신']}]},
+{id:'B35',cat:'생물',grade:'중3',q:'혈당량이 높을 때와 낮을 때 인슐린과 글루카곤의 작용을 설명하시오.',
+ a:'혈당량이 높을 때는 인슐린 분비가 증가해 세포의 포도당 흡수와 글리코젠 저장을 촉진해 혈당량을 낮추고, 혈당량이 낮을 때는 글루카곤 분비가 증가해 글리코젠을 포도당으로 전환하여 혈당량을 높입니다.',
+ kw:[{l:'인슐린: 혈당량을 낮춤',a:['인슐린']},{l:'글루카곤: 혈당량을 높임',a:['글루카곤']}]},
+{id:'B36',cat:'생물',grade:'중3',q:'체세포 분열에서 염색체의 모양과 행동에 따라 구분하는 단계를 설명하시오.',
+ a:'체세포 분열의 핵분열은 염색체가 뚜렷해지는 전기, 염색체가 세포 중앙에 배열되는 중기, 염색 분체가 분리되어 양극으로 이동하는 후기, 핵막이 다시 나타나는 말기로 구분됩니다.',
+ kw:[{l:'전기',a:['전기']},{l:'중기',a:['중기']},{l:'후기',a:['후기']},{l:'말기',a:['말기']}]},
+{id:'B37',cat:'생물',grade:'중3',q:'감수 1분열과 감수 2분열의 차이를 설명하시오.',
+ a:'감수 1분열에서는 상동 염색체가 분리되어 염색체 수가 절반으로 줄어들지만, 감수 2분열에서는 염색 분체가 분리될 뿐 염색체 수의 변화 없이 딸세포가 형성됩니다.',
+ kw:[{l:'감수 1분열: 상동 염색체 분리, 수 절반',a:['1분열','상동']},{l:'감수 2분열: 염색 분체 분리, 수 변화 없음',a:['2분열','염색 분체']}]},
+{id:'B38',cat:'생물',grade:'중3',q:'사람의 수정과 발생 과정을 순서대로 설명하시오.',
+ a:'배란된 난자와 정자가 만나 결합하는 수정이 일어난 후, 수정란이 세포 분열을 하는 난할을 거쳐 자궁 안쪽 벽에 묻히는 착상이 일어나고, 이후 체세포 분열을 반복하며 태아로 발생합니다.',
+ kw:[{l:'수정',a:['수정']},{l:'난할',a:['난할']},{l:'착상',a:['착상']},{l:'발생',a:['발생']}]},
+{id:'B39',cat:'생물',grade:'중3',q:'상동 염색체와 염색 분체의 차이를 설명하시오.',
+ a:'상동 염색체는 부모로부터 하나씩 물려받아 모양과 크기가 같은 한 쌍의 염색체이고, 염색 분체는 DNA가 복제되어 형성된 하나의 염색체를 이루는 두 가닥의 물질로 유전 정보가 동일합니다.',
+ kw:[{l:'상동 염색체: 부모에게서 하나씩, 쌍',a:['상동']},{l:'염색 분체: 복제되어 형성, 같은 유전 정보',a:['염색 분체','복제']}]},
+{id:'E37',cat:'지구과학',grade:'중2',q:'지구계를 이루는 기권과 수권의 성분 구성을 설명하시오.',
+ a:'기권은 질소가 약 78%, 산소가 약 21%로 이루어져 있고, 수권은 해수가 대부분(약 97.47%)을 차지하며 나머지가 담수로 이루어져 있습니다.',
+ kw:[{l:'기권: 질소 약 78%',a:['질소']},{l:'기권: 산소 약 21%',a:['산소']},{l:'수권: 해수가 대부분',a:['해수']}]},
+{id:'E38',cat:'지구과학',grade:'중1',q:'지구 내부를 탐사하는 직접적 방법과 간접적 방법을 설명하시오.',
+ a:'직접적 방법은 시추나 화산 분출물 조사처럼 직접 관찰하는 방법이고, 간접적 방법은 지진파 연구, 운석 연구, 고온·고압 실험처럼 간접적인 자료로 추정하는 방법입니다.',
+ kw:[{l:'직접적 방법: 시추, 화산 분출물 조사',a:['시추','화산 분출물']},{l:'간접적 방법: 지진파 연구',a:['지진파']},{l:'간접적 방법: 운석, 고온·고압 실험',a:['운석','고온']}]},
+{id:'E39',cat:'지구과학',grade:'중1',q:'대륙 지각과 해양 지각의 차이를 설명하시오.',
+ a:'대륙 지각은 화강암질 암석으로 이루어져 있고 평균 두께가 약 35km인 반면, 해양 지각은 현무암질 암석으로 이루어져 있고 평균 두께가 약 5km로 더 얇고 밀도가 더 큽니다.',
+ kw:[{l:'대륙 지각: 화강암질, 두꺼움',a:['대륙 지각','화강암질']},{l:'해양 지각: 현무암질, 얇음',a:['해양 지각','현무암질']}]},
+{id:'E40',cat:'지구과학',grade:'중1',q:'맨틀과 핵의 특징을 각각 설명하시오.',
+ a:'맨틀은 모호면에서 지하 약 2900km까지의 구간으로 지구 부피의 약 80%를 차지하는 고체 상태의 층이고, 핵은 철과 니켈의 금속 화합물로 이루어져 밀도가 가장 크며 외핵은 액체, 내핵은 고체 상태로 추정됩니다.',
+ kw:[{l:'맨틀: 지구 부피의 약 80%',a:['맨틀']},{l:'핵: 철과 니켈로 구성',a:['철','니켈']},{l:'외핵은 액체, 내핵은 고체',a:['외핵','내핵']}]},
+{id:'E41',cat:'지구과학',grade:'중1',q:'광물의 굳기를 비교하는 모스 굳기계에 대해 설명하시오.',
+ a:'광물의 단단하고 무른 정도를 나타내는 굳기를 1부터 10까지 숫자로 나타낸 것으로, 활석이 가장 무르고 금강석(다이아몬드)이 가장 단단하며 굳기가 큰 광물이 작은 광물을 긁을 수 있습니다.',
+ kw:[{l:'1(활석)~10(금강석)으로 표시',a:['활석','금강석']},{l:'굳기가 큰 광물이 작은 광물을 긁음',a:['긁']}]},
+{id:'E42',cat:'지구과학',grade:'중1',q:'암석의 순환 과정을 설명하시오.',
+ a:'화성암, 퇴적암, 변성암은 서로 풍화·침식·운반·퇴적, 열과 압력, 용융과 냉각 등의 과정을 거쳐 다른 암석으로 끊임없이 순환하며, 이 순환의 에너지원은 태양 복사 에너지와 지구 내부 에너지입니다.',
+ kw:[{l:'화성암·퇴적암·변성암이 서로 순환',a:['순환']},{l:'풍화·침식·운반·퇴적',a:['풍화','침식']},{l:'열과 압력, 용융 과정',a:['열','용융']}]},
+{id:'E43',cat:'지구과학',grade:'중1',q:'판이란 무엇이며 판을 이동시키는 원동력은 무엇인가요?',
+ a:'판은 지각과 맨틀 상부를 포함하는 단단한 암석권을 말하며, 맨틀 상부(연약권)가 유동성을 가진 고체로서 대류가 일어나 이를 따라 판이 이동합니다.',
+ kw:[{l:'지각과 맨틀 상부를 포함하는 암석권',a:['암석권','맨틀 상부']},{l:'맨틀(연약권)의 대류가 원동력',a:['대류']}]},
+{id:'E44',cat:'지구과학',grade:'중1',q:'우리나라 부근의 지각 변동이 판의 안쪽에 위치한 일본과 비교해 어떤 특징이 있나요?',
+ a:'우리나라는 판의 안쪽에 위치해 화산 활동과 지진이 자주 발생하지 않지만, 일본은 유라시아판, 태평양판, 필리핀판이 만나는 경계에 위치해 화산 활동과 지진이 자주 발생합니다.',
+ kw:[{l:'우리나라: 판의 안쪽, 지진 잦지 않음',a:['판의 안쪽']},{l:'일본: 판의 경계, 지진 잦음',a:['판의 경계','일본']}]},
+{id:'E45',cat:'지구과학',grade:'중3',q:'토리첼리의 실험을 통해 대기압의 크기를 어떻게 알 수 있나요?',
+ a:'한쪽 끝이 막힌 유리관에 수은을 채우고 수은이 담긴 수조에 거꾸로 세우면 수은이 약 76cm 높이까지 내려오다 멈추는데, 이는 수조의 수은 면에 작용하는 대기압과 수은 기둥이 누르는 압력이 같아졌기 때문이며 이때의 압력이 1기압입니다.',
+ kw:[{l:'수은 기둥이 76cm에서 멈춤',a:['76','수은']},{l:'대기압과 수은 기둥의 압력이 같음',a:['같아']},{l:'1기압',a:['1기압']}]},
+{id:'E46',cat:'지구과학',grade:'중3',q:'지구 온난화가 지구 환경에 미치는 영향을 설명하시오.',
+ a:'지구 온난화로 대기 중 온실 기체의 양이 많아져 지구의 평균 기온이 높아지면, 해수면이 상승하고 육지 면적이 감소하며 이상 기상 현상이 발생하고 생태계가 변화합니다.',
+ kw:[{l:'해수면 상승',a:['해수면']},{l:'육지 면적 감소',a:['육지 면적']},{l:'이상 기상, 생태계 변화',a:['이상 기상','생태계']}]},
+{id:'E47',cat:'지구과학',grade:'중3',q:'우리나라의 봄과 겨울철 날씨의 특징을 각각 설명하시오.',
+ a:'봄에는 양쯔강 기단의 영향으로 온난 건조한 날씨가 나타나고 이동성 고기압과 저기압이 자주 지나가 날씨가 자주 변하며, 겨울에는 시베리아 기단의 영향으로 한랭 건조한 날씨가 나타나고 서고동저형 기압 배치로 북서 계절풍이 붑니다.',
+ kw:[{l:'봄: 양쯔강 기단, 온난 건조',a:['봄','양쯔강']},{l:'겨울: 시베리아 기단, 한랭 건조',a:['겨울','시베리아']}]},
+{id:'E48',cat:'지구과학',grade:'중3',q:'우리나라의 여름철 날씨의 특징을 설명하시오.',
+ a:'여름에는 북태평양 기단의 영향으로 고온 다습한 날씨가 나타나고 남고북저형 기압 배치로 남동 계절풍이 불며, 초여름에는 장마가 나타나기도 하고 적도 부근에서 발생한 태풍이 지나가기도 합니다.',
+ kw:[{l:'북태평양 기단, 고온 다습',a:['북태평양','고온 다습']},{l:'장마와 태풍',a:['장마','태풍']}]},
+{id:'E49',cat:'지구과학',grade:'중2',q:'지구형 행성 중 수성, 금성, 화성의 특징을 각각 설명하시오.',
+ a:'수성은 대기와 물이 없고 표면에 운석 구덩이가 많으며, 금성은 이산화 탄소 대기층 때문에 온실 효과로 표면 온도가 매우 높고, 화성은 산화 철 성분의 토양으로 붉게 보이며 물의 흔적과 극관이 있습니다.',
+ kw:[{l:'수성: 대기와 물 없음, 운석 구덩이',a:['수성']},{l:'금성: 온실 효과로 고온',a:['금성','온실']},{l:'화성: 붉은 토양, 물의 흔적, 극관',a:['화성']}]},
+{id:'E50',cat:'지구과학',grade:'중2',q:'목성형 행성인 목성, 토성, 천왕성, 해왕성의 공통적인 특징을 설명하시오.',
+ a:'목성형 행성은 크기와 질량이 크고 평균 밀도가 작으며 수소와 헬륨 같은 가벼운 기체로 이루어져 있고, 대부분 여러 개의 위성과 뚜렷한 고리를 가지고 있습니다.',
+ kw:[{l:'크기와 질량이 큼, 밀도 작음',a:['크기','밀도']},{l:'가벼운 기체(수소·헬륨)로 구성',a:['수소','헬륨','기체']},{l:'많은 위성과 고리',a:['위성','고리']}]},
+{id:'E51',cat:'지구과학',grade:'중2',q:'태양의 흑점 수가 많아지는 극대기에 지구에서 나타나는 현상을 설명하시오.',
+ a:'흑점 수가 많아지는 극대기에는 태양 활동이 활발해져 델린저 현상으로 무선 통신이 방해받고, 인공위성이 고장 나거나 궤도를 이탈할 수 있으며, 오로라가 평소보다 낮은 위도에서도 나타나고 대규모 정전이 발생하기도 합니다.',
+ kw:[{l:'델린저 현상(무선 통신 방해)',a:['델린저']},{l:'인공위성 고장',a:['인공위성']},{l:'오로라, 정전',a:['오로라','정전']}]},
+{id:'P40',cat:'물리',grade:'중1',q:'광원을 볼 때와 광원이 아닌 물체를 볼 때, 빛이 눈에 들어오는 경로의 차이를 설명하시오.',
+ a:'광원을 볼 때는 광원에서 나온 빛이 눈에 직접 들어와 보이는 것이고, 광원이 아닌 물체를 볼 때는 광원에서 나온 빛이 물체에서 반사된 후 눈에 들어와야 볼 수 있습니다.',
+ kw:[{l:'광원: 빛이 눈에 직접 들어옴',a:['직접']},{l:'물체: 반사된 빛이 눈에 들어옴',a:['반사']}]},
+{id:'P41',cat:'물리',grade:'중1',q:'백색광이 아닌 색깔이 있는 조명 아래에서 물체의 색이 다르게 보이는 예를 들어 설명하시오.',
+ a:'빨간색 물체에 초록색 조명을 비추면 빨간색 물체는 초록색 빛을 반사하지 못하고 흡수하므로 검은색으로 보이는 것처럼, 조명의 색과 물체가 반사하는 색이 다르면 물체의 색이 다르게 보입니다.',
+ kw:[{l:'조명 색과 물체가 반사하는 색이 다름',a:['반사']},{l:'흡수되면 검은색으로 보임',a:['흡수','검은색']}]},
+{id:'P42',cat:'물리',grade:'중1',q:'파동에서 마루, 골, 파장, 진폭을 설명하시오.',
+ a:'마루는 횡파의 가장 높은 곳, 골은 가장 낮은 곳이며, 파장은 마루에서 다음 마루까지의 거리, 진폭은 진동의 중심에서 마루나 골까지의 수직 거리입니다.',
+ kw:[{l:'마루: 가장 높은 곳',a:['마루']},{l:'골: 가장 낮은 곳',a:['골']},{l:'파장: 마루에서 다음 마루까지',a:['파장']},{l:'진폭: 중심에서 마루까지',a:['진폭']}]},
+{id:'P43',cat:'물리',grade:'중2',q:'마찰 전기가 발생하는 원리를 원자 수준에서 설명하시오.',
+ a:'서로 다른 두 물체를 마찰시키면 원자핵 주변을 도는 전자가 마찰에 의해 한 물체에서 다른 물체로 이동하여, 전자를 잃은 물체는 (+)전하를, 전자를 얻은 물체는 (-)전하를 띠게 됩니다.',
+ kw:[{l:'마찰로 전자가 이동',a:['전자','이동']},{l:'전자를 잃으면 (+)전하',a:['잃','+']},{l:'전자를 얻으면 (-)전하',a:['얻','-']}]},
+{id:'P44',cat:'물리',grade:'중1',q:'전기력의 방향은 전하의 종류에 따라 어떻게 달라지나요?',
+ a:'다른 종류의 전하를 띤 물체 사이에는 서로 끌어당기는 인력이 작용하고, 같은 종류의 전하를 띤 물체 사이에는 서로 밀어내는 척력이 작용합니다.',
+ kw:[{l:'다른 전하: 인력(끌어당김)',a:['인력']},{l:'같은 전하: 척력(밀어냄)',a:['척력']}]},
+{id:'P45',cat:'물리',grade:'중2',q:'도체와 부도체의 차이를 설명하시오.',
+ a:'도체는 전자가 자유롭게 이동할 수 있어 전류가 잘 흐르는 물질이고, 부도체(절연체)는 전자가 자유롭게 이동할 수 없어 전류가 흐르지 못하는 물질입니다.',
+ kw:[{l:'도체: 전자 이동 자유로움, 전류 흐름',a:['도체']},{l:'부도체: 전자 이동 못함, 전류 안 흐름',a:['부도체','절연체']}]},
+{id:'P46',cat:'물리',grade:'중2',q:'검전기의 구조와 원리를 설명하시오.',
+ a:'검전기는 금속 막대 끝에 금속박 두 장이 붙어 있는 기구로, 대전체를 가까이 하면 정전기 유도에 의해 금속박이 서로 밀어내며 벌어지는 것을 이용해 물체의 대전 여부를 확인합니다.',
+ kw:[{l:'금속 막대와 금속박 두 장',a:['금속박']},{l:'정전기 유도로 금속박이 벌어짐',a:['벌어']}]},
+{id:'P47',cat:'물리',grade:'중2',q:'전류의 방향과 전자의 이동 방향은 어떤 관계인가요?',
+ a:'전류의 방향은 전지의 (+)극에서 (-)극으로 흐르는 것으로 정하지만, 전자의 실제 이동 방향은 전지의 (-)극에서 (+)극으로 이동하여 전류의 방향과 서로 반대입니다.',
+ kw:[{l:'전류: (+)극에서 (-)극으로',a:['전류']},{l:'전자: (-)극에서 (+)극으로',a:['전자']},{l:'서로 반대 방향',a:['반대']}]},
+{id:'P48',cat:'물리',grade:'중2',q:'저항의 크기는 도선의 길이와 단면적에 따라 어떻게 달라지나요?',
+ a:'저항의 크기는 도선의 길이에 비례하여 길이가 길수록 저항이 크고, 도선의 단면적에 반비례하여 단면적이 좁을수록 저항이 큽니다.',
+ kw:[{l:'길이가 길수록 저항 큼',a:['길이']},{l:'단면적이 좁을수록 저항 큼',a:['단면적']}]},
+{id:'P49',cat:'물리',grade:'중1',q:'우주 정거장에서 무게와 질량을 측정할 수 있는지 비교하여 설명하시오.',
+ a:'우주 정거장에서는 중력을 거의 느낄 수 없어 저울로 측정한 무게는 0N에 가까워 비교할 수 없지만, 질량은 물체에 힘을 작용했을 때 나타나는 힘의 효과가 달라 서로 비교하여 측정할 수 있습니다.',
+ kw:[{l:'무게: 거의 0N, 측정·비교 불가',a:['무게','0']},{l:'질량: 힘의 효과로 비교 가능',a:['질량']}]},
+{id:'P50',cat:'물리',grade:'중3',q:'냉방기와 난방기는 각각 어느 위치에 설치하는 것이 효율적인가요?',
+ a:'대류를 이용해 실내 전체를 효율적으로 냉난방하기 위해 냉방기는 위쪽에, 난방기는 아래쪽에 설치합니다.',
+ kw:[{l:'냉방기는 위쪽',a:['냉방','위쪽']},{l:'난방기는 아래쪽',a:['난방','아래쪽']}]},
+{id:'P51',cat:'물리',grade:'중2',q:'과학에서 힘이 물체에 일을 하지 않은 것으로 보는 경우 세 가지를 설명하시오.',
+ a:'물체에 작용한 힘이 0일 때, 힘을 작용해도 물체가 이동하지 않았을 때, 힘의 방향과 물체의 이동 방향이 서로 수직일 때는 힘이 물체에 한 일이 0입니다.',
+ kw:[{l:'힘이 0일 때',a:['힘이']},{l:'이동하지 않았을 때',a:['이동하지 않']},{l:'힘과 이동 방향이 수직일 때',a:['수직']}]},
+{id:'P52',cat:'물리',grade:'중2',q:'전기 에너지와 화학 에너지는 각각 무엇인가요?',
+ a:'전기 에너지는 전류나 전기를 띤 물체가 가지는 에너지이고, 화학 에너지는 물질의 화학 결합에 의해 물체가 가지는 에너지입니다.',
+ kw:[{l:'전기 에너지: 전류·전기를 띤 물체',a:['전기 에너지']},{l:'화학 에너지: 화학 결합',a:['화학 에너지','화학 결합']}]},
+{id:'P53',cat:'물리',grade:'중3',q:'일이 에너지로 전환될 때와 에너지가 일로 전환될 때의 관계를 설명하시오.',
+ a:'물체에 일을 해 주면 그 일한 양만큼 물체의 에너지가 증가하고, 반대로 에너지를 가진 물체가 일을 하면 그 물체의 에너지는 일을 한 만큼 감소합니다.',
+ kw:[{l:'일을 받으면 에너지 증가',a:['증가']},{l:'일을 하면 에너지 감소',a:['감소']}]},
+{id:'C29',cat:'화학',grade:'중2',q:'순물질을 혼합하여 사용하는 예를 두 가지 이상 들어보세요.',
+ a:'철과 크로뮴 등을 섞어 잘 녹슬지 않게 만든 스테인리스 합금, 납과 주석을 섞어 녹는점을 낮춘 땜납이나 퓨즈, 부동액, 도로 결빙을 막는 데 쓰이는 염화 칼슘 등이 있습니다.',
+ kw:[{l:'합금(스테인리스 등)',a:['합금','스테인리스']},{l:'땜납·퓨즈',a:['땜납','퓨즈']},{l:'부동액 또는 염화 칼슘',a:['부동액','염화 칼슘']}]},
+{id:'C30',cat:'화학',grade:'중2',q:'균일 혼합물과 불균일 혼합물의 차이를 설명하시오.',
+ a:'균일 혼합물은 두 가지 이상의 순물질이 고르게 섞여 있어 혼합물 전체의 성질이 균일한 혼합물이고, 불균일 혼합물은 고르지 않게 섞여 있어 부분마다 성질이 다른 혼합물입니다.',
+ kw:[{l:'균일 혼합물: 고르게 섞임',a:['균일']},{l:'불균일 혼합물: 고르지 않게 섞임, 부분마다 다름',a:['불균일']}]},
+{id:'C31',cat:'화학',grade:'중2',q:'바람을 이용해 밀도가 다른 고체 혼합물을 분리하는 원리를 설명하시오.',
+ a:'밀도가 작은 고체와 큰 고체가 섞인 혼합물을 떨어뜨리며 바람을 불면 밀도가 작은 고체가 더 멀리 날아가는 원리를 이용해 분리합니다.',
+ kw:[{l:'밀도가 작은 고체가 멀리 날아감',a:['멀리','작은']},{l:'바람을 이용',a:['바람']}]},
+{id:'C32',cat:'화학',grade:'중2',q:'물질관의 역사에서 돌턴의 원자설과 베르셀리우스의 원소 기호는 각각 어떤 의의가 있나요?',
+ a:'돌턴은 모든 물질이 더 이상 나눌 수 없는 가장 작은 입자인 원자로 이루어져 있다고 주장해 입자설을 재발견했고, 베르셀리우스는 원소의 이름에서 따온 알파벳으로 원소 기호를 만들어 현재까지 사용되는 표기법을 제안했습니다.',
+ kw:[{l:'돌턴: 원자설 주장',a:['돌턴','원자설']},{l:'베르셀리우스: 알파벳 원소 기호 제안',a:['베르셀리우스','원소 기호']}]},
+{id:'C33',cat:'화학',grade:'중2',q:'이온식은 무엇을 표시하는 식인가요?',
+ a:'이온식은 원소 기호 오른쪽 위에 이온이 잃거나 얻은 전자의 수와 이온이 띠고 있는 전하의 종류를 함께 표시하여 이온이 띠는 전하의 크기와 종류를 나타낸 식입니다.',
+ kw:[{l:'원소 기호 오른쪽 위에 표시',a:['오른쪽 위']},{l:'전하의 크기와 종류를 나타냄',a:['전하']}]},
+{id:'C34',cat:'화학',grade:'중2',q:'화학 변화가 일어날 때 입자 배열은 어떻게 달라지나요?',
+ a:'화학 변화가 일어나면 분자를 구성하는 원자의 배열이 달라지면서 성질이 전혀 다른 새로운 물질이 생성되지만, 원자의 종류와 개수는 변하지 않아 총 질량은 일정합니다.',
+ kw:[{l:'원자의 배열이 달라짐',a:['배열']},{l:'새로운 물질 생성',a:['새로운 물질']},{l:'원자 종류와 개수는 불변',a:['종류와 개수']}]},
+{id:'C35',cat:'화학',grade:'중3',q:'발열 반응의 구체적인 예를 두 가지 이상 들어보세요.',
+ a:'물질이 연소할 때, 금속이 녹슬 때(산화), 산화 칼슘이 물과 반응할 때, 산과 염기가 반응할 때, 금속이 산과 반응할 때 등이 발열 반응의 예입니다.',
+ kw:[{l:'연소',a:['연소']},{l:'산화 칼슘과 물의 반응 또는 산과 염기의 반응',a:['산화 칼슘','산과 염기']}]},
+{id:'C36',cat:'화학',grade:'중3',q:'흡열 반응의 구체적인 예를 두 가지 이상 들어보세요.',
+ a:'탄산수소 나트륨이 분해될 때, 질산 암모늄이나 염화 암모늄이 물에 녹을 때, 광합성이 일어날 때 등이 흡열 반응의 예입니다.',
+ kw:[{l:'탄산수소 나트륨의 분해',a:['탄산수소 나트륨']},{l:'질산 암모늄(또는 염화 암모늄)이 물에 용해',a:['질산 암모늄','염화 암모늄']}]},
+{id:'C37',cat:'화학',grade:'중3',q:'물리 변화와 화학 변화가 일어날 때 물질의 질량은 각각 어떻게 되나요?',
+ a:'물리 변화와 화학 변화 모두 입자를 구성하는 원자의 종류와 개수, 크기가 변하지 않으므로 반응 전후 물질의 총 질량은 변하지 않습니다.',
+ kw:[{l:'원자의 종류와 개수가 그대로임',a:['원자']},{l:'질량은 변하지 않음(둘 다)',a:['질량','변하지 않']}]},
+{id:'B40',cat:'생물',grade:'중1',q:'눈의 구조에서 홍채, 동공, 수정체의 기능을 설명하시오.',
+ a:'홍채는 동공의 크기를 조절해 눈으로 들어오는 빛의 양을 조절하고, 동공은 홍채에 둘러싸여 빛이 눈 속으로 들어가는 통로이며, 수정체는 볼록 렌즈 모양으로 빛을 굴절시켜 망막에 상이 맺히게 합니다.',
+ kw:[{l:'홍채: 빛의 양 조절',a:['홍채']},{l:'동공: 빛이 들어가는 통로',a:['동공']},{l:'수정체: 빛을 굴절시켜 상을 맺음',a:['수정체']}]},
+{id:'B41',cat:'생물',grade:'중3',q:'물체를 보는 과정을 순서대로 설명하시오.',
+ a:'빛이 각막과 수정체를 지나 굴절되어 망막에 상이 맺히면 망막의 시각 세포가 이를 자극으로 받아들이고, 시각 신경을 통해 뇌로 전달되어 물체를 보게 됩니다.',
+ kw:[{l:'각막과 수정체에서 굴절',a:['각막','수정체']},{l:'망막에 상이 맺힘, 시각 세포 자극',a:['망막','시각 세포']},{l:'시각 신경을 통해 뇌로 전달',a:['시각 신경','뇌']}]},
+{id:'B42',cat:'생물',grade:'중3',q:'눈의 명암 조절과 원근 조절 과정을 설명하시오.',
+ a:'밝은 곳에서는 홍채가 확장해 동공이 작아져 빛의 양이 줄고, 어두운 곳에서는 홍채가 축소해 동공이 커져 빛의 양이 늘며, 가까운 물체를 볼 때는 섬모체가 수축해 수정체가 두꺼워지고 먼 물체를 볼 때는 섬모체가 이완해 수정체가 얇아집니다.',
+ kw:[{l:'밝은 곳: 동공 작아짐',a:['밝은','작아']},{l:'어두운 곳: 동공 커짐',a:['어두운','커짐']},{l:'가까운 물체: 수정체 두꺼워짐',a:['가까운','두꺼워']}]},
+{id:'B43',cat:'생물',grade:'중1',q:'귀의 구조에서 고막, 귓속뼈, 달팽이관의 기능을 설명하시오.',
+ a:'고막은 소리에 의해 얇은 막이 진동하는 부분이고, 귓속뼈는 고막의 진동을 증폭시켜 달팽이관으로 전달하며, 달팽이관은 청각 세포가 분포하여 소리 자극을 받아들이는 곳입니다.',
+ kw:[{l:'고막: 소리에 의해 진동',a:['고막']},{l:'귓속뼈: 진동 증폭',a:['귓속뼈']},{l:'달팽이관: 청각 세포가 자극을 받아들임',a:['달팽이관']}]},
+{id:'B44',cat:'생물',grade:'중1',q:'소리를 듣는 과정을 순서대로 설명하시오.',
+ a:'귓바퀴로 모인 소리가 외이도를 지나 고막을 진동시키고, 귓속뼈에서 진동이 증폭되어 달팽이관의 청각 세포를 자극하면 청각 신경을 통해 뇌로 전달되어 소리를 듣게 됩니다.',
+ kw:[{l:'고막의 진동',a:['고막']},{l:'귓속뼈에서 증폭',a:['증폭']},{l:'달팽이관 청각 세포, 청각 신경, 뇌',a:['달팽이관','청각 신경','뇌']}]},
+{id:'B45',cat:'생물',grade:'중3',q:'귀에서 평형 감각을 담당하는 전정 기관과 반고리관의 기능을 설명하시오.',
+ a:'전정 기관은 중력 자극에 대한 몸의 기울어짐을 감지해 자세를 바로잡을 수 있게 하고, 반고리관은 몸이 회전하거나 이동 방향, 속력이 변할 때 이를 감지합니다.',
+ kw:[{l:'전정 기관: 몸의 기울어짐 감지',a:['전정 기관','기울어짐']},{l:'반고리관: 회전이나 속력 변화 감지',a:['반고리관','회전']}]},
+{id:'B46',cat:'생물',grade:'중2',q:'냄새를 맡는 과정을 설명하시오.',
+ a:'기체 상태의 화학 물질이 콧속으로 들어와 후각 상피의 후각 세포를 자극하면, 후각 신경을 통해 뇌로 전달되어 냄새를 느끼게 됩니다.',
+ kw:[{l:'기체 상태의 화학 물질',a:['기체']},{l:'후각 세포 자극',a:['후각 세포']},{l:'후각 신경, 뇌로 전달',a:['후각 신경','뇌']}]},
+{id:'B47',cat:'생물',grade:'중3',q:'맛을 느끼는 과정을 설명하시오.',
+ a:'액체 상태의 화학 물질이 혀의 유두에 있는 맛봉오리의 맛세포를 자극하면, 미각 신경을 통해 뇌로 전달되어 맛을 느끼게 됩니다.',
+ kw:[{l:'액체 상태의 화학 물질',a:['액체']},{l:'맛봉오리의 맛세포 자극',a:['맛봉오리','맛세포']},{l:'미각 신경, 뇌로 전달',a:['미각 신경','뇌']}]},
+{id:'B48',cat:'생물',grade:'중2',q:'피부의 감각점 종류와 특징을 설명하시오.',
+ a:'피부에는 접촉을 받아들이는 촉점, 압력을 받아들이는 압점, 차가움을 느끼게 하는 냉점, 따뜻함을 느끼게 하는 온점, 강한 자극으로 통증을 느끼게 하는 통점이 있으며, 부위에 따라 분포 밀도가 달라 예민한 정도가 다릅니다.',
+ kw:[{l:'촉점, 압점',a:['촉점','압점']},{l:'냉점, 온점',a:['냉점','온점']},{l:'통점',a:['통점']}]},
+{id:'B49',cat:'생물',grade:'중2',q:'수용성 영양소와 지용성 영양소는 각각 어떤 경로로 흡수되어 이동하나요?',
+ a:'수용성 영양소는 융털의 모세 혈관으로 흡수되어 간을 거쳐 정맥, 심장으로 이동하고, 지용성 영양소는 융털의 암죽관으로 흡수되어 림프관을 거쳐 정맥, 심장으로 이동합니다.',
+ kw:[{l:'수용성: 모세 혈관 → 간 → 정맥',a:['수용성','모세 혈관']},{l:'지용성: 암죽관 → 림프관 → 정맥',a:['지용성','암죽관']}]},
+{id:'B50',cat:'생물',grade:'중2',q:'동맥, 정맥, 모세 혈관에서 혈압, 혈관 총 단면적, 혈류 속도를 비교하시오.',
+ a:'혈압은 동맥에서 가장 크고 모세 혈관, 정맥 순으로 낮아지며, 혈관의 총 단면적은 모세 혈관이 가장 크고, 혈류 속도는 총 단면적에 반비례하여 모세 혈관에서 가장 느립니다.',
+ kw:[{l:'혈압: 동맥이 가장 큼',a:['혈압']},{l:'총 단면적: 모세 혈관이 가장 큼',a:['단면적']},{l:'혈류 속도: 모세 혈관이 가장 느림',a:['혈류 속도','느림']}]},
+{id:'B51',cat:'생물',grade:'중2',q:'동맥혈과 정맥혈의 차이를 설명하시오.',
+ a:'동맥혈은 산소가 많고 선홍색을 띠는 혈액이고, 정맥혈은 산소가 적고 암적색을 띠는 혈액입니다.',
+ kw:[{l:'동맥혈: 산소 많음, 선홍색',a:['동맥혈']},{l:'정맥혈: 산소 적음, 암적색',a:['정맥혈']}]},
+{id:'B52',cat:'생물',grade:'중2',q:'폐와 조직에서 산소와 이산화 탄소의 기체 교환이 일어나는 원리를 설명하시오.',
+ a:'기체는 농도가 높은 곳에서 낮은 곳으로 확산하므로, 폐에서는 산소가 폐포에서 모세 혈관으로, 이산화 탄소가 모세 혈관에서 폐포로 이동하고, 조직에서는 산소가 모세 혈관에서 조직 세포로, 이산화 탄소가 조직 세포에서 모세 혈관으로 이동합니다.',
+ kw:[{l:'농도 차이에 따른 확산',a:['농도','확산']},{l:'폐에서: 산소는 폐포→혈관, 이산화탄소는 반대',a:['폐포']},{l:'조직에서: 산소는 혈관→세포, 이산화탄소는 반대',a:['조직 세포']}]},
+{id:'B53',cat:'생물',grade:'중2',q:'몸에서 만들어진 노폐물인 이산화 탄소, 물, 암모니아는 각각 어떻게 배설되나요?',
+ a:'이산화 탄소는 혈액을 통해 폐로 운반되어 날숨으로 나가고, 물은 콩팥에서 걸러져 오줌으로 나가거나 폐에서 수증기로 나가며, 암모니아는 독성이 약한 요소로 바뀐 뒤 콩팥을 통해 오줌으로 나갑니다.',
+ kw:[{l:'이산화 탄소: 폐를 통해 배출',a:['이산화 탄소','폐']},{l:'물: 콩팥이나 폐로 배출',a:['물']},{l:'암모니아: 요소로 바뀌어 콩팥으로 배출',a:['암모니아','요소']}]},
+{id:'B54',cat:'생물',grade:'중2',q:'콩팥의 구조인 사구체, 보먼주머니, 세뇨관의 기능을 설명하시오.',
+ a:'사구체는 콩팥 동맥에서 들어온 혈액 속 노폐물을 걸러내는 모세 혈관 덩어리이고, 보먼주머니는 사구체에서 여과된 물질을 받는 주머니이며, 세뇨관은 여과된 물질 중 몸에 필요한 성분을 재흡수하는 관입니다.',
+ kw:[{l:'사구체: 노폐물을 여과하는 모세 혈관',a:['사구체']},{l:'보먼주머니: 여과된 물질을 받음',a:['보먼주머니']},{l:'세뇨관: 필요한 물질 재흡수',a:['세뇨관','재흡수']}]},
+{id:'B55',cat:'생물',grade:'중2',q:'오줌의 배설 경로를 순서대로 설명하시오.',
+ a:'콩팥의 네프론에서 생성된 오줌은 집합관으로 모여 콩팥 깔대기로 이동하고, 오줌관을 지나 방광에 저장되었다가 요도를 통해 몸 밖으로 배출됩니다.',
+ kw:[{l:'네프론 → 콩팥 깔대기',a:['네프론','콩팥 깔대기']},{l:'오줌관 → 방광',a:['오줌관','방광']},{l:'요도로 배출',a:['요도']}]},
+{id:'B56',cat:'생물',grade:'중2',q:'광합성 과정을 화학 반응식으로 나타내고 각 요소가 무엇을 의미하는지 설명하시오.',
+ a:'광합성의 화학 반응식은 6CO2+12H2O=C6H12O6+6O2+6H2O로, 이산화 탄소와 물이 빛에너지를 이용해 포도당과 산소로 바뀌는 과정을 나타냅니다.',
+ kw:[{l:'이산화 탄소와 물이 반응물',a:['이산화 탄소','물']},{l:'포도당과 산소가 생성물',a:['포도당','산소']},{l:'빛에너지를 이용',a:['빛에너지']}]},
+{id:'B57',cat:'생물',grade:'중2',q:'광합성으로 만들어진 양분은 밤에 어떻게 이동하고 저장되나요?',
+ a:'밤이 되면 잎에 저장되어 있던 녹말이 물에 녹는 당으로 바뀌어 체관을 통해 식물체의 각 부분으로 이동하고, 남은 양분은 뿌리나 줄기, 열매, 씨 등에 녹말, 지방, 단백질 등의 형태로 저장됩니다.',
+ kw:[{l:'녹말이 당으로 바뀜',a:['녹말','당']},{l:'체관을 통해 이동',a:['체관']},{l:'다양한 형태로 저장',a:['저장']}]},
+{id:'B58',cat:'생물',grade:'중3',q:'세포 분열이 필요한 까닭을 표면적과 부피의 관계로 설명하시오.',
+ a:'세포가 커지면 부피가 증가하는 비율이 표면적이 증가하는 비율보다 커서 세포막을 통한 물질 교환 효율이 낮아지므로, 세포는 어느 정도 커지면 분열하여 크기를 작게 유지합니다.',
+ kw:[{l:'부피 증가 비율이 표면적보다 큼',a:['부피','표면적']},{l:'물질 교환 효율 낮아짐',a:['물질 교환']}]},
+{id:'B59',cat:'생물',grade:'중3',q:'체세포 분열이 생물에게 어떤 의의가 있나요?',
+ a:'체세포 분열을 통해 다세포 생물은 체세포의 수를 늘려 생장하고, 상처 난 부위의 세포를 새로 만들거나 수명을 다한 세포를 보충하는 재생이 일어나며, 단세포 생물은 딸세포가 새로운 개체가 되어 번식합니다.',
+ kw:[{l:'생장(세포 수 증가)',a:['생장']},{l:'재생(상처·세포 보충)',a:['재생']},{l:'단세포 생물의 번식',a:['번식']}]},
+{id:'EA1',cat:'지구과학',grade:'중1',level:'advanced',q:'어느 지역에서 화강암과 현무암이 함께 발견되었다면, 이 두 암석이 각각 어떻게 다른 냉각 과정을 거쳐 만들어졌는지, 그리고 이 지역이 과거에 어떤 지각 활동을 겪었을 가능성이 있는지 설명하시오.',
+ a:'화강암은 마그마가 지하 깊은 곳에서 천천히 식어 만들어진 심성암으로 결정이 크고, 현무암은 마그마가 지표 부근에서 빠르게 식어 만들어진 화산암으로 결정이 작습니다. 두 암석이 함께 발견된다면 이 지역은 과거 화산 활동으로 지표에 용암이 분출해 현무암이 생성되고, 동시에 지하 깊은 곳에서는 마그마가 서서히 식어 화강암이 형성된 뒤 오랜 시간에 걸쳐 침식으로 지표에 드러났을 가능성이 있습니다.',
+ kw:[{l:'화강암: 심성암, 천천히 식음, 결정 큼',a:['화강암']},{l:'현무암: 화산암, 빠르게 식음, 결정 작음',a:['현무암']},{l:'지하와 지표 양쪽에서 마그마 활동',a:['지하','지표']},{l:'침식으로 지표에 드러남',a:['침식']}]},
+{id:'EA2',cat:'지구과학',grade:'중1',level:'advanced',q:'일본에서는 화산과 지진이 자주 발생하지만 같은 위도의 우리나라 동해안에서는 상대적으로 드뭅니다. 이 차이가 나타나는 까닭을 판의 경계와 관련지어 설명하시오.',
+ a:'화산과 지진은 판의 경계에서 판들이 부딪히거나 어긋나며 발생하는데, 일본은 유라시아판·태평양판·필리핀판이 만나는 경계에 위치해 화산과 지진이 자주 일어나지만, 우리나라는 판의 안쪽에 위치해 판의 충돌이 적어 화산과 지진 활동이 상대적으로 적습니다.',
+ kw:[{l:'화산과 지진은 판의 경계에서 발생',a:['판의 경계']},{l:'일본: 판의 경계에 위치',a:['일본']},{l:'우리나라: 판의 안쪽에 위치',a:['안쪽']}]},
+{id:'EA3',cat:'지구과학',grade:'중1',level:'advanced',q:'베게너는 대륙 이동의 증거는 제시했지만 당시 인정받지 못했습니다. 이후 어떤 이론이 등장해 대륙 이동의 원동력을 설명했으며, 그 원동력은 무엇인가요?',
+ a:'베게너는 해안선의 일치, 화석 분포, 빙하 흔적 등의 증거를 제시했지만 대륙을 움직이는 원동력을 설명하지 못해 인정받지 못했는데, 이후 판구조론이 등장해 맨틀 상부의 대류가 판을 이동시키는 원동력이라는 것을 밝히며 대륙 이동설을 뒷받침했습니다.',
+ kw:[{l:'베게너는 원동력을 밝히지 못함',a:['원동력']},{l:'판구조론이 등장',a:['판구조론']},{l:'맨틀의 대류가 원동력',a:['맨틀','대류']}]},
+{id:'EA4',cat:'지구과학',grade:'중1',level:'advanced',q:'히말라야산맥처럼 대륙판과 대륙판이 충돌하는 경계에서는 어떤 종류의 암석이 잘 만들어질지, 그 까닭과 함께 설명하시오.',
+ a:'대륙판끼리 충돌하면 암석에 매우 큰 열과 압력이 가해지므로 기존의 암석이 성질이 변하는 변성암이 잘 만들어지며, 특히 강한 압력을 받아 편리나 편마 구조가 나타나는 편암이나 편마암이 형성되기 쉽습니다.',
+ kw:[{l:'판의 충돌로 열과 압력이 가해짐',a:['열','압력']},{l:'변성암이 생성됨',a:['변성암']},{l:'편리·편마 구조',a:['편리','편마']}]},
+{id:'EA5',cat:'지구과학',grade:'중3',level:'advanced',q:'기온과 강수량이 높은 열대 지방과 건조한 사막 지방에서 풍화 작용의 속도와 토양의 두께가 어떻게 다를지 비교하여 설명하시오.',
+ a:'물과 공기의 화학 작용은 기온과 강수량이 높을수록 활발해지므로, 열대 지방은 풍화 작용이 빠르게 일어나 토양층이 두껍게 발달하지만, 건조한 사막 지방은 물이 부족해 화학적 풍화가 느리게 일어나 토양층이 얇습니다.',
+ kw:[{l:'기온·강수량 높으면 풍화 활발',a:['기온','강수량']},{l:'열대 지방: 두꺼운 토양',a:['열대','두꺼']},{l:'건조 지역: 얇은 토양',a:['건조','얇']}]},
+{id:'EA6',cat:'지구과학',grade:'중2',level:'advanced',q:'오존층이 파괴되면 성층권의 기온 분포와 지표에 도달하는 자외선의 양이 각각 어떻게 달라질지 설명하시오.',
+ a:'오존층이 파괴되면 자외선을 흡수하는 오존의 양이 줄어 성층권에서 위로 올라갈수록 기온이 높아지던 경향이 약해지고, 동시에 자외선을 충분히 흡수하지 못해 지표에 도달하는 자외선의 양이 증가하게 됩니다.',
+ kw:[{l:'오존층 파괴',a:['오존']},{l:'성층권 기온 상승 경향 약화',a:['기온']},{l:'지표 자외선 증가',a:['자외선','증가']}]},
+{id:'EA7',cat:'지구과학',grade:'중2',level:'advanced',q:'대기 중 이산화 탄소 농도가 계속 증가한다면 지구의 복사 평형은 어떻게 달라지며, 그 결과 평균 기온은 어떻게 변할지 설명하시오.',
+ a:'이산화 탄소 같은 온실 기체가 증가하면 지구가 방출하는 복사 에너지 중 대기에 흡수되었다가 지표로 재방출되는 양이 많아져, 대기가 없을 때보다 더 높은 기온에서 새로운 복사 평형을 이루게 되므로 지구의 평균 기온은 상승합니다.',
+ kw:[{l:'온실 기체 증가',a:['온실 기체']},{l:'재방출되는 에너지 증가',a:['재방출']},{l:'더 높은 기온에서 평형',a:['평형']},{l:'평균 기온 상승',a:['상승']}]},
+{id:'EA8',cat:'지구과학',grade:'중3',level:'advanced',q:'한랭 전선이 통과할 때 나타나는 구름의 모양과 강수의 특징을 전선면의 기울기와 관련지어 설명하시오.',
+ a:'한랭 전선은 찬 기단이 따뜻한 기단 아래로 파고들며 전선면의 기울기가 급하게 형성되므로 공기가 급격히 상승해 적운형 구름이 만들어지고, 좁은 지역에 소나기성 비가 짧고 강하게 내립니다.',
+ kw:[{l:'전선면 기울기가 급함',a:['기울기','급']},{l:'공기가 급격히 상승',a:['급격히']},{l:'적운형 구름과 소나기성 비',a:['적운형','소나기']}]},
+{id:'EA11',cat:'지구과학',grade:'중2',level:'advanced',q:'지구가 자전축이 기울어진 채로 공전하지 않고 자전축이 수직인 채로 공전한다면 계절 변화가 어떻게 달라질지 추론하시오.',
+ a:'자전축이 수직인 채로 공전하면 태양의 남중 고도와 낮의 길이가 일 년 내내 거의 일정하게 유지되므로, 계절에 따른 기온 변화가 거의 없이 항상 비슷한 날씨가 나타날 것입니다.',
+ kw:[{l:'자전축 기울기가 계절의 원인',a:['자전축','기울']},{l:'수직이면 남중 고도가 일정',a:['남중 고도','일정']},{l:'계절 변화 거의 없음',a:['계절 변화']}]},
+{id:'EA12',cat:'지구과학',grade:'중2',level:'advanced',q:'달이 지구를 공전하는 궤도면이 지구가 태양을 공전하는 궤도면과 같은 평면에 있다면 일식과 월식은 어떻게 달라질지 설명하시오.',
+ a:'현재는 달의 공전 궤도면이 지구의 공전 궤도면과 약 5° 기울어져 있어 삭이나 망이라고 매번 일식이나 월식이 일어나지 않지만, 두 궤도면이 같은 평면에 있다면 태양, 지구, 달이 삭이나 망마다 항상 일직선에 놓이게 되어 매달 일식과 월식이 일어날 것입니다.',
+ kw:[{l:'현재는 약 5° 기울어져 있음',a:['기울']},{l:'같은 평면이면 매 삭·망마다 일직선',a:['일직선']},{l:'매달 일식과 월식 발생',a:['매달']}]},
+{id:'EA13',cat:'지구과학',grade:'중2',level:'advanced',q:'지구형 행성과 목성형 행성 중 위성의 수가 대체로 더 많은 쪽은 어디이며, 그 까닭을 두 행성군의 질량 차이와 관련지어 추론하시오.',
+ a:'위성의 수는 목성형 행성이 대체로 더 많은데, 이는 목성형 행성이 지구형 행성보다 질량이 훨씬 크기 때문에 중력이 강해 더 많은 천체를 위성으로 붙잡아 둘 수 있기 때문이라고 추론할 수 있습니다.',
+ kw:[{l:'목성형 행성이 위성 더 많음',a:['목성형']},{l:'질량이 큼',a:['질량']},{l:'중력이 강해 더 많이 붙잡음',a:['중력']}]},
+{id:'EA14',cat:'지구과학',grade:'중3',level:'advanced',q:'화성과 금성은 둘 다 이산화 탄소가 주성분인 대기를 가지고 있지만 표면 온도는 크게 다릅니다. 그 까닭을 대기의 양과 관련지어 설명하시오.',
+ a:'금성은 기압이 약 90기압에 이를 정도로 이산화 탄소 대기층이 매우 두꺼워 온실 효과가 매우 강하게 나타나 표면 온도가 매우 높지만, 화성은 기압이 0.007기압으로 매우 낮아 대기가 희박하기 때문에 온실 효과가 약해 표면 온도가 낮고 일교차도 큽니다.',
+ kw:[{l:'금성: 두꺼운 대기, 강한 온실 효과, 고온',a:['금성']},{l:'화성: 희박한 대기, 약한 온실 효과',a:['화성']}]},
+{id:'EA15',cat:'지구과학',grade:'중2',level:'advanced',q:'태양의 흑점 수가 많아지는 극대기에는 태양의 활동과 코로나의 크기가 어떻게 달라지나요?',
+ a:'흑점 수가 많은 극대기에는 태양 활동이 매우 활발해져 코로나의 크기가 최대로 커지고, 플레어와 홍염 같은 현상도 활발히 일어나며 지구로 도달하는 태양 에너지와 대전 입자의 양도 증가합니다.',
+ kw:[{l:'극대기: 태양 활동 활발',a:['활발']},{l:'코로나 크기 최대',a:['코로나']},{l:'플레어·홍염 활발',a:['플레어','홍염']}]},
+{id:'EA16',cat:'지구과학',grade:'중3',level:'advanced',q:'만약 오존층이 지표에 가까운 대류권에 있었다면 대류권의 대류 현상에 어떤 영향을 줄지 추론하시오.',
+ a:'오존층이 대류권에 있다면 지표 부근에서 자외선을 흡수해 하층 기온이 높아지므로 대류권 상층과의 기온 차이가 줄어들어 대류가 잘 일어나지 않게 되고, 이로 인해 날씨 변화나 구름 생성 같은 기상 현상이 제대로 나타나기 어려울 것입니다.',
+ kw:[{l:'하층 기온이 상승',a:['하층','기온']},{l:'대류가 잘 일어나지 않음',a:['대류']},{l:'기상 현상이 방해받음',a:['기상']}]},
+{id:'EA17',cat:'지구과학',grade:'중1',level:'advanced',q:'남아메리카와 아프리카에서 같은 종류의 화석이 발견되는 것을 대륙 이동설이 아닌 생물이 직접 헤엄쳐 이동했다는 것으로 설명하려 한다면 어떤 문제점이 있을지 설명하시오.',
+ a:'화석이 된 생물 중에는 넓은 바다를 헤엄쳐 건널 수 없는 육상 생물이나 담수 생물도 포함되어 있으므로, 생물이 직접 이동했다고 설명하기 어렵고, 오히려 두 대륙이 과거에 하나로 붙어 있다가 갈라져 이동했다고 보는 것이 더 타당합니다.',
+ kw:[{l:'헤엄칠 수 없는 육상·담수 생물',a:['육상','담수']},{l:'직접 이동으로 설명하기 어려움',a:['이동']},{l:'대륙 이동으로 설명하는 것이 타당',a:['대륙 이동']}]},
+{id:'EA18',cat:'지구과학',grade:'중3',level:'advanced',q:'겨울철 시베리아 기단이 우리나라 쪽으로 남하하며 서해를 지나갈 때 기단의 성질이 어떻게 변하는지 설명하시오.',
+ a:'시베리아 기단은 원래 한랭 건조한 성질이지만, 상대적으로 따뜻한 서해를 지나며 하층부터 열과 수증기를 공급받아 기온과 습도가 높아지고, 이로 인해 서해안 지역에 폭설이 내리기도 합니다.',
+ kw:[{l:'원래 한랭 건조',a:['한랭 건조']},{l:'서해를 지나며 열과 수증기 공급',a:['열','수증기']},{l:'기온·습도가 높아짐',a:['높아짐']}]},
+{id:'EA19',cat:'지구과학',grade:'중3',level:'advanced',q:'관측 지점에 온난 전선이 통과한 직후부터 한랭 전선이 통과하기 전까지 날씨가 어떻게 나타날지 설명하시오.',
+ a:'온난 전선이 통과한 직후부터 한랭 전선이 통과하기 전까지는 따뜻한 기단의 영향을 받는 구간이므로 기온이 높아지고 대체로 맑은 날씨가 나타나다가, 한랭 전선이 다가오면서 다시 적운형 구름과 소나기가 나타나기 시작합니다.',
+ kw:[{l:'온난 전선 통과 후: 기온 상승, 맑음',a:['기온','맑']},{l:'한랭 전선이 다가오며 적운형 구름·소나기',a:['적운형','소나기']}]},
+{id:'EA20',cat:'지구과학',grade:'중3',level:'advanced',q:'여름철 남고북저형, 겨울철 서고동저형 기압 배치가 각각 어떤 계절풍을 일으키는지 설명하고 그 차이가 나타나는 까닭을 설명하시오.',
+ a:'여름에는 대륙이 해양보다 빨리 가열되어 대륙 쪽에 저기압, 해양 쪽에 고기압이 발달하는 남고북저형 배치가 되어 남동 계절풍이 불고, 겨울에는 대륙이 해양보다 빨리 냉각되어 대륙 쪽에 고기압이 발달하는 서고동저형 배치가 되어 북서 계절풍이 붑니다.',
+ kw:[{l:'여름: 남고북저, 남동 계절풍',a:['남고북저','남동']},{l:'겨울: 서고동저, 북서 계절풍',a:['서고동저','북서']},{l:'대륙과 해양의 가열·냉각 속도 차이',a:['가열','냉각']}]},
+{id:'EA21',cat:'지구과학',grade:'중3',level:'advanced',q:'기온이 일정한 상태에서 수증기량이 계속 증가하면 이슬점과 상대 습도는 각각 어떻게 변하는지 설명하고, 결국 어떤 현상이 나타날 수 있는지 설명하시오.',
+ a:'수증기량이 증가하면 이슬점이 높아지고 상대 습도도 높아지는데, 수증기량이 현재 기온의 포화 수증기량보다 많아지면 공기가 포화 상태를 넘어서면서 수증기가 응결해 안개나 구름이 생기고 강수로 이어질 수 있습니다.',
+ kw:[{l:'수증기량 증가 → 이슬점 상승',a:['이슬점']},{l:'상대 습도 상승',a:['상대 습도']},{l:'포화를 넘으면 응결·강수',a:['응결']}]},
+{id:'EA22',cat:'지구과학',grade:'중1',level:'advanced',q:'대규모 화산 폭발이 일어나면 화산재가 성층권까지 도달할 수 있는데, 이것이 지구의 기온에 어떤 영향을 줄 수 있는지 추론하시오.',
+ a:'화산재가 성층권까지 퍼지면 태양 복사 에너지의 일부를 반사하거나 차단해 지표에 도달하는 에너지가 줄어들 수 있으므로, 일시적으로 지구의 평균 기온이 낮아지는 효과가 나타날 수 있습니다.',
+ kw:[{l:'화산재가 태양 복사를 반사·차단',a:['반사','차단']},{l:'지표 도달 에너지 감소',a:['에너지 감소']},{l:'기온이 일시적으로 하강',a:['하강']}]},
+{id:'EA24',cat:'지구과학',grade:'중2',level:'advanced',q:'달은 대기가 없어 대기가 있는 지구와 비교했을 때 낮과 밤의 기온 차이가 매우 큽니다. 그 까닭을 복사 평형과 관련지어 설명하시오.',
+ a:'대기가 없는 달은 태양 복사 에너지를 반사하거나 재방출해 줄 대기가 없어 낮에는 태양 에너지를 그대로 받아 매우 뜨거워지고 밤에는 에너지를 붙잡아 둘 수 없어 매우 빠르게 식으므로, 대기가 있는 지구보다 낮과 밤의 기온 차이가 훨씬 큽니다.',
+ kw:[{l:'달은 대기가 없음',a:['대기']},{l:'낮에 매우 뜨거워짐',a:['낮','뜨거']},{l:'밤에 빠르게 식음',a:['밤','식']}]},
+{id:'EA25',cat:'지구과학',grade:'중1',level:'advanced',q:'화산 활동으로 대기 중에 화산 가스(이산화 황 등)가 많이 방출되면 산성비가 내릴 수 있습니다. 이것이 풍화 작용에 어떤 영향을 줄지 설명하시오.',
+ a:'산성비는 산성 물질이 포함된 빗물로, 암석이 산성 물질과 반응하면 화학적 풍화가 더 빠르게 일어나 석회암 같은 암석이 더 쉽게 녹아 풍화되는 속도가 빨라질 수 있습니다.',
+ kw:[{l:'산성비',a:['산성비']},{l:'암석이 산성 물질과 반응',a:['반응']},{l:'화학적 풍화가 빨라짐',a:['풍화']}]},
+{id:'PA1',cat:'물리',grade:'중1',level:'advanced',q:'달에서 몸무게가 지구의 1/6로 측정된 우주인이 지구로 돌아왔을 때, 몸무게와 질량은 각각 어떻게 변하는지 설명하시오.',
+ a:'질량은 장소에 관계없이 일정한 고유한 양이므로 달에서나 지구에서나 변하지 않지만, 무게는 중력의 크기에 비례하므로 달의 중력이 지구의 1/6이라 달에서 가벼웠던 몸무게는 지구로 돌아오면 원래 값으로 커집니다.',
+ kw:[{l:'질량은 변하지 않음',a:['질량']},{l:'무게는 중력에 비례',a:['중력']},{l:'지구로 오면 무게가 커짐',a:['커짐','증가']}]},
+{id:'PA2',cat:'물리',grade:'중1',level:'advanced',q:'같은 용수철저울을 달과 지구에서 각각 사용해 같은 물체의 무게를 측정하면 눈금이 다르게 나타나는 까닭을 탄성력의 원리와 관련지어 설명하시오.',
+ a:'용수철저울은 물체의 무게(중력)와 탄성력이 같아질 때까지 늘어나는 원리를 이용하는데, 달에서는 중력이 지구의 1/6로 작아 물체를 당기는 힘이 작으므로 용수철이 적게 늘어나 더 작은 눈금을 가리키게 됩니다.',
+ kw:[{l:'무게와 탄성력이 같아질 때까지 늘어남',a:['탄성력']},{l:'달은 중력이 작음',a:['중력']},{l:'용수철이 적게 늘어나 작은 눈금',a:['적게']}]},
+{id:'PA3',cat:'물리',grade:'중1',level:'advanced',q:'빙판길에서 자동차 타이어에 체인을 감으면 미끄러짐이 줄어드는 까닭을 마찰력과 관련지어 설명하시오.',
+ a:'체인을 감으면 타이어와 빙판 사이의 접촉면이 거칠어져 마찰력이 커지므로, 타이어가 미끄러지는 것을 방지하는 데 도움이 됩니다.',
+ kw:[{l:'접촉면이 거칠어짐',a:['접촉면','거칠']},{l:'마찰력이 커짐',a:['마찰력']}]},
+{id:'PA4',cat:'물리',grade:'중1',level:'advanced',q:'잠수함이 물속에서 가라앉거나 떠오르도록 조절하는 원리를 부력과 무게의 관계로 설명하시오.',
+ a:'잠수함은 내부의 탱크에 물을 채우거나 빼내어 무게를 조절하는데, 무게가 부력보다 커지면 가라앉고 무게가 부력보다 작아지면 떠오르는 원리를 이용해 잠수와 부상을 조절합니다.',
+ kw:[{l:'탱크에 물을 채우거나 뺌',a:['탱크','물']},{l:'무게가 부력보다 크면 가라앉음',a:['가라앉']},{l:'무게가 부력보다 작으면 떠오름',a:['떠오름','뜸']}]},
+{id:'PA5',cat:'물리',grade:'중1',level:'advanced',q:'풍선을 들고 높은 산에 올라가면 부피가 커지고, 같은 풍선을 냉동실에 넣으면 부피가 작아집니다. 이 두 현상이 각각 어떤 법칙과 관련 있는지 설명하시오.',
+ a:'높은 산에서는 외부 기압이 낮아지므로 보일 법칙에 따라 풍선 속 기체의 부피가 커지고, 냉동실에서는 온도가 낮아지므로 샤를 법칙에 따라 기체 입자의 운동이 둔해져 부피가 작아집니다.',
+ kw:[{l:'높은 산: 기압 낮음, 보일 법칙',a:['보일 법칙']},{l:'냉동실: 온도 낮음, 샤를 법칙',a:['샤를 법칙']}]},
+{id:'PA7',cat:'물리',grade:'중1',level:'advanced',q:'얼음물이 든 컵을 실온에 두면 얼음이 다 녹을 때까지 물의 온도가 0℃로 유지되는 까닭을 설명하시오.',
+ a:'얼음이 녹는 융해가 일어나는 동안 흡수한 열에너지가 온도를 높이는 데 쓰이지 않고 얼음을 물로 상태 변화시키는 데 모두 사용되기 때문에, 얼음이 다 녹을 때까지는 온도가 녹는점인 0℃로 일정하게 유지됩니다.',
+ kw:[{l:'융해 동안 열에너지가 상태 변화에만 사용됨',a:['융해','열에너지']},{l:'온도가 녹는점으로 일정하게 유지',a:['일정']}]},
+{id:'PA8',cat:'물리',grade:'중1',level:'advanced',q:'빨간색 옷과 초록색 옷을 입은 두 사람이 파란색 조명 아래에 서 있다면 각각 어떤 색으로 보일지 설명하시오.',
+ a:'빨간색 옷은 파란색 빛을 반사하지 못하고 흡수하므로 검은색으로 보이고, 초록색 옷도 마찬가지로 파란색 빛을 반사하지 못해 검은색으로 보이게 됩니다.',
+ kw:[{l:'빨간색 옷: 검은색으로 보임',a:['빨간','검은색']},{l:'초록색 옷: 검은색으로 보임',a:['초록','검은색']},{l:'반사하지 못하고 흡수됨',a:['흡수']}]},
+{id:'PA9',cat:'물리',grade:'중1',level:'advanced',q:'자동차의 사이드미러에는 볼록 거울을, 손전등의 반사판에는 오목 거울을 사용하는 까닭을 각 거울에서 생기는 상의 특징과 관련지어 설명하시오.',
+ a:'볼록 거울은 항상 물체보다 작고 바로 선 상이 생겨 넓은 범위를 볼 수 있으므로 사이드미러에 이용되고, 오목 거울은 초점에 빛을 모으거나 초점에서 나온 빛을 평행하게 만들 수 있어 손전등처럼 빛을 멀리 보내는 데 이용됩니다.',
+ kw:[{l:'볼록 거울: 넓은 범위, 사이드미러',a:['볼록']},{l:'오목 거울: 빛을 모으거나 평행하게, 손전등',a:['오목']}]},
+{id:'PA10',cat:'물리',grade:'중1',level:'advanced',q:'우주 비행사들이 우주 공간에서는 서로 소리로 대화할 수 없어 무전기를 사용하는 까닭을 파동의 성질과 관련지어 설명하시오.',
+ a:'소리는 종파로서 공기 같은 매질을 통해 전달되는데, 우주 공간은 매질이 없는 진공 상태이므로 소리가 전달되지 못해 직접 대화할 수 없고, 대신 매질이 필요 없는 전자기파를 이용하는 무전기로 통신합니다.',
+ kw:[{l:'소리는 매질이 필요함',a:['매질']},{l:'우주는 진공(매질 없음)',a:['진공']},{l:'전자기파는 매질이 필요 없음',a:['전자기파']}]},
+{id:'PA11',cat:'물리',grade:'중1',level:'advanced',q:'(-)대전체를 검전기의 금속판에 가까이 가져가면 금속박이 벌어지는 과정을 전자의 이동으로 설명하시오.',
+ a:'(-)대전체를 가까이 가져가면 금속판의 자유 전자가 대전체와의 척력으로 밀려나 아래쪽 금속박으로 이동하고, 금속박은 (-)전하가 많아져 서로 척력이 작용해 벌어지게 됩니다.',
+ kw:[{l:'대전체와 척력으로 전자가 이동',a:['전자','척력']},{l:'금속박에 (-)전하가 몰림',a:['금속박']},{l:'척력으로 벌어짐',a:['벌어짐']}]},
+{id:'PA12',cat:'물리',grade:'중2',level:'advanced',q:'같은 저항 두 개를 직렬로 연결했을 때와 병렬로 연결했을 때, 전체 저항의 크기를 비교하여 설명하시오.',
+ a:'직렬연결에서는 전체 저항이 각 저항의 합이 되어 커지지만, 병렬연결에서는 전류가 흐를 수 있는 통로가 늘어나는 효과가 있어 전체 저항이 개별 저항보다 오히려 작아집니다.',
+ kw:[{l:'직렬: 전체 저항이 커짐(합)',a:['직렬']},{l:'병렬: 전체 저항이 작아짐',a:['병렬']}]},
+{id:'PA14',cat:'물리',grade:'중2',level:'advanced',q:'전동기에서 정류자가 없다면 코일이 계속 같은 방향으로 회전할 수 없는 까닭을 설명하시오.',
+ a:'정류자는 코일이 반 바퀴 회전할 때마다 전류의 방향을 바꾸어 코일이 받는 자기력의 방향을 유지해 주는데, 정류자가 없으면 코일이 반 바퀴를 돈 뒤에는 반대 방향의 자기력을 받아 회전을 멈추거나 반대로 돌게 됩니다.',
+ kw:[{l:'정류자가 전류 방향을 바꿈',a:['정류자']},{l:'없으면 반대 방향의 자기력을 받음',a:['반대']},{l:'회전이 유지되지 않음',a:['유지']}]},
+{id:'PA15',cat:'물리',grade:'중3',level:'advanced',q:'일정한 속력으로 움직이는 자동차와 자유 낙하하는 물체의 시간-속력 그래프의 모양이 어떻게 다른지 비교하여 설명하시오.',
+ a:'등속 운동을 하는 자동차는 속력이 일정하므로 시간-속력 그래프가 시간축과 나란한 직선으로 나타나지만, 자유 낙하하는 물체는 속력이 시간에 비례하여 증가하므로 원점을 지나며 기울기가 있는 직선으로 나타납니다.',
+ kw:[{l:'등속 운동: 시간축과 나란한 직선',a:['시간축','나란']},{l:'자유 낙하: 원점 지나며 기울기 있는 직선',a:['원점','기울기']}]},
+{id:'PA16',cat:'물리',grade:'중3',level:'advanced',q:'롤러코스터가 가장 높은 지점에서 출발해 내려올 때, 위치 에너지와 운동 에너지가 어떻게 변하는지 역학적 에너지 보존과 관련지어 설명하시오.',
+ a:'롤러코스터가 높은 지점에서 내려올수록 높이가 낮아지므로 위치 에너지는 감소하고, 속력이 빨라지므로 운동 에너지는 증가하는데, 공기 저항과 마찰을 무시하면 두 에너지의 합인 역학적 에너지는 일정하게 보존됩니다.',
+ kw:[{l:'내려올수록 위치 에너지 감소',a:['위치 에너지']},{l:'운동 에너지 증가',a:['운동 에너지']},{l:'역학적 에너지 보존',a:['역학적 에너지','보존']}]},
+{id:'PA17',cat:'물리',grade:'중3',level:'advanced',q:'바닷가의 모래는 낮에는 매우 뜨겁고 밤에는 빨리 식는 반면, 바닷물은 온도 변화가 적은 까닭을 비열과 관련지어 설명하시오.',
+ a:'모래는 비열이 작아 적은 열량으로도 온도가 쉽게 변하므로 낮에는 빨리 뜨거워지고 밤에는 빨리 식지만, 물은 비열이 매우 커서 같은 열량을 받아도 온도 변화가 작으므로 바닷물은 낮과 밤의 온도 변화가 적습니다.',
+ kw:[{l:'모래는 비열이 작아 온도 쉽게 변함',a:['모래','비열']},{l:'물은 비열이 커 온도 변화가 작음',a:['물','비열']}]},
+{id:'PA18',cat:'물리',grade:'중3',level:'advanced',q:'다리미의 자동 온도 조절 장치에 열팽창 정도가 다른 두 금속을 붙인 바이메탈을 사용하는 원리를 설명하시오.',
+ a:'바이메탈은 열팽창 정도가 다른 두 금속을 붙여 만든 것으로, 온도가 높아지면 두 금속이 서로 다른 정도로 팽창해 휘어지는데, 이 휘어짐을 이용해 회로를 자동으로 끊거나 연결해 온도를 조절합니다.',
+ kw:[{l:'열팽창 정도가 다른 두 금속',a:['열팽창']},{l:'온도에 따라 휘어짐',a:['휘어']},{l:'휘어짐으로 회로를 조절',a:['회로']}]},
+{id:'PA19',cat:'물리',grade:'중1',level:'advanced',q:'여름철 자동차 안에 에어로졸 스프레이 캔을 두면 위험한 까닭을 기체의 온도와 압력의 관계로 설명하시오.',
+ a:'자동차 안의 온도가 높아지면 캔 속 기체 입자의 운동이 활발해져 충돌 횟수와 세기가 늘어나 기체의 압력이 커지는데, 압력이 너무 커지면 캔이 폭발할 위험이 있습니다.',
+ kw:[{l:'온도가 높아지면 입자 운동 활발',a:['온도']},{l:'충돌 증가로 압력이 커짐',a:['압력']},{l:'폭발 위험',a:['폭발']}]},
+{id:'PA20',cat:'물리',grade:'중1',level:'advanced',q:'근시인 사람과 원시인 사람은 각각 오목렌즈와 볼록렌즈로 시력을 교정하는데, 그 까닭을 상이 맺히는 위치와 관련지어 설명하시오.',
+ a:'근시는 상이 망막보다 앞쪽에 맺혀 오목렌즈로 빛을 퍼지게 해 상이 맺히는 위치를 뒤로 보내 교정하고, 원시는 상이 망막보다 뒤쪽에 맺혀 볼록렌즈로 빛을 모아 상이 맺히는 위치를 앞으로 당겨 교정합니다.',
+ kw:[{l:'근시: 상이 앞에 맺힘, 오목렌즈',a:['근시','오목렌즈']},{l:'원시: 상이 뒤에 맺힘, 볼록렌즈',a:['원시','볼록렌즈']}]},
+{id:'PA21',cat:'물리',grade:'중1',level:'advanced',q:'같은 세기와 높이로 연주해도 피아노와 바이올린의 소리를 구별할 수 있는 까닭을 소리의 3요소와 관련지어 설명하시오.',
+ a:'소리의 크기는 진폭, 높낮이는 진동수와 관련 있는데, 세기와 높이가 같더라도 악기마다 진동하는 방법이 달라 서로 다른 파형이 나타나므로, 음색의 차이로 피아노와 바이올린 소리를 구별할 수 있습니다.',
+ kw:[{l:'세기와 높이가 같아도',a:['같']},{l:'진동 방법이 달라 파형이 다름',a:['파형']},{l:'음색의 차이로 구별',a:['음색']}]},
+{id:'PA22',cat:'물리',grade:'중2',level:'advanced',q:'가정에서 여러 전기 기구를 병렬로 연결해 사용하는 까닭을 병렬 연결의 특징과 관련지어 설명하시오.',
+ a:'병렬로 연결하면 각 전기 기구에 걸리는 전압이 모두 같아 정상적으로 작동할 수 있고, 하나의 전기 기구를 꺼도 다른 기구는 영향을 받지 않고 계속 사용할 수 있기 때문에 가정용 전기 배선에 병렬연결을 이용합니다.',
+ kw:[{l:'병렬: 전압이 모두 같음',a:['전압']},{l:'하나를 꺼도 다른 기구는 영향 없음',a:['영향']}]},
+{id:'PA24',cat:'물리',grade:'중1',level:'advanced',q:'얼음이 물 위에 떠 있는 까닭을 물과 얼음의 밀도, 그리고 부력과 관련지어 설명하시오.',
+ a:'물은 얼면 부피가 늘어나 밀도가 작아지므로 얼음의 밀도는 물보다 작고, 밀도가 작은 물질은 큰 물질 위로 뜨는 원리와 얼음이 밀어낸 물의 무게만큼 부력을 받아 물보다 가벼운 얼음이 물 위에 뜨게 됩니다.',
+ kw:[{l:'얼음의 밀도가 물보다 작음',a:['밀도']},{l:'밀도가 작은 물질이 뜸',a:['뜸']},{l:'부력이 무게보다 큼',a:['부력']}]},
+{id:'PA25',cat:'물리',grade:'중3',level:'advanced',q:'지구에서 자유 낙하하는 물체와 같은 물체가 달에서 자유 낙하할 때 속력이 증가하는 정도(중력 가속도)가 어떻게 다를지 추론하여 설명하시오.',
+ a:'달의 중력은 지구의 약 1/6이므로 달에서 자유 낙하하는 물체는 중력 가속도가 지구보다 훨씬 작아, 1초당 속력이 증가하는 정도가 지구에서보다 작고 천천히 떨어지게 됩니다.',
+ kw:[{l:'달의 중력은 지구의 약 1/6',a:['1/6']},{l:'중력 가속도가 작음',a:['중력 가속도']},{l:'천천히 떨어짐',a:['천천히']}]},
+{id:'CA1',cat:'화학',grade:'중2',level:'advanced',q:'순금 반지와 합금으로 만든 반지를 겉모습만으로 구별하기 어려울 때, 밀도를 이용해 구별할 수 있는 원리를 설명하시오.',
+ a:'순금은 다른 금속이 섞이지 않은 순물질이므로 밀도가 항상 일정하지만, 합금은 다른 금속이 섞인 혼합물이라 밀도가 순금과 다르게 나타나므로, 같은 부피에서 질량을 비교해 밀도를 구하면 순금인지 합금인지 구별할 수 있습니다.',
+ kw:[{l:'순금: 밀도가 일정',a:['순금']},{l:'합금: 밀도가 다름',a:['합금']},{l:'밀도를 비교해 구별',a:['비교','구별']}]},
+{id:'CA2',cat:'화학',grade:'중2',level:'advanced',q:'H2O와 H2O2는 둘 다 수소와 산소로만 이루어져 있지만 성질이 다른 물질입니다. 그 까닭을 분자를 이루는 원자의 개수와 관련지어 설명하시오.',
+ a:'H2O와 H2O2는 같은 종류의 원소(수소와 산소)로 이루어져 있지만, 분자를 이루는 원자의 개수와 배열이 서로 달라 전혀 다른 성질을 가진 물질이 됩니다.',
+ kw:[{l:'같은 종류의 원소로 구성',a:['같은 종류']},{l:'원자의 개수·배열이 다름',a:['개수','배열']},{l:'서로 다른 물질(성질)',a:['다른 물질','다른 성질']}]},
+{id:'CA3',cat:'화학',grade:'중2',level:'advanced',q:'리튬과 스트론튬은 불꽃 반응 색이 둘 다 빨간색으로 비슷해 구별하기 어렵습니다. 이 둘을 구별할 수 있는 더 정확한 방법을 설명하시오.',
+ a:'불꽃 반응 색이 비슷한 원소라도 선 스펙트럼에서 나타나는 선의 색, 위치, 개수가 원소마다 고유하게 다르므로, 선 스펙트럼을 관찰하면 리튬과 스트론튬을 정확하게 구별할 수 있습니다.',
+ kw:[{l:'불꽃 반응 색이 비슷함',a:['불꽃']},{l:'선 스펙트럼은 원소마다 고유함',a:['선 스펙트럼']},{l:'선의 위치·색으로 구별',a:['구별']}]},
+{id:'CA4',cat:'화학',grade:'중2',level:'advanced',q:'폐수 속에 납 이온(Pb2+)이 들어있는지 확인하는 실험 방법을 앙금 생성 반응을 이용해 설명하시오.',
+ a:'폐수에 아이오딘화 칼륨 수용액처럼 아이오딘화 이온(I-)이 들어있는 용액을 넣었을 때 노란색의 아이오딘화 납 앙금이 생성되면, 폐수 속에 납 이온이 들어있다는 것을 확인할 수 있습니다.',
+ kw:[{l:'아이오딘화 이온이 든 용액을 넣음',a:['아이오딘화']},{l:'노란색 앙금 생성',a:['노란색','앙금']},{l:'납 이온 확인',a:['납']}]},
+{id:'CA5',cat:'화학',grade:'중2',level:'advanced',q:'소금물은 전류가 흐르지만 설탕물은 전류가 흐르지 않는 까닭을 이온의 존재 여부와 관련지어 설명하시오.',
+ a:'소금(염화 나트륨)은 물에 녹으면 나트륨 이온과 염화 이온으로 나누어지는 전해질이라 전류가 흐르지만, 설탕은 물에 녹아도 이온으로 나누어지지 않는 비전해질이라 전류가 흐르지 않습니다.',
+ kw:[{l:'소금: 전해질, 이온으로 나뉨',a:['전해질']},{l:'설탕: 비전해질, 이온으로 안 나뉨',a:['비전해질']}]},
+{id:'CA6',cat:'화학',grade:'중1',level:'advanced',q:'잠수부가 깊은 바닷속으로 내려갈수록 압력이 커지는데, 이때 잠수부가 내쉬는 공기 방울의 부피와 밀도는 수면으로 올라올수록 각각 어떻게 변하는지 설명하시오.',
+ a:'수면으로 올라올수록 압력이 낮아지므로 보일 법칙에 따라 공기 방울의 부피는 점점 커지고, 같은 질량의 기체가 더 큰 부피를 차지하게 되므로 밀도는 점점 작아집니다.',
+ kw:[{l:'수면으로 올라올수록 압력이 낮아짐',a:['압력']},{l:'부피가 커짐(보일 법칙)',a:['부피']},{l:'밀도가 작아짐',a:['밀도']}]},
+{id:'CA7',cat:'화학',grade:'중2',level:'advanced',q:'불순물이 조금 섞인 질산 칼륨을 높은 온도의 물에 녹인 뒤 냉각시켰더니 순수한 질산 칼륨 결정이 석출되었습니다. 이 방법의 원리를 설명하시오.',
+ a:'이는 재결정의 원리로, 온도가 높을 때는 불순물과 질산 칼륨이 모두 녹아 있다가 온도를 낮추면 용해도가 크게 감소하는 질산 칼륨은 결정으로 석출되지만, 소량의 불순물은 용해도 변화가 적어 여전히 물에 녹아 있어 순수한 결정만 분리할 수 있습니다.',
+ kw:[{l:'온도를 낮추면 용해도가 감소',a:['용해도']},{l:'질산 칼륨이 석출됨',a:['석출']},{l:'불순물은 여전히 녹아 있음',a:['불순물']}]},
+{id:'CA8',cat:'화학',grade:'중2',level:'advanced',q:'원유를 분별 증류하면 여러 가지 성분으로 나누어지는 원리를 설명하시오.',
+ a:'원유는 끓는점이 서로 다른 여러 물질이 섞인 혼합물로, 가열하면 끓는점이 낮은 성분부터 먼저 기체가 되어 나오고 끓는점이 높은 성분은 나중에 나오므로, 이 순서에 따라 각 성분을 분리할 수 있습니다.',
+ kw:[{l:'끓는점이 다른 물질의 혼합물',a:['끓는점']},{l:'낮은 성분부터 먼저 끓어 나옴',a:['먼저']},{l:'순서대로 분리',a:['분리']}]},
+{id:'CA9',cat:'화학',grade:'중3',level:'advanced',q:'탄산 칼슘과 염산이 반응하여 이산화 탄소 기체가 발생하는 반응을 열린 용기와 닫힌 용기에서 각각 진행했을 때, 반응 전후 질량이 어떻게 달라지는지 비교하여 설명하시오.',
+ a:'닫힌 용기에서는 발생한 이산화 탄소 기체가 빠져나가지 못하므로 반응 전후 질량이 그대로 보존되지만, 열린 용기에서는 발생한 기체가 공기 중으로 빠져나가므로 측정되는 질량이 줄어든 것처럼 보이는데, 이는 빠져나간 기체의 질량만큼 줄어든 것일 뿐 질량 보존 법칙에 어긋나는 것은 아닙니다.',
+ kw:[{l:'닫힌 용기: 질량 보존',a:['닫힌']},{l:'열린 용기: 기체가 빠져나가 질량이 줄어든 것처럼 보임',a:['열린']},{l:'빠져나간 기체의 질량만큼 감소',a:['빠져나간']}]},
+{id:'CA10',cat:'화학',grade:'중2',level:'advanced',q:'산화 철에는 FeO와 Fe2O3처럼 철과 산소의 비율이 다른 두 가지 화합물이 있습니다. 이것이 일정 성분비 법칙에 어긋나지 않는 까닭을 설명하시오.',
+ a:'일정 성분비 법칙은 같은 화합물을 구성하는 성분 원소 사이의 질량비가 항상 일정하다는 법칙이므로, FeO와 Fe2O3는 서로 다른 화합물이기 때문에 각각의 화합물 안에서는 철과 산소의 질량비가 일정하게 성립하며 법칙에 어긋나지 않습니다.',
+ kw:[{l:'일정 성분비는 같은 화합물 내에서 성립',a:['같은 화합물']},{l:'FeO와 Fe2O3는 서로 다른 화합물',a:['다른 화합물']},{l:'각각의 화합물 안에서는 비율이 일정',a:['일정']}]},
+{id:'CA11',cat:'화학',grade:'중3',level:'advanced',q:'수소 기체와 산소 기체가 반응해 수증기가 될 때 부피비가 2:1:2로 나타나는 것을 화학 반응식과 관련지어 설명하시오.',
+ a:'2H2+O2→2H2O의 화학 반응식에서 계수비가 2:1:2이며, 기체 반응 법칙에 따라 같은 온도와 압력에서 반응하거나 생성되는 기체의 부피비는 화학 반응식의 계수비와 같으므로 수소, 산소, 수증기의 부피비도 2:1:2가 됩니다.',
+ kw:[{l:'화학 반응식의 계수비가 2:1:2',a:['계수비']},{l:'기체 반응 법칙',a:['기체 반응 법칙']},{l:'부피비는 계수비와 같음',a:['부피비']}]},
+{id:'CA12',cat:'화학',grade:'중3',level:'advanced',q:'휴대용 손난로와 냉각팩은 각각 어떤 종류의 반응을 이용한 것인지 원리와 함께 설명하시오.',
+ a:'손난로는 철 가루가 산소와 반응(산화)하며 열을 방출하는 발열 반응을 이용한 것이고, 냉각팩은 질산 암모늄 같은 물질이 물에 녹으며 주위의 열을 흡수하는 흡열 반응을 이용한 것입니다.',
+ kw:[{l:'손난로: 철의 산화, 발열 반응',a:['손난로','발열']},{l:'냉각팩: 질산 암모늄 용해, 흡열 반응',a:['냉각팩','흡열']}]},
+{id:'CA13',cat:'화학',grade:'중3',level:'advanced',q:'양초가 타는 현상에는 물리 변화와 화학 변화가 함께 나타납니다. 각각 어떤 과정이 물리 변화이고 어떤 과정이 화학 변화인지 설명하시오.',
+ a:'고체인 양초가 열을 받아 액체로 녹는 과정은 성질이 변하지 않는 물리 변화이고, 심지를 타고 올라간 촛농이 산소와 반응하여 이산화 탄소와 물 같은 전혀 다른 물질로 변하며 빛과 열을 내는 연소 과정은 화학 변화입니다.',
+ kw:[{l:'고체가 액체로 녹음: 물리 변화',a:['물리 변화']},{l:'연소(타는 것): 화학 변화',a:['연소','화학 변화']},{l:'새로운 물질이 생성됨',a:['새로운 물질']}]},
+{id:'CA14',cat:'화학',grade:'중2',level:'advanced',q:'검은색 사인펜 잉크를 크로마토그래피로 분리하면 여러 가지 색이 나타나는 까닭을 설명하시오.',
+ a:'검은색으로 보이는 사인펜 잉크는 실제로는 여러 가지 색소가 섞인 혼합물인데, 크로마토그래피를 하면 각 색소가 용매를 따라 이동하는 속도가 서로 달라 각각 다른 위치로 분리되어 여러 색이 나타나는 것입니다.',
+ kw:[{l:'검은 잉크는 여러 색소의 혼합물',a:['혼합물']},{l:'색소마다 이동 속도가 다름',a:['이동 속도']},{l:'분리되어 여러 색이 나타남',a:['분리']}]},
+{id:'CA15',cat:'화학',grade:'중2',level:'advanced',q:'나트륨 원자가 전자 1개를 잃고 염소 원자가 전자 1개를 얻어 이온 결합을 형성하는 과정을, 원자의 전기적 성질 변화와 함께 설명하시오.',
+ a:'중성이던 나트륨 원자는 전자 1개를 잃어 (+)전하를 띠는 나트륨 이온이 되고, 중성이던 염소 원자는 그 전자를 얻어 (-)전하를 띠는 염화 이온이 되며, 이렇게 반대 전하를 띠는 두 이온이 정전기적 인력으로 서로 끌어당겨 결합합니다.',
+ kw:[{l:'나트륨: 전자를 잃음, 양이온',a:['나트륨']},{l:'염소: 전자를 얻음, 음이온',a:['염소']},{l:'반대 전하로 인력 결합',a:['인력']}]},
+{id:'CA16',cat:'화학',grade:'중2',level:'advanced',q:'물이 든 페트병을 얼리면 페트병이 팽팽하게 부풀거나 터지는 경우가 있습니다. 그 까닭을 물이 얼 때의 부피 변화와 관련지어 설명하시오.',
+ a:'물은 다른 물질과 달리 얼 때 입자 배열이 특이하게 변해 부피가 오히려 증가하는 예외적인 물질인데, 이 때문에 페트병 속 물이 얼면서 부피가 커져 페트병을 밀어내 팽팽해지거나 터지게 됩니다.',
+ kw:[{l:'물은 얼 때 부피가 증가하는 예외적인 물질',a:['부피','증가']},{l:'부피 증가로 페트병이 팽창',a:['팽창','터짐']}]},
+{id:'CA18',cat:'화학',grade:'중2',level:'advanced',q:'수돗물 속에 염화 이온이 들어있는지 확인하기 위해 질산 은 수용액을 넣었더니 흰색 앙금이 생겼습니다. 이 실험 결과가 의미하는 바를 설명하시오.',
+ a:'질산 은 수용액 속의 은 이온과 수돗물 속의 염화 이온이 반응하여 물에 잘 녹지 않는 흰색의 염화 은 앙금을 생성한 것이므로, 이 실험을 통해 수돗물 속에 염화 이온이 들어있다는 것을 확인할 수 있습니다.',
+ kw:[{l:'은 이온과 염화 이온이 반응',a:['은 이온','염화 이온']},{l:'흰색 앙금(염화 은) 생성',a:['흰색','앙금']},{l:'염화 이온의 존재 확인',a:['확인']}]},
+{id:'CA19',cat:'화학',grade:'중1',level:'advanced',q:'메테인(CH4)이 연소하면 이산화 탄소와 물이 생성됩니다. 이 반응에서 반응 전후 탄소, 수소, 산소 원자의 개수가 어떻게 보존되는지 설명하시오.',
+ a:'CH4+2O2→CO2+2H2O의 반응식에서 반응 전 탄소 1개, 수소 4개, 산소 4개가 반응 후에도 각각 탄소 1개, 수소 4개, 산소 4개로 그대로 보존되며, 이처럼 화학 반응이 일어나도 원자의 종류와 개수는 변하지 않습니다.',
+ kw:[{l:'반응 전후 원자 개수가 동일함',a:['개수']},{l:'탄소·수소·산소 각각 보존',a:['탄소','수소','산소']},{l:'원자의 종류와 개수는 불변',a:['불변']}]},
+{id:'CA20',cat:'화학',grade:'중2',level:'advanced',q:'자동차 냉각수에 부동액을 섞어 사용하는 까닭을 순물질과 혼합물의 어는점 차이와 관련지어 설명하시오.',
+ a:'순수한 물은 0℃에서 얼지만, 물에 에틸렌 글리콜 같은 부동액을 섞은 혼합물은 어는점이 순수한 물보다 낮아지므로, 추운 겨울에도 냉각수가 얼지 않고 액체 상태를 유지할 수 있습니다.',
+ kw:[{l:'혼합물은 순수한 물보다 어는점이 낮아짐',a:['어는점']},{l:'겨울에도 얼지 않음',a:['얼지 않']}]},
+{id:'CA21',cat:'화학',grade:'중1',level:'advanced',q:'밝은색을 띠는 화강암과 어두운색을 띠는 현무암의 색 차이가 나타나는 까닭을 조암 광물의 종류와 관련지어 설명하시오.',
+ a:'화강암은 밝은색을 띠는 석영, 장석 같은 광물을 많이 포함하고 있어 밝게 보이고, 현무암은 흑운모, 각섬석, 휘석, 감람석 같은 어두운색 광물을 많이 포함하고 있어 어둡게 보입니다.',
+ kw:[{l:'화강암: 밝은색 광물(석영, 장석)',a:['화강암']},{l:'현무암: 어두운색 광물',a:['현무암']}]},
+{id:'CA23',cat:'화학',grade:'중3',level:'advanced',q:'탄산음료에서 나오는 기체를 석회수에 통과시켰더니 뿌옇게 흐려졌습니다. 이 실험으로 알 수 있는 사실과 그 원리를 설명하시오.',
+ a:'석회수가 뿌옇게 흐려지는 것은 이산화 탄소와 석회수 속 성분이 반응하여 물에 잘 녹지 않는 흰색 앙금이 생겼기 때문이므로, 이 실험을 통해 탄산음료에서 나온 기체가 이산화 탄소라는 것을 확인할 수 있습니다.',
+ kw:[{l:'뿌옇게 흐려지는 것은 앙금 생성',a:['앙금']},{l:'이산화 탄소와 반응',a:['이산화 탄소']},{l:'이산화 탄소임을 확인',a:['확인']}]},
+{id:'CA24',cat:'화학',grade:'중2',level:'advanced',q:'겨울철 호수 표면이 얼어도 물속의 물고기가 얼어 죽지 않고 살 수 있는 까닭을 물의 온도에 따른 밀도 변화와 관련지어 설명하시오.',
+ a:'물은 4℃에서 밀도가 가장 크고 그보다 온도가 낮아지면 오히려 밀도가 작아지므로, 표면의 물이 얼어 0℃가 되어도 밀도가 큰 4℃의 물은 호수 바닥에 가라앉아 남아 있어 물고기가 그 안에서 얼어 죽지 않고 살 수 있습니다.',
+ kw:[{l:'물은 4℃에서 밀도가 최대',a:['4']},{l:'0℃ 물은 밀도가 작아 표면에 위치',a:['표면']},{l:'바닥에 4℃ 물이 남아있음',a:['바닥']}]},
+{id:'CA25',cat:'화학',grade:'중2',level:'advanced',q:'겨울철 도로에 뿌리는 제설제가 눈을 녹이는 원리를 물질의 특성과 관련지어 설명하시오.',
+ a:'제설제인 염화 칼슘을 눈에 뿌리면 물에 녹으면서 열을 방출하는 동시에, 순수한 물보다 낮은 어는점을 가진 혼합물이 되어 눈이나 얼음이 낮은 온도에서도 녹을 수 있게 됩니다.',
+ kw:[{l:'염화 칼슘이 물에 녹으며 열 방출',a:['염화 칼슘','열']},{l:'혼합물이 되어 어는점이 낮아짐',a:['어는점']},{l:'낮은 온도에서도 녹음',a:['녹']}]},
+{id:'BA2',cat:'생물',grade:'중1',level:'advanced',q:'항생제를 계속 사용하면 항생제에 내성을 가진 세균이 점점 많아지는 현상을 변이와 생존에 유리한 개체의 관점에서 설명하시오.',
+ a:'세균 무리에는 원래 다양한 변이가 존재하는데, 항생제에 우연히 내성을 가진 변이를 지닌 개체는 항생제 환경에서도 살아남아 번식하고, 내성이 없는 개체는 죽게 되므로 시간이 지날수록 항생제에 내성을 가진 세균의 비율이 늘어나게 됩니다.',
+ kw:[{l:'세균 무리에 다양한 변이가 존재',a:['변이']},{l:'내성 있는 개체가 생존·번식',a:['생존','번식']},{l:'내성 세균의 비율이 증가',a:['비율']}]},
+{id:'BA3',cat:'생물',grade:'중2',level:'advanced',q:'한여름 뙤약볕이 내리쬐는 한낮에 식물의 잎이 일시적으로 시드는 경우가 있습니다. 이 현상을 기공의 개폐와 증산 작용의 관점에서 설명하시오.',
+ a:'한낮에 온도가 너무 높고 건조해지면 식물이 수분 손실을 줄이기 위해 기공을 닫는데, 이로 인해 증산 작용이 억제되어 뿌리에서 잎까지 물을 끌어올리는 원동력이 줄어들면서 잎이 일시적으로 시들 수 있습니다.',
+ kw:[{l:'고온 건조하면 기공이 닫힘',a:['기공']},{l:'증산 작용이 억제됨',a:['증산']},{l:'물 상승 원동력 감소로 시듦',a:['시듦']}]},
+{id:'BA4',cat:'생물',grade:'중2',level:'advanced',q:'비닐하우스에서 작물을 재배할 때 온도, 이산화 탄소 농도, 빛의 세기를 인위적으로 조절하는 까닭을 광합성량에 영향을 주는 요인과 관련지어 설명하시오.',
+ a:'광합성량은 빛의 세기, 이산화 탄소 농도, 온도가 적절할 때 최대로 늘어나므로, 비닐하우스에서 이 요인들을 작물에 알맞게 조절해 주면 광합성량을 최대로 늘려 생장을 촉진할 수 있습니다.',
+ kw:[{l:'광합성량은 세 요인의 영향을 받음',a:['영향']},{l:'요인을 조절해 광합성량을 최대로 늘림',a:['조절']},{l:'생장 촉진',a:['생장']}]},
+{id:'BA5',cat:'생물',grade:'중2',level:'advanced',q:'밥을 오래 씹을수록 단맛이 나는 까닭을 소화 효소의 작용과 관련지어 설명하시오.',
+ a:'침 속에 들어있는 아밀레이스라는 소화 효소가 밥에 들어있는 탄수화물인 녹말을 엿당으로 분해하는데, 오래 씹을수록 아밀레이스가 녹말에 더 많이 작용해 단맛이 나는 엿당이 많이 생성되기 때문입니다.',
+ kw:[{l:'침 속의 아밀레이스',a:['아밀레이스']},{l:'녹말을 엿당으로 분해',a:['엿당']},{l:'오래 씹을수록 많이 분해됨',a:['오래']}]},
+{id:'BA6',cat:'생물',grade:'중2',level:'advanced',q:'운동을 하면 심장 박동이 빨라지고 호흡이 가빠지는 까닭을 세포 호흡과 관련지어 설명하시오.',
+ a:'운동을 하면 근육 세포에서 더 많은 에너지가 필요해져 세포 호흡이 활발해지고, 이때 필요한 산소와 영양소를 빠르게 공급하고 발생한 이산화 탄소를 빠르게 내보내기 위해 심장 박동과 호흡 운동이 빨라집니다.',
+ kw:[{l:'운동 시 세포 호흡이 활발해짐',a:['세포 호흡']},{l:'산소·영양소를 빠르게 공급해야 함',a:['산소']},{l:'심장 박동과 호흡이 증가',a:['심장 박동','호흡']}]},
+{id:'BA7',cat:'생물',grade:'중2',level:'advanced',q:'물을 많이 마신 날은 오줌의 양이 늘어나고 색이 옅어지는 까닭을 콩팥의 재흡수 작용과 관련지어 설명하시오.',
+ a:'물을 많이 마시면 혈액 속 수분량이 많아지므로, 콩팥의 세뇨관에서 물을 재흡수하는 양이 줄어들어 오줌으로 나가는 물의 양이 늘어나고, 오줌 속 노폐물의 농도가 상대적으로 낮아져 색이 옅어집니다.',
+ kw:[{l:'혈액의 수분량이 많아짐',a:['수분']},{l:'세뇨관의 재흡수량이 줄어듦',a:['재흡수']},{l:'오줌양 증가·농도 낮아짐',a:['농도']}]},
+{id:'BA8',cat:'생물',grade:'중3',level:'advanced',q:'뜨거운 냄비를 만졌을 때 뜨겁다고 느끼기도 전에 손을 빠르게 떼는 현상을 무조건 반사의 경로로 설명하시오.',
+ a:'뜨거운 자극이 피부의 감각 신경을 통해 척수로 전달되면, 척수에서 바로 운동 신경으로 명령을 내려 손을 떼는 반응이 일어나는 척수 반사가 일어나는데, 이는 대뇌를 거치지 않아 자극이 대뇌에 전달되어 뜨겁다고 느끼는 것보다 훨씬 빠르게 일어납니다.',
+ kw:[{l:'감각 신경을 통해 척수로 전달',a:['척수']},{l:'척수에서 바로 운동 신경으로 명령',a:['운동 신경']},{l:'대뇌를 거치지 않아 빠름',a:['대뇌']}]},
+{id:'BA9',cat:'생물',grade:'중3',level:'advanced',q:'인슐린이 정상적으로 분비되지 않으면 혈당량이 계속 높게 유지되는 당뇨병이 나타나는 까닭을 인슐린의 기능과 관련지어 설명하시오.',
+ a:'인슐린은 세포가 혈액 속 포도당을 흡수하도록 촉진하고 간에서 포도당을 글리코젠으로 저장하도록 하여 혈당량을 낮추는 역할을 하는데, 인슐린이 부족하면 이 작용이 제대로 일어나지 않아 혈당량이 정상보다 높게 유지되는 당뇨병이 나타납니다.',
+ kw:[{l:'인슐린은 포도당 흡수·저장을 촉진',a:['인슐린']},{l:'혈당량을 낮추는 역할',a:['혈당']},{l:'부족하면 혈당이 높게 유지됨',a:['높게']}]},
+{id:'BA10',cat:'생물',grade:'중3',level:'advanced',q:'생식세포 분열로 염색체 수가 절반으로 줄어드는 것이 세대를 거듭해도 자손의 염색체 수가 일정하게 유지되는 데 어떻게 기여하는지 설명하시오.',
+ a:'정자와 난자 같은 생식세포는 감수 분열로 염색체 수가 체세포의 절반이 되는데, 수정 시 정자와 난자가 결합하면 다시 체세포와 같은 염색체 수로 돌아오므로, 세대를 거듭해도 자손의 염색체 수가 일정하게 유지될 수 있습니다.',
+ kw:[{l:'생식세포는 염색체 수가 절반',a:['절반']},{l:'수정 시 다시 체세포와 같은 수로 돌아옴',a:['수정']},{l:'세대를 거듭해도 일정하게 유지',a:['유지']}]},
+{id:'BA11',cat:'생물',grade:'중1',level:'advanced',q:'산을 가로지르는 도로가 건설되면 그 지역에 사는 동물들의 생물 다양성이 감소할 수 있는 까닭을 서식지 단편화와 관련지어 설명하시오.',
+ a:'도로가 서식지를 둘로 나누면 서식지가 단편화되어 동물들이 이동하거나 짝을 찾기 어려워지고, 좁아진 서식지에서 개체군의 크기가 줄어들며 근친 교배 등으로 유전적 다양성이 낮아져 결국 생물 다양성이 감소할 수 있습니다.',
+ kw:[{l:'서식지가 단편화됨',a:['서식지','단편화']},{l:'이동·짝짓기가 어려워짐',a:['이동','짝']},{l:'유전적 다양성이 감소',a:['유전적 다양성']}]},
+{id:'BA12',cat:'생물',grade:'중2',level:'advanced',q:'추운 겨울에 몸을 떨면 체온이 올라가는 까닭을 세포 호흡의 에너지 전환과 관련지어 설명하시오.',
+ a:'몸을 떨면 근육 세포에서 세포 호흡이 활발해지는데, 세포 호흡으로 발생한 에너지의 일부는 몸을 움직이는 데 쓰이지만 상당 부분은 열로 방출되므로, 몸을 떨면 열 발생량이 늘어 체온이 올라갑니다.',
+ kw:[{l:'몸을 떨면 근육의 세포 호흡이 활발해짐',a:['세포 호흡']},{l:'에너지의 일부가 열로 방출됨',a:['열']},{l:'체온이 상승함',a:['체온']}]},
+{id:'BA13',cat:'생물',grade:'중2',level:'advanced',q:'지방이 많은 음식을 먹으면 지용성 영양소가 흡수되어 이동하는 경로가 수용성 영양소와 다릅니다. 그 차이와 최종적으로 만나는 곳을 설명하시오.',
+ a:'수용성 영양소는 융털의 모세 혈관으로 흡수되어 간을 거쳐 이동하지만, 지방과 같은 지용성 영양소는 융털의 암죽관으로 흡수되어 림프관을 거치는데, 결국 두 영양소는 모두 정맥을 통해 심장으로 모여 온몸으로 운반됩니다.',
+ kw:[{l:'수용성: 모세 혈관 → 간',a:['수용성','모세 혈관']},{l:'지용성: 암죽관 → 림프관',a:['지용성','암죽관']},{l:'결국 정맥·심장에서 합류',a:['정맥','심장']}]},
+{id:'BA14',cat:'생물',grade:'중2',level:'advanced',q:'고산 지대에서는 산소가 희박해 처음 방문한 사람은 호흡이 가빠지는데, 오래 산 사람은 적혈구 수가 많아 잘 적응합니다. 이 차이를 산소 운반과 관련지어 설명하시오.',
+ a:'고산 지대는 산소가 희박해 폐에서 흡수되는 산소의 양이 적으므로, 처음 방문한 사람은 부족한 산소를 보충하기 위해 호흡이 가빠지지만, 오래 산 사람은 적혈구 수가 늘어나 헤모글로빈의 산소 운반 능력이 높아져 부족한 산소 환경에도 잘 적응할 수 있습니다.',
+ kw:[{l:'고산 지대는 산소가 희박함',a:['산소']},{l:'처음 방문자는 호흡이 가빠짐',a:['가빠']},{l:'적응한 사람은 적혈구가 증가해 산소 운반 능력 향상',a:['적혈구']}]},
+{id:'BA15',cat:'생물',grade:'중3',level:'advanced',q:'갑자기 눈앞으로 공이 날아오면 무의식적으로 눈을 빠르게 감는 반응이 일어나는 경로를 설명하시오.',
+ a:'눈으로 들어온 시각 자극이 시각 신경을 통해 중추로 전달되면, 대뇌를 거치지 않고 빠르게 처리되어 운동 신경을 통해 눈꺼풀 근육으로 명령이 전달되는 무조건 반사가 일어나 눈을 빠르게 감게 됩니다.',
+ kw:[{l:'시각 자극이 중추로 전달됨',a:['시각']},{l:'대뇌를 거치지 않고 빠르게 처리',a:['대뇌']},{l:'운동 신경을 통해 눈꺼풀 근육에 명령',a:['운동 신경']}]},
+{id:'BA16',cat:'생물',grade:'중2',level:'advanced',q:'갑자기 위험한 상황을 마주쳤을 때 심장이 빠르게 뛰고 동공이 커지는 현상을 교감 신경의 작용과 관련지어 설명하시오.',
+ a:'위험한 상황에서는 교감 신경이 작용해 몸이 빠르게 대처할 수 있도록 심장 박동을 촉진시켜 혈액을 빠르게 공급하고, 동공을 확대시켜 빛을 더 많이 받아들여 주변 상황을 더 잘 볼 수 있게 합니다.',
+ kw:[{l:'교감 신경이 작용함',a:['교감']},{l:'심장 박동 촉진',a:['심장 박동']},{l:'동공 확대',a:['동공']}]},
+{id:'BA17',cat:'생물',grade:'중3',level:'advanced',q:'체세포 분열로 생긴 두 딸세포가 모세포와 똑같은 유전 정보를 가지는 까닭을 염색 분체와 관련지어 설명하시오.',
+ a:'체세포 분열 전 간기에 DNA가 복제되어 염색체가 유전 정보가 동일한 두 가닥의 염색 분체로 이루어지는데, 분열 후기에 이 염색 분체가 각각 분리되어 서로 다른 딸세포로 들어가므로 두 딸세포는 모세포와 똑같은 유전 정보를 가지게 됩니다.',
+ kw:[{l:'간기에 DNA가 복제됨',a:['간기','복제']},{l:'염색 분체는 유전 정보가 동일함',a:['염색 분체']},{l:'분리되어 각 딸세포로 들어감',a:['분리']}]},
+{id:'BA18',cat:'생물',grade:'중2',level:'advanced',q:'단백질을 많이 섭취하면 오줌 속 요소의 양이 늘어나는 까닭을 영양소의 분해 과정과 관련지어 설명하시오.',
+ a:'단백질이 세포 호흡으로 분해될 때는 탄수화물이나 지방과 달리 질소 성분으로 인해 암모니아가 만들어지는데, 암모니아는 독성이 강해 간에서 독성이 약한 요소로 바뀐 뒤 콩팥을 통해 오줌으로 배설되므로, 단백질을 많이 섭취할수록 오줌 속 요소의 양이 늘어납니다.',
+ kw:[{l:'단백질 분해 시 암모니아가 생성됨',a:['암모니아']},{l:'간에서 요소로 전환됨',a:['요소']},{l:'단백질 많으면 요소 배설량 증가',a:['많으면']}]},
+{id:'BA19',cat:'생물',grade:'중3',level:'advanced',q:'다친 피부 상처가 시간이 지나면 아무는 것을 세포 분열과 관련지어 설명하시오.',
+ a:'상처가 나면 주변의 살아있는 세포들이 체세포 분열을 활발히 일으켜 새로운 세포를 만들어 내는데, 이렇게 만들어진 딸세포들이 상처 부위를 채우면서 조직이 재생되어 상처가 아뭅니다.',
+ kw:[{l:'체세포 분열이 활발해짐',a:['체세포 분열']},{l:'새로운 세포가 생성됨',a:['새로운 세포']},{l:'상처 부위가 재생됨',a:['재생']}]},
+{id:'BA20',cat:'생물',grade:'중2',level:'advanced',q:'구름이 잔뜩 낀 흐린 날, 식물이 기체를 거의 방출하지 않고 흡수만 하는 것처럼 보일 수 있는 까닭을 광합성량과 호흡량의 관계로 설명하시오.',
+ a:'흐린 날에는 빛의 세기가 약해 광합성량이 줄어드는데, 광합성량이 호흡량과 거의 같아지면 광합성으로 흡수하는 이산화 탄소의 양과 호흡으로 방출하는 이산화 탄소의 양이 비슷해져, 겉으로는 기체 출입이 거의 없는 것처럼 보일 수 있습니다.',
+ kw:[{l:'흐린 날은 빛이 약해 광합성량 감소',a:['광합성량']},{l:'광합성량이 호흡량과 비슷해짐',a:['호흡량']},{l:'겉보기 기체 출입이 거의 없음',a:['기체 출입']}]},
+{id:'BA21',cat:'생물',grade:'중1',level:'advanced',q:'한 가지 작물만 넓은 지역에 심는 단일 경작이 생태계에 위험할 수 있는 까닭을 종 다양성과 관련지어 설명하시오.',
+ a:'한 가지 작물만 심으면 그 지역의 종 다양성이 매우 낮아져 먹이 사슬이 단순해지고, 특정 병충해나 질병이 퍼졌을 때 이를 막아 줄 다른 생물이 부족해 작물 전체가 큰 피해를 입을 위험이 커집니다.',
+ kw:[{l:'종 다양성이 낮아짐',a:['종 다양성']},{l:'먹이 사슬이 단순해짐',a:['먹이 사슬']},{l:'병충해에 취약해짐',a:['병충해']}]},
+{id:'BA23',cat:'생물',grade:'중3',level:'advanced',q:'밥을 먹지 않고 오랜 시간이 지나도 혈당량이 급격히 떨어지지 않는 까닭을 글루카곤과 글리코젠의 작용으로 설명하시오.',
+ a:'혈당량이 낮아지면 이자에서 글루카곤 분비가 증가하여 간에 저장되어 있던 글리코젠을 포도당으로 전환해 혈액으로 방출하도록 촉진하므로, 음식을 먹지 않아도 혈당량이 급격히 떨어지지 않고 일정 수준으로 유지될 수 있습니다.',
+ kw:[{l:'글루카곤 분비가 증가함',a:['글루카곤']},{l:'글리코젠을 포도당으로 전환',a:['글리코젠']},{l:'혈당량이 유지됨',a:['혈당']}]},
+{id:'BA24',cat:'생물',grade:'중3',level:'advanced',q:'회전 놀이기구를 오래 타고 내리면 어지러움을 느끼는 까닭을 반고리관의 기능과 관련지어 설명하시오.',
+ a:'반고리관은 몸이 회전할 때 그 자극을 감지하는 기관인데, 오래 회전한 후 갑자기 멈추면 반고리관 속의 자극이 바로 정지된 상태를 따라가지 못해 실제로는 멈췄는데도 계속 회전하고 있다는 잘못된 신호를 뇌로 보내 어지러움을 느끼게 됩니다.',
+ kw:[{l:'반고리관은 회전 자극을 감지',a:['반고리관']},{l:'멈춰도 자극이 남아있음',a:['남아']},{l:'어지러움을 느낌',a:['어지러']}]},
+{id:'BA25',cat:'생물',grade:'중1',level:'advanced',q:'공장 폐수가 하천으로 유입되어 물고기가 떼죽음을 당하는 사건이 그 지역 생물 다양성에 미치는 영향과, 이를 막기 위한 대책을 설명하시오.',
+ a:'환경 오염으로 물고기가 떼죽음을 당하면 그 지역의 종 다양성과 먹이 사슬이 무너져 생태계 평형이 깨질 수 있으므로, 폐수를 정화한 뒤 방류하도록 하는 환경 오염 감소 대책과 오염된 하천을 복원하는 노력이 필요합니다.',
+ kw:[{l:'종 다양성·먹이 사슬이 붕괴됨',a:['먹이 사슬']},{l:'생태계 평형이 깨짐',a:['평형']},{l:'환경 오염 감소·하천 복원 필요',a:['정화','복원']}]},
+{id:'B60',cat:'생물',grade:'중3',q:'멘델이 유전 연구에 완두를 사용한 까닭을 설명하시오.',
+ a:'완두는 대립 형질이 뚜렷하게 구분되고, 자손을 짧은 시간에 많이 얻을 수 있으며, 자가 수분과 인공 수분(타가 수분)이 모두 가능해 원하는 교배를 자유롭게 할 수 있기 때문입니다.',
+ kw:[{l:'대립 형질이 뚜렷함',a:['뚜렷']},{l:'자손을 많이, 짧은 시간에 얻음',a:['짧은','많이']},{l:'자가 수분과 인공 수분이 모두 가능함',a:['자가 수분','인공 수분']}]},
+{id:'B61',cat:'생물',grade:'중3',q:'대립 형질이란 무엇이며, 우성과 열성은 각각 무엇인가요?',
+ a:'대립 형질은 하나의 형질에 대해 서로 다르게 나타나는 두 가지 형질을 말하며, 순종을 교배했을 때 잡종 1대에서 나타나는 형질을 우성, 나타나지 않는 형질을 열성이라고 합니다.',
+ kw:[{l:'대립 형질: 한 형질에 대해 다르게 나타나는 두 형질',a:['대립 형질']},{l:'우성: 잡종 1대에서 나타나는 형질',a:['우성']},{l:'열성: 잡종 1대에서 나타나지 않는 형질',a:['열성']}]},
+{id:'B62',cat:'생물',grade:'중3',q:'순종과 잡종의 차이를 설명하시오.',
+ a:'순종은 한 형질에 대한 유전자 구성이 같은 개체(예: RR, rr)이고, 잡종은 한 형질에 대한 유전자 구성이 서로 다른 개체(예: Rr)를 말합니다.',
+ kw:[{l:'순종: 유전자 구성이 같음(RR, rr)',a:['순종']},{l:'잡종: 유전자 구성이 다름(Rr)',a:['잡종']}]},
+{id:'B63',cat:'생물',grade:'중3',q:'유전자형과 표현형의 차이를 설명하시오.',
+ a:'유전자형은 어떤 형질에 대한 유전자의 구성을 기호로 나타낸 것(예: RR, Rr, rr)이고, 표현형은 유전자형에 의해 겉으로 드러나는 형질(예: 둥근 모양, 주름진 모양)을 말합니다.',
+ kw:[{l:'유전자형: 유전자 구성을 기호로 나타냄',a:['유전자형']},{l:'표현형: 겉으로 드러나는 형질',a:['표현형']}]},
+{id:'B64',cat:'생물',grade:'중3',q:'멘델의 우열의 법칙을 설명하시오.',
+ a:'대립 형질을 가진 두 순종을 교배하면 잡종 1대에서는 한 쌍의 대립유전자 중 우성 유전자의 형질만 표현되고 열성 형질은 나타나지 않는데, 이를 우열의 법칙이라고 합니다.',
+ kw:[{l:'순종끼리 교배',a:['순종']},{l:'잡종 1대에서 우성 형질만 표현됨',a:['우성']},{l:'열성 형질은 나타나지 않음',a:['열성']}]},
+{id:'B65',cat:'생물',grade:'중3',q:'멘델의 분리의 법칙을 설명하시오.',
+ a:'생식세포가 만들어질 때 쌍을 이루던 대립유전자가 서로 분리되어 각각 다른 생식세포로 나뉘어 들어가는 것을 분리의 법칙이라고 합니다.',
+ kw:[{l:'생식세포 형성 시 대립유전자가 분리됨',a:['대립유전자','분리']},{l:'서로 다른 생식세포로 나뉘어 들어감',a:['생식세포']}]},
+{id:'B66',cat:'생물',grade:'중3',q:'멘델의 독립(자유 결합)의 법칙을 설명하시오.',
+ a:'두 쌍 이상의 대립 형질이 함께 유전될 때, 한 쌍의 대립유전자가 다른 쌍의 대립유전자에 영향을 주지 않고 각각 독립적으로 분리되어 유전되는 것을 독립의 법칙이라고 합니다.',
+ kw:[{l:'두 쌍 이상의 대립 형질이 함께 유전',a:['두 쌍']},{l:'서로 영향을 주지 않고 독립적으로 분리',a:['독립적']}]},
+{id:'B67',cat:'생물',grade:'중3',q:'둥근 완두(RR)와 주름진 완두(rr)를 교배했을 때 잡종 1대의 표현형과 그 까닭을 설명하시오.',
+ a:'둥근 완두는 우성, 주름진 완두는 열성이므로 우열의 법칙에 따라 잡종 1대는 모두 유전자형이 Rr이 되고, 우성인 둥근 모양만 표현형으로 나타납니다.',
+ kw:[{l:'잡종 1대의 유전자형은 모두 Rr',a:['Rr']},{l:'우성인 둥근 모양만 나타남',a:['둥근']}]},
+{id:'B68',cat:'생물',grade:'중3',q:'잡종 1대(Rr)끼리 교배하면 잡종 2대의 유전자형과 표현형의 분리비는 각각 어떻게 되나요?',
+ a:'잡종 1대(Rr)를 자가 교배하면 잡종 2대의 유전자형은 RR : Rr : rr가 1 : 2 : 1의 비율로 나타나고, 표현형은 우성(둥근) : 열성(주름진)이 3 : 1의 비율로 나타납니다.',
+ kw:[{l:'유전자형 비율 RR:Rr:rr = 1:2:1',a:['1:2:1']},{l:'표현형 비율 우성:열성 = 3:1',a:['3:1']}]},
+{id:'B69',cat:'생물',grade:'중3',q:'검정 교배는 무엇이며 왜 하는지 설명하시오.',
+ a:'검정 교배는 우성 표현형을 나타내는 개체의 유전자형이 순종(RR)인지 잡종(Rr)인지 알아보기 위해 열성 순종(rr) 개체와 교배하는 것으로, 자손에서 열성 형질이 나오면 원래 개체가 잡종이고, 열성 형질이 전혀 나오지 않으면 순종임을 알 수 있습니다.',
+ kw:[{l:'열성 순종(rr)과 교배',a:['열성 순종']},{l:'우성 개체의 유전자형(순종/잡종)을 확인하기 위함',a:['순종','잡종']},{l:'자손에 열성이 나오면 잡종',a:['열성']}]},
+];
+const BASIC_QUESTIONS = QUESTIONS.filter(q=>q.level!=='advanced');
+const ADV_POOL = QUESTIONS.filter(q=>q.level==='advanced');
+const CATS = ['지구과학','물리','화학','생물'];
+const CAT_ICON = {'지구과학':'🌍','물리':'⚡','화학':'🧪','생물':'🌱'};
+const QMAP = {}; QUESTIONS.forEach(q=>QMAP[q.id]=q);
+const APP_KEY='ip_v2';
+const TEACHER_PW='0000';
+const WRONG_THRESHOLD=70; // 이 점수 미만이면 오답노트에 등록
+const SHEET_WEBHOOK_URL='https://script.google.com/macros/s/AKfycbz13PbCOXl3A-RcF-sPaFb1YTMpbqYALuBH5_0ITR3yUtbPJauXjQnnrCkZKUyvLmvv4w/exec';
+function isMobileDevice(){
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
+async function submitToSheet(payload){
+  try{
+    await fetch(SHEET_WEBHOOK_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    return true;
+  }catch(e){
+    console.error('시트 전송 실패', e);
+    return false;
+  }
+}
+
+/* ===================== 로컬 저장소 (학생별) ===================== */
+function studentKey(name){ return APP_KEY+'_student_'+encodeURIComponent((name||'').trim()); }
+function getStudent(name){
+  try{
+    const raw=localStorage.getItem(studentKey(name));
+    if(raw){
+      const d=JSON.parse(raw);
+      if(!d.wrong)d.wrong={};
+      if(!d.examLogs)d.examLogs=[];
+      if(!d.everWrong){
+        // 기존 데이터 마이그레이션: 누적 오답 기록이 없던 학생은 현재 오답을 초기값으로 사용
+        d.everWrong = Object.assign({}, d.wrong);
+      }
+      return d;
+    }
+  }catch(e){}
+  return {wrong:{}, everWrong:{}, examLogs:[]};
+}
+function setStudent(name, data){
+  try{ localStorage.setItem(studentKey(name), JSON.stringify(data)); return true; }catch(e){ return false; }
+}
+function getAllStudents(){
+  const out=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k && k.indexOf(APP_KEY+'_student_')===0){
+      try{
+        const name=decodeURIComponent(k.slice((APP_KEY+'_student_').length));
+        const data=JSON.parse(localStorage.getItem(k));
+        out.push({name, data});
+      }catch(e){}
+    }
+  }
+  return out;
+}
+function wrongCount(name){ if(!name||!name.trim())return 0; const s=getStudent(name); return Object.keys(s.wrong||{}).length; }
+function everWrongCount(name){ if(!name||!name.trim())return 0; const s=getStudent(name); return Object.keys(s.everWrong||{}).length; }
+function lastUsedName(){ try{ return localStorage.getItem(APP_KEY+'_lastname')||''; }catch(e){ return ''; } }
+function saveLastUsedName(n){ try{ localStorage.setItem(APP_KEY+'_lastname', n); }catch(e){} }
+
+/* ===================== 유틸 ===================== */
+function shuffleArr(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function norm(s){ return (s||'').replace(/\s+/g,'').toLowerCase(); }
+
+// 유사 발음/음성인식 오류 교정 테이블
+const SOUND_FIXES = [
+  [/멘틀|멘트|메틀|맨트|맨틀/g,'맨틀'],
+  [/외핵|외 핵|외헥/g,'외핵'],[/내핵|내 핵|내헥/g,'내핵'],
+  [/지각|지 각/g,'지각'],[/지진파|지진 파/g,'지진파'],
+  [/광합성|광압성|광함성|광압 성/g,'광합성'],[/엽록체|엽록 체/g,'엽록체'],
+  [/증산|증 산/g,'증산'],[/기공|기 공/g,'기공'],
+  [/화강암|화강 암/g,'화강암'],[/현무암|현무 암/g,'현무암'],
+  [/변성암|변성 암/g,'변성암'],[/퇴적암|퇴적 암/g,'퇴적암'],
+  [/보일법칙|보일 법칙/g,'보일 법칙'],[/샤를법칙|샤를 법칙/g,'샤를 법칙'],
+  [/이산화탄소|이산화 탄소/g,'이산화 탄소'],
+  [/포화수증기량|보아수증기량|포화 수증기량|포아수증기량|포하수증기량/g,'포화 수증기량'],
+  [/수증기량|수증기 량/g,'수증기량'],
+  [/세포분열|세포 분열/g,'세포 분열'],[/체세포|체 세포/g,'체세포'],
+  [/헤모글로빈|헤모 글로빈/g,'헤모글로빈'],
+  [/콩팥|콩 팥/g,'콩팥'],[/세뇨관|세뇨 관/g,'세뇨관'],
+  [/달팽이관|달팽이 관/g,'달팽이관'],
+  [/염색체|염색 체/g,'염색체'],[/염색분체|염색 분체/g,'염색 분체'],
+  [/광합성|광합 성/g,'광합성'],[/광합성/g,'광합성'],
+  [/암석권|암석 권/g,'암석권'],[/연약권|연약 권/g,'연약권'],
+  [/판구조론|판 구조론/g,'판구조론'],
+  [/대류권|대류 권/g,'대류권'],[/성층권|성층 권/g,'성층권'],[/오존층|오존 층/g,'오존층'],
+];
+
+// 두 문자열 간 편집거리(레벤슈타인 거리) 계산 - 음성인식 오인식 허용 매칭에 사용
+function editDistance(a, b){
+  const m=a.length, n=b.length;
+  if(m===0) return n; if(n===0) return m;
+  const dp=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=0;j<=n;j++) dp[0][j]=j;
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+// 키워드가 텍스트 안에 "충분히 비슷하게" 포함되어 있는지 확인
+// 음절 수의 30% 이내 오차(삽입/삭제/대체)이면 인정
+function fuzzyIncludes(text, keyword){
+  if(!keyword || keyword.length===0) return false;
+  if(text.includes(keyword)) return true;
+  if(keyword.length < 2) return text.includes(keyword);
+  const maxDist = Math.max(1, Math.floor(keyword.length * 0.3));
+  // 키워드 길이 윈도우로 슬라이딩하며 편집거리 검사
+  for(let i=0;i<=text.length-keyword.length+maxDist;i++){
+    const window = text.slice(Math.max(0,i), Math.min(text.length, i+keyword.length+maxDist));
+    if(editDistance(window, keyword) <= maxDist) return true;
+  }
+  return false;
+}
+function fixSoundErrors(text){
+  let t = text || '';
+  SOUND_FIXES.forEach(([pat, rep])=>{ t = t.replace(pat, rep); });
+  return t;
+}
+
+// 조사/어미 제거 후 어간만 남기는 가벼운 정규화
+function normDeep(s){
+  return (s||'')
+    .replace(/[^\uAC00-\uD7A3a-zA-Z0-9]/g,' ') // 특수문자→공백
+    .replace(/\s+/g,'')
+    .toLowerCase();
+}
+
+function scoreAnswer(q, text){
+  if(!text || text.trim().length < 2){
+    return {matched:[], missed:q.kw, score:0, aiGraded:false};
+  }
+  // 음성인식 오류 교정 후 정규화
+  const fixed = fixSoundErrors(text);
+  const n = normDeep(fixed);
+  const nOrig = norm(text); // 원본도 함께 체크
+
+  const matched=[], missed=[];
+  q.kw.forEach(k=>{
+    const hit = k.a.some(alt=>{
+      const na = normDeep(fixSoundErrors(alt));
+      const na2 = norm(alt);
+      // 1. 완전 포함
+      if(n.includes(na) || nOrig.includes(na2)) return true;
+      // 2. 퍼지 매칭: 편집거리 기반으로 비슷하면 인정 (음성인식 오인식 대응)
+      if(na.length >= 2 && fuzzyIncludes(n, na)) return true;
+      // 3. 부분 매칭: alt 글자의 80% 이상 순서대로 포함되면 인정
+      if(na.length >= 2){
+        let pos=0, matched2=0;
+        for(let ch of na){ const idx=n.indexOf(ch,pos); if(idx>=0){matched2++;pos=idx+1;} }
+        if(matched2/na.length >= 0.8) return true;
+      }
+      return false;
+    });
+    if(hit) matched.push(k); else missed.push(k);
+  });
+
+  const total = q.kw.length || 1;
+  const ratio = matched.length / total;
+
+  // 기본 점수 50점 + 키워드 비율로 50점 추가 (답변이 있는 경우)
+  // 키워드 1개만 맞아도 의미 있는 점수, 전체 맞으면 100점 가능
+  let score;
+  const hasAnswer = text.trim().length >= 4;
+  if(!hasAnswer){
+    score = 0;
+  } else if(total === 0){
+    score = 70; // 키워드 없는 문항은 답변 있으면 기본
+  } else {
+    // 기본 50 + 키워드 비율 * 50
+    score = Math.round(50 + ratio * 50);
+    // 키워드 전부 맞으면 100점
+    if(ratio >= 1) score = 100;
+    // 키워드 절반 이상이면 최소 75점 보장
+    if(ratio >= 0.5 && score < 75) score = 75;
+    // 키워드 1개 이상 맞으면 최소 60점 보장
+    if(matched.length >= 1 && score < 60) score = 60;
+  }
+  score = Math.max(0, Math.min(100, score));
+  return {matched, missed, score, aiGraded:false};
+}
+/* 최종 점수를 한 번 더 후하게 보정. 80점 정도 받은 답변은 100점에 가깝게,
+   낮은 점수는 상대적으로 덜 보정되어 변별력은 유지되도록 함. */
+function boostScore(raw){
+  const boosted = Math.round(raw * 1.25);
+  return Math.max(0, Math.min(100, boosted));
+}
+/* AI(Claude)로 의미 기반 채점을 시도. 실패하면 null을 반환해 키워드 채점으로 대체함.
+   음성인식 결과는 표현이 모범답안과 달라도 의미가 같으면 인정해야 하므로,
+   단순 문자열 포함 여부가 아니라 모델이 각 핵심 개념의 '의미상 포함 여부'를 판단하게 함.
+   중학생 구술면접 상황이므로 채점은 관대하게: 핵심 과학 개념이 맞으면 부수적인 세부 표현
+   (예: 위치, 정확한 수치, 부연 설명 등)을 빠뜨려도 감점하지 않음. */
+async function aiGradeAnswer(q, text){
+  if(!text || norm(text).length < 4) return null;
+  const labels = q.kw.map(k=>k.l);
+  const sys = `너는 중학교 과학 구술면접을 채점하는 친절하고 관대한 채점관이야. 학생의 음성인식 답변(오타나 띄어쓰기 오류가 있을 수 있음)을 모범답안과 비교해서 채점해.
+
+채점 원칙 (중요, 반드시 지킬 것):
+1. 표현이 달라도 의미가 같거나 같은 내용을 자기 말로 풀어서 설명했으면 해당 핵심 개념을 "포함됨"으로 인정해. 단어가 똑같이 나왔는지가 아니라 과학적으로 핵심 의미가 맞는지로 판단해.
+2. 중학생 수준의 구술 답변임을 감안해서 관대하게 채점해. 핵심 개념 라벨이 "OO는 XX이다"처럼 여러 요소를 담고 있어도, 학생이 그 개념의 핵심 아이디어만 정확히 말했다면 부수적인 수식어, 위치 표현(예: "지하 깊은 곳", "표면 부근" 같은 세부 조건), 정확한 수치나 예시를 굳이 언급하지 않아도 그 개념은 포함된 것으로 인정해.
+3. 학생 답변에 과학적으로 명백히 틀린 내용이 없다면, 사소한 설명 누락만으로 감점하지 마. 오직 핵심 개념 자체를 언급하지 않았거나, 과학적으로 틀리게 설명한 경우에만 그 개념을 "포함되지 않음"으로 처리해.
+4. 오타, 띄어쓰기 오류, 음성인식 과정에서 생긴 비슷한 발음의 단어 오변환(예: "광합성"이 "광압성"으로 잘못 인식된 경우 등)은 절대 감점 사유로 삼지 마. 문맥상 학생이 어떤 단어나 개념을 말하려 한 것인지 명확히 유추할 수 있다면, 정확한 표기가 아니어도 원래 의도한 단어를 말한 것으로 인정하고 채점해.
+5. 점수는 후하게 매겨. 핵심 개념을 대부분(예: 전체의 80% 이상) 의미상 정확히 짚었다면 90~100점을 줘. 몇 가지 핵심 개념만 빠졌다면 70~89점, 절반 정도만 맞았다면 45~69점, 핵심을 거의 말하지 못했거나 답변이 없으면 그 이하로 줘. 완벽하게 토씨 하나까지 똑같아야만 100점을 주는 방식이 아니라, 과학적으로 충분히 이해하고 설명했다고 판단되면 100점도 흔쾌히 줘.
+
+반드시 아래 JSON 형식으로만 답해. 다른 텍스트나 코드블록 표시(백틱) 없이 순수 JSON만 출력해.
+{"matched":["핵심개념 라벨 중 학생이 의미상 포함한 것들"],"missed":["포함하지 않은 것들"],"score":0~100 사이 정수,"feedback":"학생을 격려하는 한두 문장의 한국어 피드백"}
+matched와 missed의 문자열은 반드시 주어진 핵심개념 라벨 목록의 것을 그대로 사용해야 하고, 모든 라벨이 둘 중 하나에 정확히 한 번씩만 들어가야 해.`;
+  const userMsg = `[질문]\n${q.q}\n\n[모범답안]\n${q.a}\n\n[핵심개념 라벨 목록]\n${JSON.stringify(labels)}\n\n[학생 답변]\n${text}`;
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system: sys,
+        messages:[{role:'user', content:userMsg}]
+      })
+    });
+    if(!res.ok) return null;
+    const data = await res.json();
+    const outText = (data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('');
+    const clean = outText.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    if(!parsed || typeof parsed.score!=='number') return null;
+    const matchedLabels = Array.isArray(parsed.matched)? parsed.matched : [];
+    const missedLabelsRaw = Array.isArray(parsed.missed)? parsed.missed : [];
+    const matched = q.kw.filter(k=>matchedLabels.includes(k.l));
+    const missed = q.kw.filter(k=>!matchedLabels.includes(k.l));
+    let score = Math.round(parsed.score);
+    if(score<0) score=0; if(score>100) score=100;
+    return {matched, missed, score, feedback: typeof parsed.feedback==='string'? parsed.feedback : null, aiGraded:true};
+  }catch(e){
+    return null;
+  }
+}
+async function generateFollowUp(q, studentAnswer, score, trackType){
+  const sysBasic = `너는 중학교 과학 구술면접관이야. 학생이 방금 아래 질문에 어느 정도 맞게 답했지만(약 50~99점), 빠지거나 부족한 핵심 개념이 있어. 그 부족한 부분을 스스로 채울 수 있도록 유도하는 짧은 꼬리질문을 한 개만 만들어. 정답을 알려주지 말고, 학생이 생각해서 채울 수 있게 힌트가 담긴 질문으로 만들어. 가능하면 일상생활 속 예시나 구체적인 상황을 곁들여서 질문해. 반드시 질문 문장 하나만 출력하고, 다른 설명이나 따옴표는 붙이지 마.`;
+  const sysAdvanced = `너는 과학고 입시 면접관이야. 학생이 방금 아래 응용 질문에 어느 정도 맞게 답했지만(약 50~99점) 더 깊이 파고들 여지가 있어. "입자 관점에서는?", "조건이 반대로 바뀌면?", "다른 상황에 적용하면?" 같은 스타일로 한 단계 더 깊게 파고드는 심화 꼬리질문을 한 개만 만들어. 가능하면 일상생활 속 예시나 새로운 상황을 곁들여서 질문해. 반드시 질문 문장 하나만 출력하고, 다른 설명이나 따옴표는 붙이지 마.`;
+  const sys = trackType==='advanced-probe'? sysAdvanced : sysBasic;
+  const userMsg = `[원래 질문]\n${q.q}\n\n[모범답안]\n${q.a}\n\n[학생 답변]\n${studentAnswer}\n\n[학생 점수]\n${score}점`;
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:300,
+        system: sys,
+        messages:[{role:'user', content:userMsg}]
+      })
+    });
+    if(!res.ok) return null;
+    const data = await res.json();
+    const outText = (data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('').trim();
+    return outText.replace(/^["']|["']$/g,'') || null;
+  }catch(e){ return null; }
+}
+async function generateFollowUpComment(followUpQ, followUpAnswer){
+  const sys = `너는 중학교 과학 구술면접관이야. 방금 던진 꼬리질문에 학생이 답했어. 짧고 격려하는 한두 문장으로 코멘트해줘 (정답 여부를 단정짓기보다는, 잘한 점을 짚어주고 부족하면 살짝 보완해주는 톤으로). 다른 설명 없이 코멘트 문장만 출력해.`;
+  const userMsg = `[꼬리질문]\n${followUpQ}\n\n[학생 답변]\n${followUpAnswer}`;
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:200, system: sys, messages:[{role:'user', content:userMsg}] })
+    });
+    if(!res.ok) return '';
+    const data = await res.json();
+    return (data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('').trim();
+  }catch(e){ return ''; }
+}
+function tierOf(score){
+  if(score>=90) return {cls:'tier-perfect', label:'완벽해요! 핵심 개념을 정확히 설명했어요.'};
+  if(score>=70) return {cls:'tier-good', label:'우수해요! 핵심은 잘 짚었어요. 몇 가지만 보완해봐요.'};
+  if(score>=45) return {cls:'tier-mid', label:'조금 더 다듬어볼까요? 절반 정도의 핵심 개념이 빠졌어요.'};
+  return {cls:'tier-low', label:'개념을 다시 학습해보는 게 좋겠어요. 모범답안을 참고해서 다시 연습해봐요.'};
+}
+function ringStyle(score){
+  const color = score>=90?'#c9a227':score>=70?'#2f7d5b':score>=45?'#e0862b':'#b3432b';
+  return `background:conic-gradient(${color} ${score*3.6}deg, #e9e4d5 0deg); `;
+}
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtDT(ts){ const d=new Date(ts); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function fmtDate(ts){ const d=new Date(ts); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+
+/* ===================== 모달 ===================== */
+function showAlert(msg){
+  return new Promise(resolve=>{
+    const ov=document.getElementById('modalOverlay');
+    document.getElementById('modalMsg').textContent=msg;
+    document.getElementById('modalBtns').innerHTML=`<button class="btn btn-primary" id="modalOkBtn">확인</button>`;
+    ov.classList.remove('hidden');
+    document.getElementById('modalOkBtn').onclick=()=>{ov.classList.add('hidden');resolve(true);};
+  });
+}
+function showConfirm(msg){
+  return new Promise(resolve=>{
+    const ov=document.getElementById('modalOverlay');
+    document.getElementById('modalMsg').textContent=msg;
+    document.getElementById('modalBtns').innerHTML=`<button class="btn btn-ghost" id="modalCancelBtn">취소</button><button class="btn btn-primary" id="modalOkBtn">확인</button>`;
+    ov.classList.remove('hidden');
+    document.getElementById('modalOkBtn').onclick=()=>{ov.classList.add('hidden');resolve(true);};
+    document.getElementById('modalCancelBtn').onclick=()=>{ov.classList.add('hidden');resolve(false);};
+  });
+}
+
+/* ===================== 상태 ===================== */
+function newSession(){
+  return {
+    name: lastUsedName(),
+    mode:'category', cats:['지구과학','물리','화학','생물'], grades:['중1','중2','중3'], count:999, shuffle:false,
+    queue:[], idx:0, records:[], answerText:'', feedback:null,
+    micTestMsg:''
+  };
+}
+let state = newSession();
+let screen='setup';
+let tDetailName=null;
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null, isRecording = false, recFinalBase='', lastBurstFinal='', recFatalError=false;
+let micWanted = false, recRestartTimer = null, kbHintTimer = null;
+
+/* ===================== 마이크 진단 ===================== */
+async function testMic(){
+  const el=document.getElementById('micTestResult');
+  if(el) el.textContent='테스트 중...';
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    if(el) el.textContent='❌ 이 브라우저/화면에서는 마이크 접근 기능을 사용할 수 없어요.';
+    return;
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    stream.getTracks().forEach(t=>t.stop());
+    if(el) el.textContent='✅ 마이크 권한이 정상적으로 허용되어 있어요! 문제 화면에서 음성 인식을 사용할 수 있어요.';
+  }catch(e){
+    let msg='❌ 마이크를 사용할 수 없어요 ('+e.name+').';
+    if(e.name==='NotAllowedError'||e.name==='PermissionDeniedError') msg+='\n브라우저 주소창의 자물쇠(또는 정보) 아이콘 → 사이트 설정에서 마이크를 "허용"으로 바꾼 뒤 새로고침해주세요.';
+    else if(e.name==='NotFoundError') msg+='\n연결된 마이크 장치를 찾을 수 없어요.';
+    else msg+='\n이 화면이 대화창 안 "미리보기(샌드박스)"일 가능성이 커요. 이 아티팩트를 게시/공유한 뒤 그 링크를 새 브라우저 탭에서 열거나, HTML 파일을 다운로드해 직접 열어서 다시 시도해주세요.';
+    if(el){ el.textContent=msg; }
+  }
+}
+
+/* ===================== 음성 인식 ===================== */
+function setupRecognition(){
+  if(!SR) return;
+  recognition = new SR();
+  recognition.lang='ko-KR';
+  // continuous=false: 한 번 누르면 말이 끝날 때(또는 침묵)까지 쭉 듣고 자동으로 멈춤.
+  // (continuous=true는 모바일에서 내부적으로 재시작되며 텍스트가 중복 누적되는 문제가 있었고,
+  //  자동 재시작 방식은 재시작 자체가 실패해 아예 인식이 안 되는 문제가 있어 가장 단순하고 안정적인 방식으로 되돌림)
+  recognition.continuous=false;
+  recognition.interimResults=true;
+  recognition.onresult=(e)=>{
+    let sessionFinal='';
+    let interim='';
+    for(let i=0;i<e.results.length;i++){
+      const t=e.results[i][0].transcript;
+      if(e.results[i].isFinal) sessionFinal += t;
+      else interim += t;
+    }
+    lastBurstFinal = sessionFinal;
+    state.answerText = (recFinalBase + sessionFinal + interim).trim();
+    updateAnswerBoxLive();
+  };
+  recognition.onerror=(e)=>{
+    let msg='음성 인식 중 오류가 발생했어요.';
+    let fatal=false;
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
+      msg='마이크 권한이 필요해요.\n① 브라우저 주소창의 자물쇠 아이콘에서 마이크 허용 여부를 확인하세요.\n② 그래도 안 되면 이 화면이 대화창 안 미리보기일 수 있어요 — 아티팩트를 게시/공유한 링크를 새 탭에서 열거나 HTML을 다운로드해 직접 열어보세요.';
+      fatal=true;
+    } else if(e.error==='no-speech'){
+      msg='음성이 감지되지 않았어요. 계속 듣고 있어요.';
+    } else if(e.error==='network'){
+      msg='네트워크 오류로 음성 인식에 실패했어요. 인터넷 연결을 확인해주세요.';
+      fatal=true;
+    } else if(e.error==='aborted'){
+      return; // 사용자가 직접 멈춰서 발생하는 정상적인 중단
+    }
+    if(fatal) micWanted=false;
+    const st=document.getElementById('recStatus'); if(st){st.textContent=msg; st.classList.remove('on'); st.classList.add('err');}
+  };
+  recognition.onend=()=>{
+    if(lastBurstFinal){
+      recFinalBase = (recFinalBase + lastBurstFinal + ' ').replace(/\s+/g,' ');
+      state.answerText = recFinalBase.trim();
+      updateAnswerBoxLive();
+    }
+    lastBurstFinal='';
+    if(micWanted){
+      // 사용자가 아직 마이크를 끄지 않았으면, 짧은 텀을 두고 자동으로 다시 듣기 시작
+      // (재시작을 너무 빨리 하면 브라우저가 오류를 내는 경우가 있어 약간의 지연을 둠)
+      isRecording=true;
+      renderQuizControls();
+      if(recRestartTimer) clearTimeout(recRestartTimer);
+      recRestartTimer = setTimeout(()=>{
+        if(!micWanted) return;
+        try{ recognition.start(); }
+        catch(err){ isRecording=false; micWanted=false; renderQuizControls(); }
+      }, 350);
+    } else {
+      isRecording=false;
+      renderQuizControls();
+    }
+  };
+}
+function toggleRecording(){
+  if(!SR) return;
+  if(!recognition) setupRecognition();
+  if(isRecording || micWanted){
+    micWanted=false;
+    if(recRestartTimer){ clearTimeout(recRestartTimer); recRestartTimer=null; }
+    try{ recognition.stop(); }catch(e){}
+    isRecording=false;
+  } else {
+    stopAnswerTimer();
+    recFinalBase = state.answerText ? state.answerText+' ' : '';
+    lastBurstFinal='';
+    micWanted=true;
+    try{ recognition.start(); isRecording=true; }catch(e){ micWanted=false; }
+  }
+  renderQuizControls();
+}
+function updateAnswerBoxLive(){
+  const box=document.getElementById('answerBox');
+  if(box) box.value = state.answerText;
+  const cc=document.getElementById('charCount');
+  if(cc) cc.textContent = state.answerText.length+'자';
+}
+function renderQuizControls(){
+  const micBtn=document.getElementById('micBtn');
+  const status=document.getElementById('recStatus');
+  const wave=document.getElementById('waveform');
+  if(!micBtn) return;
+  status.classList.remove('err');
+  if(isRecording){
+    micBtn.classList.add('recording'); micBtn.textContent='⏹️';
+    status.textContent='듣고 있어요... 다 말했으면 정지 버튼을 눌러주세요.';
+    status.classList.add('on');
+    wave.classList.remove('hidden');
+  } else {
+    micBtn.classList.remove('recording'); micBtn.textContent='🎙️';
+    status.textContent = SR? '마이크 버튼을 눌러 답변을 시작하세요' : '';
+    status.classList.remove('on');
+    wave.classList.add('hidden');
+  }
+}
+
+/* ===================== 답변 시작 제한시간 (60초) ===================== */
+const ANSWER_START_LIMIT = 60;
+let answerTimerId = null;
+let answerTimeLeft = ANSWER_START_LIMIT;
+let answerTimerStopped = true;
+function startAnswerTimer(){
+  if(answerTimerId){ clearInterval(answerTimerId); answerTimerId=null; }
+  answerTimeLeft = ANSWER_START_LIMIT;
+  answerTimerStopped = false;
+  updateAnswerTimerDisplay();
+  answerTimerId = setInterval(()=>{
+    if(answerTimerStopped){ clearInterval(answerTimerId); answerTimerId=null; return; }
+    answerTimeLeft -= 1;
+    updateAnswerTimerDisplay();
+    if(answerTimeLeft<=0){
+      clearInterval(answerTimerId); answerTimerId=null; answerTimerStopped=true;
+      onAnswerTimeout();
+    }
+  },1000);
+}
+function stopAnswerTimer(){
+  answerTimerStopped = true;
+  if(answerTimerId){ clearInterval(answerTimerId); answerTimerId=null; }
+  const el=document.getElementById('answerTimer');
+  if(el) el.classList.add('hidden');
+}
+function updateAnswerTimerDisplay(){
+  const el=document.getElementById('answerTimer');
+  if(!el) return;
+  el.textContent = `⏱ 답변 시작까지 ${answerTimeLeft}초`;
+  el.classList.toggle('urgent', answerTimeLeft<=10);
+}
+function onAnswerTimeout(){
+  if(isRecording && recognition){ recognition.stop(); isRecording=false; }
+  state._timedOut = true;
+  submitAnswer();
+}
+
+/* ===================== 질문 음성(TTS) + 답변 준비 카운트다운 ===================== */
+let lastTTSQuestionId = null;
+let prepTimerId = null;
+let ttsVoicesCache = null;
+function pickKoreanVoice(){
+  if(!window.speechSynthesis) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if(!voices || !voices.length) return null;
+  ttsVoicesCache = voices;
+  const koVoices = voices.filter(v=>v.lang && v.lang.toLowerCase().startsWith('ko'));
+  if(!koVoices.length) return null;
+  // 남성으로 추정되는 이름 패턴 우선 탐색 (플랫폼마다 표기가 달라 폭넓게 매칭)
+  const maleNamePattern = /male|man|injoon|인준|민수|minsu|준호|junho|철수|형준|승우|성진/i;
+  const femaleNamePattern = /female|woman|heami|해ami|유나|yuna|sunhi|선희|지민|jimin/i;
+  let pick = koVoices.find(v=>maleNamePattern.test(v.name));
+  if(!pick) pick = koVoices.find(v=>!femaleNamePattern.test(v.name) && koVoices.length>1) || null;
+  return pick || koVoices[0];
+}
+function isIOSDevice(){
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+function speakQuestion(text){
+  if(!window.speechSynthesis){ startPrepCountdown(); return; } // TTS 미지원이면 바로 카운트다운으로
+  try{
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'ko-KR';
+    // 아이폰(iOS) 음성 엔진은 피치를 조금만 낮춰도 소리가 심하게 왜곡되는 경우가 많아
+    // 아예 기본 피치(자연스러운 목소리)를 그대로 사용
+    if(isIOSDevice()){
+      utter.pitch = 1.0;
+      utter.rate = 0.95;
+    } else {
+      utter.pitch = 0.68; // 낮은 피치로 딱딱하고 무게감 있는 남성 아나운서 톤
+      utter.rate = 0.92;
+    }
+    utter.volume = 1;
+    const voice = pickKoreanVoice();
+    if(voice) utter.voice = voice;
+    utter.onstart = ()=>{ const el=document.getElementById('qtext'); if(el) el.classList.add('reading'); };
+    const finish = ()=>{
+      const el=document.getElementById('qtext'); if(el) el.classList.remove('reading');
+      startPrepCountdown();
+    };
+    utter.onend = finish;
+    utter.onerror = finish;
+    window.speechSynthesis.speak(utter);
+  }catch(e){ startPrepCountdown(); }
+}
+function playTone(freq, duration, vol){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type='sine'; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(vol, ctx.currentTime+0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+duration);
+    osc.start(); osc.stop(ctx.currentTime+duration+0.05);
+  }catch(e){}
+}
+function playTick(){ playTone(1100, 0.09, 0.14); } // 카운트다운 매 초마다 나는 짧은 비프음
+function playBeep(){ playTone(880, 0.35, 0.28); } // 카운트다운 종료(0초) 시 울리는 신호음
+function startPrepCountdown(){
+  if(prepTimerId){ clearInterval(prepTimerId); prepTimerId=null; }
+  state._prepActive = true;
+  state._prepTimeLeft = 10;
+  render();
+  prepTimerId = setInterval(()=>{
+    state._prepTimeLeft -= 1;
+    const el = document.getElementById('prepCountdownNum');
+    if(el) el.textContent = state._prepTimeLeft+'초';
+    if(state._prepTimeLeft<=0){
+      clearInterval(prepTimerId); prepTimerId=null;
+      finishPrepCountdown(true);
+    } else {
+      playTick();
+    }
+  },1000);
+}
+function finishPrepCountdown(autoStart){
+  state._prepActive = false;
+  if(prepTimerId){ clearInterval(prepTimerId); prepTimerId=null; }
+  render();
+  if(autoStart){
+    playBeep();
+    if(SR && !isRecording){ try{ toggleRecording(); }catch(e){} }
+  }
+}
+function cancelQuestionAudio(){
+  if(window.speechSynthesis) try{ window.speechSynthesis.cancel(); }catch(e){}
+  if(prepTimerId){ clearInterval(prepTimerId); prepTimerId=null; }
+  state._prepActive = false;
+}
+
+
+function render(){
+  const app=document.getElementById('app');
+  if(screen==='setup') app.innerHTML=renderSetup();
+  else if(screen==='quiz') app.innerHTML=renderQuiz();
+  else if(screen==='feedback') app.innerHTML=renderFeedback();
+  else if(screen==='result') app.innerHTML=renderResult();
+  else if(screen==='mystats') app.innerHTML=renderMyStats();
+  else if(screen==='tlogin') app.innerHTML=renderTLogin();
+  else if(screen==='tdash') app.innerHTML=renderTDash();
+  else if(screen==='tdetail') app.innerHTML=renderTDetail();
+  bindEvents();
+}
+
+function renderSetup(){
+  const name = state.name;
+  const activePool = state.mode==='advanced' ? ADV_POOL : (state.mode==='random' ? QUESTIONS : BASIC_QUESTIONS);
+  const chips = CATS.map(c=>`
+    <div class="chip ${state.cats.includes(c)?'active':''}" data-cat="${c}">
+      <b>${CAT_ICON[c]} ${c}</b><small>${activePool.filter(q=>q.cat===c).length}문항</small>
+    </div>`).join('');
+  const GRADES = ['중1','중2','중3'];
+  const gradeChips = GRADES.map(g=>`
+    <div class="chip ${state.grades.includes(g)?'active':''}" data-grade="${g}">
+      <b>${g}</b><small>${activePool.filter(q=>q.grade===g).length}문항</small>
+    </div>`).join('');
+  const counts = state.mode==='random' ? [10,20,30,50,100,150,200,250,300] : [5,10,15,999];
+  const countChips = counts.map(n=>`<div class="opt-chip ${state.count===n?'active':''}" data-count="${n}">${n===999?'전체':n+'문제'}</div>`).join('');
+  const wc = wrongCount(name);
+  const ewc = everWrongCount(name);
+  const ip = getInProgress(name);
+  const supportNote = SR? '' : `<div class="warnbox">⚠️ 이 브라우저는 음성 인식(Web Speech API)을 지원하지 않아요. 데스크톱 Chrome 브라우저를 권장하며, 지원되지 않으면 답변을 직접 입력해서 채점할 수 있어요.</div>`;
+  return `
+  ${supportNote}
+  <div class="card">
+    <h2 class="card-title">👤 이름을 입력해주세요</h2>
+    <p class="card-sub">기록·오답노트는 이름별로 저장돼요.</p>
+    <input type="text" id="nameInput" placeholder="이름을 입력하세요" value="${escapeHtml(name)}">
+  </div>
+
+  ${ip? `
+  <div class="card" style="border:2px solid var(--gold);">
+    <h2 class="card-title" style="font-size:15.5px;">📌 이어서 풀 면접이 있어요</h2>
+    <p class="card-sub">${(ip.records||[]).length} / ${ip.queueIds.length}문항까지 풀었어요 · ${ip.modeLabel||''} · ${ip.savedAt||''}</p>
+    <div class="row2">
+      <button class="btn btn-ghost" id="discardProgressBtn">새로 시작</button>
+      <button class="btn btn-gold" id="resumeBtn">▶ 이어서 풀기</button>
+    </div>
+  </div>
+  ` : ''}
+
+  <div class="card">
+    <h2 class="card-title">면접 모드 선택</h2>
+    <div class="mode-card ${state.mode==='category'?'active':''}" data-mode="category">
+      <div class="mt">🗂️ 부분 학습</div>
+      <div class="md">원하는 영역과 문항 수를 직접 골라서 연습해요.</div>
+    </div>
+    <div class="mode-card ${state.mode==='advanced'?'active':''}" data-mode="advanced">
+      <div class="mt">🎯 응용 모드 (상)</div>
+      <div class="md">여러 개념을 종합해서 추론하는 심화 문항 100개로 연습해요.</div>
+    </div>
+    <div class="mode-card ${state.mode==='all'?'active':''}" data-mode="all">
+      <div class="mt">🧩 전체 모드</div>
+      <div class="md">기본 ${BASIC_QUESTIONS.length}문항을 모두 풀어봐요.</div>
+    </div>
+    <div class="mode-card ${state.mode==='random'?'active':''}" data-mode="random">
+      <div class="mt">🎲 랜덤 모드</div>
+      <div class="md">기본+응용 300문항 전체에서 원하는 개수만큼 무작위로 뽑아 풀어요.</div>
+    </div>
+    <div class="mode-card ${state.mode==='wrong'?'active':''} ${wc===0?'disabled':''}" data-mode="wrong">
+      <div class="mt">🔁 오답 모드</div>
+      <div class="md">${name.trim()? (wc>0? `이전에 부족했던 ${wc}문항만 다시 풀어요.` : '아직 오답노트가 비어 있어요. 면접을 먼저 풀어보세요.') : '이름을 입력하면 오답 개수를 알려드려요.'}</div>
+    </div>
+    <div class="mode-card ${state.mode==='cumwrong'?'active':''} ${ewc===0?'disabled':''}" data-mode="cumwrong">
+      <div class="mt">📚 누적 오답 모드</div>
+      <div class="md">${name.trim()? (ewc>0? `한 번이라도 걸렸던 ${ewc}문항 전체를 복습해요 (나중에 맞혔어도 계속 포함돼요).` : '아직 걸렸던 문항이 없어요. 면접을 먼저 풀어보세요.') : '이름을 입력하면 누적 오답 개수를 알려드려요.'}</div>
+    </div>
+
+    ${state.mode==='category'||state.mode==='advanced'||state.mode==='random'? `
+    ${state.mode==='advanced'? '<div class="infobox" style="margin:10px 0;">⭐ 응용 문항은 한 가지 개념만으로는 답할 수 없고, 여러 개념을 연결해서 상황을 추론해야 해요.</div>' : ''}
+    <label class="field-label">🎓 학년 (복수 선택 가능)</label>
+    <div class="chip-grid">${gradeChips}</div>
+    <label class="field-label">📚 질문 범위 (복수 선택 가능)</label>
+    <div class="chip-grid">${chips}</div>
+    <label class="field-label">🔢 문항 수</label>
+    <div class="opt-row">${countChips}</div>
+    ` : ''}
+    <div class="toggle-row"><input type="checkbox" id="shuffleChk" ${state.shuffle?'checked':''}><label for="shuffleChk">문제 순서 무작위로 섞기</label></div>
+    <div style="margin-top:18px;">
+      <button class="btn btn-primary" id="startBtn" ${(state.mode==='wrong'&&wc===0)||(state.mode==='cumwrong'&&ewc===0)?'disabled':''}>🎓 면접 시작하기</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title" style="font-size:15.5px;">🎤 답변, 이렇게 말로 입력하세요</h2>
+    <div class="infobox" style="margin-top:2px;">📱 문제 화면의 답변 입력칸을 <b>탭</b>하면 휴대폰 키보드가 올라와요. 그 키보드 위쪽에 있는 <b>🎤 마이크 아이콘</b>을 누르고 말하면 텍스트로 바로 입력돼요.
+이 방법은 브라우저 기능이 아니라 휴대폰 자체 음성입력 기능이라 항상 안정적으로 작동해요. 모바일에서는 이 방법을 기본으로 사용해주세요.</div>
+    <p class="card-sub" style="margin:14px 0 8px;">화면에 있는 🎙️ 버튼(브라우저 자체 음성인식)은 PC의 Chrome에서는 잘 되지만, 휴대폰에서는 기기·브라우저에 따라 안 될 수 있어요. 궁금하면 아래로 상태를 확인해보세요.</p>
+    <button class="btn btn-outline" id="micTestBtn">🎙️ 버튼 권한 테스트 (참고용)</button>
+    <p class="small-note" id="micTestResult"></p>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title" style="font-size:15.5px;">📈 내 기록 · 오답노트</h2>
+    <button class="btn btn-outline" id="myStatsBtn">내 기록 보기</button>
+  </div>
+  <div class="card">
+    <h2 class="card-title" style="font-size:15.5px;">👩‍🏫 강사용</h2>
+    <button class="btn btn-ghost" id="teacherBtn">강사용 결과 확인</button>
+  </div>
+  <div class="footer-copy">GMS학원 이은정 강사 · 중등과학 총정리 기반 구술면접 훈련</div>
+  `;
+}
+
+function renderQuiz(){
+  const q = state.queue[state.idx];
+  const total = state.queue.length;
+  const pct = Math.round((state.idx)/total*100);
+  const micSupported = !!SR;
+  const prepHtml = state._prepActive ? `
+  <div class="card" style="text-align:center;border:2px solid var(--gold);">
+    <div style="font-size:13.5px;color:var(--sub);">🎙️ 답변을 준비할 시간이에요</div>
+    <div class="prep-num" id="prepCountdownNum">${state._prepTimeLeft}초</div>
+    <div class="row2">
+      <button class="btn btn-primary" id="prepReadyBtn">🎤 준비 완료! 바로 말하기</button>
+      <button class="btn btn-outline" id="prepExtendBtn">⏱️ 생각시간 +5초</button>
+    </div>
+  </div>` : '';
+  return `
+  <div class="progressbar"><div class="progressbar-inner" style="width:${pct}%"></div></div>
+  <div class="meta-row"><span class="cat-tag">${CAT_ICON[q.cat]} ${q.cat}</span><span>${state.idx+1} / ${total} 문항</span><span class="name-tag">${escapeHtml(state.name)}</span></div>
+  <div class="answer-timer" id="answerTimer">⏱ 답변 시작까지 ${ANSWER_START_LIMIT}초</div>
+  <div class="qcard">
+    <div class="qtext" id="qtext">${q.q}</div>
+    <button class="btn btn-outline" id="replayTTSBtn" style="margin-top:10px;">🔊 문제 다시 듣기</button>
+  </div>
+  ${prepHtml}
+  <div class="infobox" style="margin-bottom:14px;">🎤 답변 칸에 자동으로 커서가 가 있어요. 키보드가 뜨면 위쪽의 <b>마이크 아이콘</b>을 눌러 말하면 텍스트로 입력돼요. (키보드가 안 보이면 답변 칸을 한 번 탭해주세요)</div>
+  <div class="answer-label"><span>내 답변</span><span class="char-count" id="charCount">${state.answerText.length}자</span></div>
+  ${isMobileDevice()? `
+  <button class="btn btn-primary" id="keyboardMicBtn" style="margin-bottom:4px;">키보드 마이크 버튼 누르기(구글음성입력)</button>
+  <p class="small-note kb-mic-hint" id="kbMicHint" style="display:none;margin:0 0 10px;text-align:center;">구글음성인식이 더 잘 입력됩니다</p>
+  ` : ''}
+  <textarea class="answer-box" id="answerBox" placeholder="답변 칸을 탭한 뒤 키보드의 마이크 아이콘으로 말하거나, 직접 입력하세요...">${state.answerText}</textarea>
+  ${micSupported? `
+  <div class="rec-zone" style="margin-top:14px;">
+    <p class="small-note" style="margin-top:0;margin-bottom:10px;">또는 앱 자체 음성인식을 시도해볼 수 있어요 (키보드 마이크보다 정확도가 낮을 수 있어요)</p>
+    <button class="mic-btn" id="micBtn">🎙️</button>
+    <div class="rec-status" id="recStatus">마이크 버튼을 눌러 시도해보기</div>
+    <div class="waveform hidden" id="waveform"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+  ` : ``}
+  <div class="row2" style="margin-top:16px;">
+    <button class="btn btn-ghost" id="clearBtn">지우기</button>
+    <button class="btn btn-primary" id="submitBtn">답변 제출하고 채점받기</button>
+  </div>
+  <span class="giveup" id="skipBtn">이 문제 건너뛰기</span>
+  <span class="giveup" id="pauseBtn">잠시 멈추고 나중에 이어풀기</span>
+  ${state.records.length>0? `<div style="margin-top:10px;"><button class="btn btn-outline" id="finishEarlyBtn">✅ 여기까지 풀고 점수낼래요 (${state.records.length}문항)</button></div>` : ''}
+  `;
+}
+
+function renderFeedback(){
+  const fb = state.feedback;
+  const q = state.queue[state.idx];
+  const tier = tierOf(fb.score);
+  const kwOk = fb.matched.map(k=>`<span class="kw-chip ok">✅ ${k.l}</span>`).join('');
+  const kwMiss = fb.missed.map(k=>`<span class="kw-chip miss">➕ ${k.l}</span>`).join('');
+  const isLast = state.idx === state.queue.length-1;
+  const followUpHtml = fb.followUpQuestion ? `
+    <div class="card" style="border:2px solid var(--gold);margin-top:14px;">
+      <h3 class="card-title" style="font-size:15px;">🔁 꼬리질문</h3>
+      <div class="qtext" style="font-size:15.5px;">${escapeHtml(fb.followUpQuestion)}</div>
+      ${state._followUpAnswered? `
+        <div class="ans-box mine" style="margin-top:10px;"><b>내 답변</b>${escapeHtml(state._followUpAnswerText)||'(답변 없음)'}</div>
+        ${state._followUpComment? `<div class="infobox">🤖 ${escapeHtml(state._followUpComment)}</div>` : ''}
+      ` : `
+        <textarea class="answer-box" id="followUpBox" placeholder="꼬리질문에 답해보세요 (건너뛰어도 괜찮아요)" style="margin-top:10px;">${state._followUpAnswerText||''}</textarea>
+        <button class="btn btn-primary" id="followUpSubmitBtn" style="margin-top:10px;">꼬리질문 답변 제출</button>
+      `}
+    </div>
+  ` : '';
+  return `
+  <div class="card">
+    ${fb.timedOut? `<div class="warnbox">⏱ 60초 안에 답변을 시작하지 않아 자동으로 제출됐어요.</div>` : ''}
+    <div class="score-wrap">
+      <div class="score-ring" style="${ringStyle(fb.score)}">
+        <div style="background:#fff;width:118px;height:118px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div class="score-num" style="color:${fb.score>=90?'#b8902f':fb.score>=70?'#2f7d5b':fb.score>=45?'#e0862b':'#b3432b'}">${fb.score}</div>
+          <div class="score-max">/ 100점</div>
+        </div>
+      </div>
+    </div>
+    <div class="tier-label ${tier.cls}">${tier.label}</div>
+    ${fb.passMsg? `<div class="infobox" style="text-align:center;font-weight:700;">${escapeHtml(fb.passMsg)}</div>` : ''}
+    ${fb.feedback? `<div class="infobox">🤖 <b>AI 채점 코멘트</b><br>${escapeHtml(fb.feedback)}</div>` : ''}
+    ${fb.aiGraded===false? `<p class="small-note">📝 키워드 기반 채점으로 처리됐어요. 핵심 개념 위주로 채점했어요.</p>` : ''}
+    <div class="kw-section">
+      ${kwOk? `<div class="kw-title">✅ 답변에 포함된 핵심 개념</div><div class="kw-grid">${kwOk}</div>`:''}
+      ${kwMiss? `<div class="kw-title">➕ 놓친 핵심 개념</div><div class="kw-grid">${kwMiss}</div>`:''}
+    </div>
+    <div class="ans-box mine"><b>내 답변</b>${escapeHtml(state.answerText)||'(답변 없음)'}</div>
+    <div class="ans-box model"><b>모범 답안</b>${q.a}</div>
+  </div>
+  ${followUpHtml}
+  <div class="card">
+    <button class="btn btn-primary" id="nextBtn" style="margin-top:6px;">${isLast? '결과 보기' : '다음 질문'}</button>
+    <button class="btn btn-outline" id="retryAnswerBtn" style="margin-top:10px;">이 문제 다시 답하기</button>
+    ${!isLast? `<div style="margin-top:10px;"><span class="giveup" id="finishEarlyBtn2">✅ 여기까지 풀고 점수낼래요 (${state.records.length}문항)</span></div>` : ''}
+  </div>
+  `;
+}
+
+function renderResult(){
+  const total = state.records.length;
+  const avg = total? Math.round(state.records.reduce((s,r)=>s+r.score,0)/total) : 0;
+  const items = state.records.map(r=>{
+    const color = r.score>=90?'#b8902f':r.score>=70?'#2f7d5b':r.score>=45?'#e0862b':'#b3432b';
+    return `<div class="result-item"><div class="ri-q">${CAT_ICON[r.cat]} ${r.q}</div><div class="ri-score" style="color:${color}">${r.score}점</div></div>`;
+  }).join('');
+  const deviceBtn = isMobileDevice()
+    ? `<button class="btn btn-gold" id="mobileSubmitBtn" style="margin-top:12px;">📤 선생님께 오답 제출하기</button>`
+    : `<button class="btn btn-gold" id="printBtn" style="margin-top:12px;">🖨️ A4로 바로 인쇄</button>`;
+  return `
+  <div class="card">
+    <h2 class="card-title" style="text-align:center;">${escapeHtml(state.name)}님의 면접 결과</h2>
+    <div class="avg-big">${avg}<span style="font-size:20px;color:var(--sub);">점</span></div>
+    <div class="avg-sub">${total}문항 평균 점수 · ${state.mode==='wrong'?'오답 모드':state.mode==='cumwrong'?'누적 오답 모드':state.mode==='all'?'전체 모드':state.mode==='advanced'?'응용 모드(상)':state.mode==='random'?'랜덤 모드':'부분 학습'}</div>
+    <div class="result-list">${items}</div>
+    <div class="row2" style="margin-top:16px;">
+      <button class="btn btn-outline" id="wrongNoteBtn">오답노트 보기</button>
+      <button class="btn btn-primary" id="retryBtn">다시 도전하기</button>
+    </div>
+    <div class="row2" style="margin-top:12px;">
+      <button class="btn btn-outline" id="resultPrintBtn">🖨️ 인쇄하기 (전체 누적)</button>
+      <button class="btn btn-gold" id="resultPdfBtn">💾 PDF로 저장 (전체 누적)</button>
+    </div>
+    ${deviceBtn}
+    <div class="small-note" id="sheetSendStatus" style="margin-top:8px;text-align:center;">📤 선생님께 결과 전송 중...</div>
+    <button class="btn btn-ghost" id="backHomeBtn" style="margin-top:10px;">처음으로</button>
+  </div>
+  `;
+}
+
+function renderMyStats(){
+  const name=state.name;
+  if(!name.trim()){
+    return `<div class="card"><h2 class="card-title">내 기록</h2><p class="small-note">먼저 이름을 입력해주세요.</p>
+    <input type="text" id="nameInput2" placeholder="이름을 입력하세요" style="margin-top:8px;">
+    <button class="btn btn-primary" id="loadStatsBtn" style="margin-top:12px;">기록 불러오기</button>
+    <button class="btn btn-ghost" id="backSetupBtn" style="margin-top:10px;">돌아가기</button>
+    </div>`;
+  }
+  const s = getStudent(name);
+  const logs = s.examLogs.slice().reverse();
+  const wrongList = Object.keys(s.wrong).map(id=>({id, ...s.wrong[id]})).filter(w=>QMAP[w.id]);
+  const histHtml = logs.length? logs.map(l=>`
+    <div class="hist-item">
+      <div class="hist-top"><span>${l.date}</span><span>${l.avg}점</span></div>
+      <div class="hist-sub">${l.count}문항 · ${l.modeLabel||''} · ${(l.cats||[]).join(', ')}</div>
+    </div>`).join('') : `<p class="small-note">아직 면접 기록이 없어요.</p>`;
+  const wrongHtml = wrongList.length? wrongList.map(w=>{
+    const q=QMAP[w.id];
+    return `<div class="wrongitem">
+      <div class="wq">${CAT_ICON[q.cat]} ${q.q}</div>
+      <div class="wmeta">최근 점수 ${w.lastScore}점 · ${w.date||''}</div>
+      <div class="wa"><b>내 답변:</b> ${escapeHtml(w.lastAnswer)||'(답변 없음)'}</div>
+      <div class="wc"><b>모범 답안:</b> ${q.a}</div>
+    </div>`;
+  }).join('') : `<p class="small-note">오답노트가 비어 있어요. 훌륭해요!</p>`;
+  return `
+  <div class="card">
+    <h2 class="card-title">${escapeHtml(name)}님의 면접 기록</h2>
+    <div class="tabbar">
+      <div class="tabbtn active" data-tab="hist">면접 기록</div>
+      <div class="tabbtn" data-tab="wrong">오답노트 (${wrongList.length})</div>
+    </div>
+    <div id="tabHist">${histHtml}</div>
+    <div id="tabWrong" class="hidden">
+      ${wrongHtml}
+      ${wrongList.length? `<div class="row2" style="margin-top:12px;">
+        <button class="btn btn-outline" id="printBtn2">🖨️ 인쇄하기</button>
+        <button class="btn btn-gold" id="pdfBtn">💾 PDF로 저장</button>
+      </div>`:''}
+    </div>
+    <button class="btn btn-ghost" id="backSetupBtn" style="margin-top:16px;">돌아가기</button>
+  </div>
+  `;
+}
+
+function renderTLogin(){
+  return `
+  <div class="card">
+    <h2 class="card-title">👩‍🏫 강사용 로그인</h2>
+    <p class="card-sub">비밀번호를 입력해주세요.</p>
+    <input type="password" id="pwInput" placeholder="비밀번호">
+    <div class="row2" style="margin-top:14px;">
+      <button class="btn btn-ghost" id="pwCancel">취소</button>
+      <button class="btn btn-primary" id="pwSubmit">확인</button>
+    </div>
+  </div>
+  `;
+}
+
+function renderTDash(){
+  const students = getAllStudents().map(({name,data})=>{
+    const logs=data.examLogs||[];
+    const last=logs.length? logs[logs.length-1]: null;
+    const avgAll = logs.length? Math.round(logs.reduce((s,l)=>s+l.avg,0)/logs.length) : 0;
+    return {name, sessions:logs.length, avgAll, lastDate: last? last.date:'-', wrongCnt:Object.keys(data.wrong||{}).length};
+  }).sort((a,b)=> (b.lastDate>a.lastDate?1:-1));
+  const rows = students.length? students.map(s=>`
+    <tr class="clickable local-row" data-name="${escapeHtml(s.name)}">
+      <td style="text-align:left;">${escapeHtml(s.name)}</td>
+      <td>${s.sessions}</td>
+      <td>${s.avgAll}점</td>
+      <td>${s.wrongCnt}</td>
+      <td>${s.lastDate}</td>
+    </tr>`).join('') : `<tr><td colspan="5" style="color:var(--sub);">아직 이 기기에서 응시한 학생이 없어요.</td></tr>`;
+  return `
+  <div class="card">
+    <h2 class="card-title">👩‍🏫 강사용 대시보드</h2>
+    <p class="card-sub">학생이 <b>어떤 기기(폰·PC)로 풀었든</b> 구글 시트에 기록된 전체 학생이 아래에 자동으로 떠요. 이름을 누르면 오답노트를 확인·인쇄할 수 있어요.</p>
+    <div id="sheetAllList"><p class="small-note">🔍 구글 시트에서 학생 목록을 불러오는 중...</p></div>
+  </div>
+  <div class="card">
+    <h2 class="card-title" style="font-size:15px;">🔍 이름으로 직접 검색</h2>
+    <p class="card-sub">위 목록에 안 보이거나 이름 철자가 다를 때 직접 검색해보세요.</p>
+    <input type="text" id="sheetSearchName" placeholder="학생 이름 검색 (구글 시트)" style="margin-bottom:8px;">
+    <button class="btn btn-primary" id="sheetSearchBtn">🔍 구글 시트에서 검색</button>
+    <div id="sheetSearchResult" style="margin-top:12px;"></div>
+  </div>
+  <div class="card">
+    <h2 class="card-title" style="font-size:15.5px;">📱 이 기기에서 직접 응시한 기록</h2>
+    <p class="card-sub">학생을 눌러 상세 기록과 오답노트를 확인하세요.</p>
+    <table>
+      <thead><tr><th style="text-align:left;">이름</th><th>응시</th><th>평균</th><th>오답</th><th>최근 응시일</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <button class="btn btn-ghost" id="backSetupBtn" style="margin-top:16px;">돌아가기</button>
+  </div>
+  `;
+}
+
+function renderTDetail(){
+  const name=tDetailName;
+  const s = getStudent(name);
+  const logs = s.examLogs.slice().reverse();
+  const wrongList = Object.keys(s.wrong).map(id=>({id, ...s.wrong[id]})).filter(w=>QMAP[w.id]);
+  const catAvg = {};
+  CATS.forEach(c=>{
+    const relevant = logs.filter(l=>(l.cats||[]).includes(c));
+    catAvg[c] = null;
+  });
+  const histHtml = logs.length? logs.map(l=>`
+    <div class="hist-item" style="cursor:default;">
+      <div class="hist-top"><span>${l.date}</span><span>${l.avg}점</span></div>
+      <div class="hist-sub">${l.count}문항 · ${l.modeLabel||''} · ${(l.cats||[]).join(', ')}</div>
+    </div>`).join('') : `<p class="small-note">면접 기록이 없어요.</p>`;
+  const wrongHtml = wrongList.length? wrongList.map(w=>{
+    const q=QMAP[w.id];
+    return `<div class="wrongitem">
+      <div class="wq">${CAT_ICON[q.cat]} ${q.q}</div>
+      <div class="wmeta">최근 점수 ${w.lastScore}점 · ${w.date||''}</div>
+      <div class="wa"><b>학생 답변:</b> ${escapeHtml(w.lastAnswer)||'(답변 없음)'}</div>
+      <div class="wc"><b>모범 답안:</b> ${q.a}</div>
+    </div>`;
+  }).join('') : `<p class="small-note">오답노트가 비어 있어요.</p>`;
+  return `
+  <div class="card">
+    <h2 class="card-title">${escapeHtml(name)} 학생 상세</h2>
+    <div class="tabbar">
+      <div class="tabbtn active" data-tab="hist">면접 기록</div>
+      <div class="tabbtn" data-tab="wrong">오답노트 (${wrongList.length})</div>
+    </div>
+    <div id="tabHist">${histHtml}</div>
+    <div id="tabWrong" class="hidden">
+      ${wrongHtml}
+      ${wrongList.length? `<div class="row2" style="margin-top:12px;">
+        <button class="btn btn-outline" id="printBtn2">🖨️ 인쇄하기</button>
+        <button class="btn btn-gold" id="pdfBtn">💾 PDF로 저장</button>
+      </div>`:''}
+    </div>
+    <button class="btn btn-ghost" id="backTdashBtn" style="margin-top:16px;">목록으로</button>
+  </div>
+  `;
+}
+
+/* ===================== PDF 오답노트 (소화/순환 퀴즈앱과 동일하게 검증된 방식) ===================== */
+/* 모바일 대응(중요): pdf.save()의 자동(프로그램) 다운로드는 삼성 인터넷 등 일부
+   모바일 브라우저에서 조용히 실패하는 경우가 있어요. 그래서 PDF가 준비되면
+   학생/강사가 '직접 손가락으로 누르는' 진짜 링크 버튼을 보여주는 방식으로 처리해요.
+   또한 캡처 대상은 화면 밖(-9999px)에 고정 너비(760px)로 별도로 만들어,
+   모바일 좁은 화면 너비 때문에 글자가 과하게 커지는 문제를 피해요. */
+let lastPdfBlobUrl=null;
+let lastPdfFilename=null;
+function showLoadingModal(msg){
+  const ov=document.getElementById('modalOverlay');
+  document.getElementById('modalMsg').innerHTML=msg;
+  document.getElementById('modalBtns').innerHTML='';
+  ov.classList.remove('hidden');
+}
+function hideLoadingModal(){
+  document.getElementById('modalOverlay').classList.add('hidden');
+}
+function printWrongNote(name, wrongList){
+  if(!wrongList.length){ showAlert('오답노트가 비어 있어요.'); return; }
+  const itemsHtml = wrongList.map((w,i)=>{
+    const q=QMAP[w.id];
+    if(!q) return '';
+    return `<div class="print-item">
+      <div style="font-size:12.5px;font-weight:700;margin-bottom:4px;line-height:1.45;color:#1b2a4a;">${i+1}. [${q.cat}] ${q.q}</div>
+      <div style="font-size:11px;color:#b3432b;">내 답변: ${escapeHtml(w.lastAnswer)||'(답변 없음)'} (${w.lastScore}점)</div>
+      <div style="font-size:11px;color:#2f7d5b;font-weight:700;margin-top:3px;">모범 답안: ${q.a}</div>
+    </div>`;
+  }).join('');
+  const area = document.getElementById('printArea');
+  area.innerHTML = `
+    <h1 style="font-size:18px;color:#1b2a4a;margin:0 0 4px;">${escapeHtml(name)}님의 오답노트</h1>
+    <p style="font-size:11px;color:#6b7280;margin:0 0 14px;">중등 과학 구술면접 마스터 · GMS학원 이은정 강사 · ${new Date().toLocaleDateString('ko-KR')}</p>
+    ${itemsHtml}
+  `;
+  area.classList.remove('hidden');
+  // 모바일 브라우저는 클릭 이벤트 직후 동기적으로 호출해야 인쇄가 정상적으로 열림 (지연 호출 시 막히는 경우가 있음)
+  window.print();
+  area.classList.add('hidden');
+  area.innerHTML='';
+}
+async function downloadWrongNotePDF(name, wrongList){
+  if(!wrongList.length){ await showAlert('오답노트가 비어 있어요.'); return; }
+  if(!window.html2canvas || !(window.jspdf && window.jspdf.jsPDF)){
+    await showAlert('PDF 기능을 불러오는 중이에요. 인터넷 연결을 확인한 뒤 잠시 후 다시 시도해주세요.');
+    return;
+  }
+  showLoadingModal('📄 PDF를 만들고 있어요...');
+  const helper = document.createElement('div');
+  helper.style.cssText = 'position:fixed;left:-9999px;top:0;width:700px;background:#ffffff;box-sizing:border-box;font-family:"Noto Sans KR",sans-serif;';
+  document.body.appendChild(helper);
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const usableWidth = pageWidth - margin*2;
+    let y = margin;
+
+    // 제목 블록을 이미지로 렌더링해 추가
+    helper.innerHTML = `<h1 style="font-size:18px;color:#1b2a4a;margin:0 0 4px;">${escapeHtml(name)}님의 오답노트</h1><p style="font-size:11px;color:#6b7280;margin:0;">중등 과학 구술면접 마스터 · GMS학원 이은정 강사 · ${new Date().toLocaleDateString('ko-KR')}</p>`;
+    let canvas = await html2canvas(helper, {scale:2, backgroundColor:'#ffffff', windowWidth:700});
+    let imgH = canvas.height*usableWidth/canvas.width;
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',margin,y,usableWidth,imgH);
+    y += imgH + 6;
+
+    // 문항을 하나씩 이미지로 렌더링해서, 페이지 남은 공간에 안 맞으면 통째로 다음 페이지로 넘김
+    // (하나의 큰 이미지를 기계적으로 잘랐던 예전 방식과 달리 문항 중간이 잘리지 않음)
+    for(let i=0;i<wrongList.length;i++){
+      const w = wrongList[i];
+      const q = QMAP[w.id];
+      if(!q) continue;
+      helper.innerHTML = `
+        <div style="padding:8px 10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#1b2a4a;">${i+1}. [${q.cat}] ${q.q}</div>
+          <div style="font-size:11px;color:#b3432b;">내 답변: ${escapeHtml(w.lastAnswer)||'(답변 없음)'} (${w.lastScore}점)</div>
+          <div style="font-size:11px;color:#2f7d5b;font-weight:700;margin-top:3px;">모범 답안: ${q.a}</div>
+        </div>`;
+      canvas = await html2canvas(helper, {scale:2, backgroundColor:'#ffffff', windowWidth:700});
+      imgH = canvas.height*usableWidth/canvas.width;
+      if(y + imgH > pageHeight - margin){
+        pdf.addPage();
+        y = margin;
+      }
+      pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',margin,y,usableWidth,imgH);
+      y += imgH + 4;
+    }
+    hideLoadingModal();
+    pdf.save(`오답노트_${name||'학생'}_${fmtDate(Date.now())}.pdf`);
+  }catch(e){
+    hideLoadingModal();
+    await showAlert('PDF를 만드는 중 문제가 발생했어요. 인터넷 연결을 확인하고 다시 시도해주세요.');
+  } finally {
+    if(helper.parentNode) helper.parentNode.removeChild(helper);
+  }
+}
+function getLocalWrongList(name){
+  const s=getStudent(name);
+  return Object.keys(s.wrong).map(id=>({id, ...s.wrong[id]})).filter(w=>QMAP[w.id]);
+}
+function printLocalWrongNote(name){
+  printWrongNote(name, getLocalWrongList(name));
+}
+async function downloadLocalWrongNotePDF(name){
+  await downloadWrongNotePDF(name, getLocalWrongList(name));
+}
+async function fetchStudentFromSheet(name){
+  const url = SHEET_WEBHOOK_URL + '?name=' + encodeURIComponent(name.trim());
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('네트워크 오류');
+  return await res.json();
+}
+function buildWrongListFromSheetRows(rows){
+  const map = {};
+  rows.forEach(row=>{
+    let records=[];
+    try{ records = JSON.parse(row.records || '[]'); }catch(e){ records=[]; }
+    records.forEach(r=>{
+      if(r.score < WRONG_THRESHOLD && QMAP[r.id]){
+        map[r.id] = {id:r.id, lastAnswer:r.answer, lastScore:r.score};
+      } else if(map[r.id] && r.score >= WRONG_THRESHOLD){
+        delete map[r.id]; // 나중에 다시 풀어서 통과했으면 오답노트에서 제외
+      }
+    });
+  });
+  return Object.values(map);
+}
+function buildEverWrongListFromSheetRows(rows){
+  // 누적 오답: 한 번이라도 틀렸으면 나중에 맞혀도 목록에서 빼지 않음
+  const map = {};
+  rows.forEach(row=>{
+    let records=[];
+    try{ records = JSON.parse(row.records || '[]'); }catch(e){ records=[]; }
+    records.forEach(r=>{
+      if(r.score < WRONG_THRESHOLD && QMAP[r.id]){
+        map[r.id] = {id:r.id, lastAnswer:r.answer, lastScore:r.score};
+      }
+    });
+  });
+  return Object.values(map);
+}
+let sheetStudentsCache = null;
+async function fetchAllStudentsFromSheet(){
+  const res = await fetch(SHEET_WEBHOOK_URL);
+  if(!res.ok) throw new Error('네트워크 오류');
+  return await res.json();
+}
+function renderSheetAllList(list){
+  const el = document.getElementById('sheetAllList');
+  if(!el) return;
+  if(!list.length){
+    el.innerHTML = `<p class="small-note">아직 제출된 학생 기록이 없어요.</p>`;
+    return;
+  }
+  const rows = list.map(s=>`
+    <tr class="clickable" data-sheetname="${escapeHtml(s.name)}">
+      <td style="text-align:left;">${escapeHtml(s.name)}</td>
+      <td>${s.sessions}</td>
+      <td>${s.avg}점</td>
+      <td>${s.lastDate? new Date(s.lastDate).toLocaleDateString('ko-KR') : '-'}</td>
+    </tr>`).join('');
+  el.innerHTML = `
+    <table>
+      <thead><tr><th style="text-align:left;">이름</th><th>제출횟수</th><th>평균</th><th>최근 제출일</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+  el.querySelectorAll('tr.clickable').forEach(tr=>{
+    tr.onclick=()=>showSheetStudentDetail(tr.dataset.sheetname, document.getElementById('sheetSearchResult'));
+  });
+}
+async function showSheetStudentDetail(nm, resultEl){
+  if(!resultEl) return;
+  resultEl.innerHTML = `<p class="small-note">🔍 '${escapeHtml(nm)}' 기록을 불러오는 중...</p>`;
+  resultEl.scrollIntoView({behavior:'smooth', block:'center'});
+  try{
+    const rows = await fetchStudentFromSheet(nm);
+    if(!rows.length){
+      resultEl.innerHTML = `<p class="small-note">'${escapeHtml(nm)}' 이름으로 제출된 기록이 없어요.</p>`;
+      return;
+    }
+    const wrongList = buildWrongListFromSheetRows(rows);
+    const avgAll = Math.round(rows.reduce((s,r)=>s+Number(r.score||0),0)/rows.length);
+    resultEl.innerHTML = `
+      <div class="infobox">✅ <b>${escapeHtml(nm)}</b> · ${rows.length}개 세션 발견 · 전체 평균 ${avgAll}점 · 오답 ${wrongList.length}문항</div>
+      <div class="row2" style="margin-top:8px;">
+        <button class="btn btn-outline" id="sheetPrintBtn">🖨️ 인쇄하기</button>
+        <button class="btn btn-gold" id="sheetPdfBtn">💾 PDF로 저장</button>
+      </div>
+    `;
+    document.getElementById('sheetPrintBtn').onclick=()=>printWrongNote(nm, wrongList);
+    document.getElementById('sheetPdfBtn').onclick=()=>downloadWrongNotePDF(nm, wrongList);
+  }catch(e){
+    resultEl.innerHTML = `<p class="small-note">⚠️ 검색에 실패했어요. 인터넷 연결을 확인해주세요.</p>`;
+  }
+}
+function showPdfReadyModal(){
+  const ov=document.getElementById('modalOverlay');
+  document.getElementById('modalMsg').innerHTML='📄 오답노트 PDF가 준비됐어요!<br>아래 버튼을 <b>직접 눌러서</b> 저장하거나 열어 주세요.';
+  const btns=document.getElementById('modalBtns');
+  btns.style.flexDirection='column';
+  btns.innerHTML=`
+    <a href="${lastPdfBlobUrl}" download="${lastPdfFilename}" class="btn btn-primary" style="margin-bottom:8px;">⬇️ PDF 다운로드</a>
+    <a href="${lastPdfBlobUrl}" target="_blank" class="btn btn-outline" style="margin-bottom:8px;">📄 PDF 열어서 보기 · 인쇄</a>
+    <button class="btn btn-ghost" id="modalCloseBtn">닫기</button>
+  `;
+  ov.classList.remove('hidden');
+  document.getElementById('modalCloseBtn').onclick=()=>{ ov.classList.add('hidden'); btns.style.flexDirection=''; };
+}
+
+/* ===================== 이벤트 ===================== */
+function bindEvents(){
+  if(screen==='setup'){
+    const nameEl=document.getElementById('nameInput');
+    nameEl.oninput=(e)=>{ state.name=e.target.value; };
+    nameEl.onblur=()=>{ saveLastUsedName(state.name.trim()); render(); };
+    document.querySelectorAll('.chip').forEach(c=>{
+      c.onclick=()=>{
+        if(c.dataset.cat){
+          const cat=c.dataset.cat;
+          if(state.cats.includes(cat)){
+            if(state.cats.length>1) state.cats=state.cats.filter(x=>x!==cat);
+          } else state.cats.push(cat);
+        } else if(c.dataset.grade){
+          const g=c.dataset.grade;
+          if(state.grades.includes(g)){
+            if(state.grades.length>1) state.grades=state.grades.filter(x=>x!==g);
+          } else state.grades.push(g);
+        }
+        render();
+      };
+    });
+    document.querySelectorAll('.opt-chip').forEach(c=>{
+      c.onclick=()=>{ state.count=parseInt(c.dataset.count); render(); };
+    });
+    document.querySelectorAll('.mode-card').forEach(m=>{
+      m.onclick=()=>{
+        if(m.dataset.mode==='wrong' && wrongCount(state.name)===0){ return; }
+        if(m.dataset.mode==='cumwrong' && everWrongCount(state.name)===0){ return; }
+        state.mode=m.dataset.mode; render();
+      };
+    });
+    document.getElementById('shuffleChk').onchange=(e)=>{ state.shuffle=e.target.checked; };
+    document.getElementById('startBtn').onclick=async()=>{
+      state.name=nameEl.value.trim();
+      if(!state.name){ await showAlert('이름을 먼저 입력해주세요!'); return; }
+      saveLastUsedName(state.name);
+      const startBtn=document.getElementById('startBtn');
+      if(state.mode==='wrong'||state.mode==='cumwrong'){ startBtn.disabled=true; startBtn.textContent='🔍 다른 기기 기록도 확인하는 중...'; }
+      await startInterview();
+      if(startBtn){ startBtn.disabled=false; startBtn.textContent='🎓 면접 시작하기'; }
+    };
+    document.getElementById('micTestBtn').onclick=()=>testMic();
+    document.getElementById('myStatsBtn').onclick=()=>{ state.name=nameEl.value.trim(); saveLastUsedName(state.name); screen='mystats'; render(); };
+    document.getElementById('teacherBtn').onclick=()=>{ screen='tlogin'; render(); };
+    const resumeBtn=document.getElementById('resumeBtn');
+    if(resumeBtn) resumeBtn.onclick=()=>{ state.name=nameEl.value.trim(); saveLastUsedName(state.name); resumeInterview(); };
+    const discardBtn=document.getElementById('discardProgressBtn');
+    if(discardBtn) discardBtn.onclick=async()=>{
+      state.name=nameEl.value.trim();
+      const ok=await showConfirm('진행 중이던 면접 기록을 삭제하고 새로 시작할까요?');
+      if(ok){ discardProgress(state.name); render(); }
+    };
+  }
+  else if(screen==='quiz'){
+    const curQ = state.queue[state.idx];
+    if(lastTTSQuestionId !== curQ.id){
+      lastTTSQuestionId = curQ.id;
+      state._prepActive = false;
+      speakQuestion(curQ.q);
+    }
+    const replayBtn=document.getElementById('replayTTSBtn');
+    if(replayBtn) replayBtn.onclick=()=>speakQuestion(curQ.q);
+    startAnswerTimer();
+    const prepReadyBtn=document.getElementById('prepReadyBtn');
+    if(prepReadyBtn) prepReadyBtn.onclick=()=>finishPrepCountdown(true);
+    const prepExtendBtn=document.getElementById('prepExtendBtn');
+    if(prepExtendBtn) prepExtendBtn.onclick=()=>{ state._prepTimeLeft += 5; const el=document.getElementById('prepCountdownNum'); if(el) el.textContent=state._prepTimeLeft+'초'; };
+    const kbMicBtn=document.getElementById('keyboardMicBtn');
+    if(kbMicBtn) kbMicBtn.onclick=()=>{
+      const box2=document.getElementById('answerBox');
+      if(box2){ box2.focus(); const len=box2.value.length; try{ box2.setSelectionRange(len,len); }catch(e){} }
+      const hint=document.getElementById('kbMicHint');
+      if(hint){
+        hint.style.display='block';
+        if(kbHintTimer) clearTimeout(kbHintTimer);
+        kbHintTimer = setTimeout(()=>{ hint.style.display='none'; }, 4000);
+      }
+    };
+    if(SR){
+      const micBtn=document.getElementById('micBtn');
+      if(micBtn) micBtn.onclick=()=>toggleRecording();
+      renderQuizControls();
+    }
+    const box=document.getElementById('answerBox');
+    if(box){
+      box.oninput=(e)=>{
+        state.answerText=e.target.value;
+        const cc=document.getElementById('charCount'); if(cc) cc.textContent=e.target.value.length+'자';
+        if(e.target.value.trim().length>0){
+          stopAnswerTimer();
+          if(state._prepActive) finishPrepCountdown(false);
+        }
+      };
+      // 문제가 뜨자마자 답변칸에 포커스를 줘서 키보드가 바로 올라오게 함 (한 번의 탭을 줄여줌)
+      box.focus();
+      const len=box.value.length;
+      try{ box.setSelectionRange(len,len); }catch(e){}
+    }
+    document.getElementById('clearBtn').onclick=()=>{
+      if(isRecording && recognition){ recognition.stop(); isRecording=false; }
+      state.answerText=''; recFinalBase=''; render();
+    };
+    document.getElementById('submitBtn').onclick=()=>{
+      if(isRecording && recognition){ recognition.stop(); isRecording=false; }
+      cancelQuestionAudio();
+      stopAnswerTimer();
+      submitAnswer();
+    };
+    document.getElementById('skipBtn').onclick=()=>{
+      if(isRecording && recognition){ recognition.stop(); isRecording=false; }
+      cancelQuestionAudio();
+      stopAnswerTimer();
+      state.answerText=''; submitAnswer();
+    };
+    document.getElementById('pauseBtn').onclick=async()=>{
+      const ok=await showConfirm('지금까지 답한 문제까지는 자동으로 저장돼 있어요.\n그만 풀고 처음 화면으로 돌아갈까요?');
+      if(!ok) return;
+      if(isRecording && recognition){ recognition.stop(); isRecording=false; }
+      cancelQuestionAudio();
+      stopAnswerTimer();
+      lastTTSQuestionId = null;
+      screen='setup'; render();
+    };
+    const feBtn=document.getElementById('finishEarlyBtn');
+    if(feBtn) feBtn.onclick=()=>{
+      if(isRecording && recognition){ recognition.stop(); isRecording=false; }
+      cancelQuestionAudio();
+      stopAnswerTimer();
+      finishEarly();
+    };
+  }
+  else if(screen==='feedback'){
+    document.getElementById('nextBtn').onclick=()=>goNext();
+    document.getElementById('retryAnswerBtn').onclick=()=>{
+      state.answerText=''; recFinalBase=''; screen='quiz'; render();
+    };
+    const feBtn2=document.getElementById('finishEarlyBtn2');
+    if(feBtn2) feBtn2.onclick=()=>finishEarly();
+    const fuBox=document.getElementById('followUpBox');
+    if(fuBox) fuBox.oninput=(e)=>{ state._followUpAnswerText = e.target.value; };
+    const fuBtn=document.getElementById('followUpSubmitBtn');
+    if(fuBtn) fuBtn.onclick=async()=>{
+      fuBtn.disabled=true; fuBtn.textContent='🤖 확인하고 있어요...';
+      const ans = state._followUpAnswerText||'';
+      state._followUpComment = await generateFollowUpComment(state.feedback.followUpQuestion, ans) || '답변 감사해요!';
+      state._followUpAnswered = true;
+      // 최근 기록에 꼬리질문 내용도 함께 저장 (교사 확인용)
+      const lastRec = state.records[state.records.length-1];
+      if(lastRec) lastRec.followUp = { question: state.feedback.followUpQuestion, answer: ans, comment: state._followUpComment };
+      render();
+    };
+  }
+  else if(screen==='result'){
+    document.getElementById('backHomeBtn').onclick=()=>{ const nm=state.name; state=newSession(); state.name=nm; screen='setup'; render(); };
+    document.getElementById('wrongNoteBtn').onclick=()=>{ screen='mystats'; render(); };
+    document.getElementById('resultPrintBtn').onclick=()=>printLocalWrongNote(state.name);
+    document.getElementById('resultPdfBtn').onclick=()=>downloadLocalWrongNotePDF(state.name);
+    const mobileBtn=document.getElementById('mobileSubmitBtn');
+    if(mobileBtn) mobileBtn.onclick=async()=>{
+      mobileBtn.disabled=true; mobileBtn.textContent='📤 전송 중...';
+      const wrongIds = state.records.filter(r=>r.score<WRONG_THRESHOLD).map(r=>r.id);
+      const avg = Math.round(state.records.reduce((s,r)=>s+r.score,0)/state.records.length);
+      const ok = await submitToSheet({ name:state.name, modeLabel:state._modeLabel, score:avg, totalCount:state.records.length, wrongIds, records:state.records });
+      mobileBtn.disabled=false;
+      mobileBtn.textContent = ok? '✅ 선생님께 제출 완료!' : '⚠️ 전송 실패 (다시 눌러보세요)';
+    };
+    const printBtn=document.getElementById('printBtn');
+    if(printBtn) printBtn.onclick=()=>printResultA4();
+    document.getElementById('retryBtn').onclick=()=>{
+      const nm=state.name, cats=state.cats, grades=state.grades, count=state.count, shuffle=state.shuffle, mode=state.mode;
+      state=newSession(); state.name=nm; state.cats=cats; state.grades=grades; state.count=count; state.shuffle=shuffle; state.mode=mode;
+      screen='setup'; render();
+    };
+  }
+  else if(screen==='mystats'){
+    const back=document.getElementById('backSetupBtn'); if(back) back.onclick=()=>{ screen='setup'; render(); };
+    const loadBtn=document.getElementById('loadStatsBtn');
+    if(loadBtn){
+      loadBtn.onclick=()=>{
+        const v=document.getElementById('nameInput2').value.trim();
+        if(!v){ showAlert('이름을 입력해주세요.'); return; }
+        state.name=v; saveLastUsedName(v); render();
+      };
+    }
+    document.querySelectorAll('.tabbtn').forEach(t=>{
+      t.onclick=()=>{
+        document.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        const tab=t.dataset.tab;
+        document.getElementById('tabHist').classList.toggle('hidden', tab!=='hist');
+        document.getElementById('tabWrong').classList.toggle('hidden', tab!=='wrong');
+      };
+    });
+    const pdfBtn=document.getElementById('pdfBtn');
+    if(pdfBtn) pdfBtn.onclick=()=>downloadLocalWrongNotePDF(state.name);
+    const printBtn2=document.getElementById('printBtn2');
+    if(printBtn2) printBtn2.onclick=()=>printLocalWrongNote(state.name);
+  }
+  else if(screen==='tlogin'){
+    document.getElementById('pwSubmit').onclick=async()=>{
+      const v=document.getElementById('pwInput').value;
+      if(v===TEACHER_PW){ screen='tdash'; render(); }
+      else await showAlert('비밀번호가 틀렸어요.');
+    };
+    document.getElementById('pwCancel').onclick=()=>{ screen='setup'; render(); };
+  }
+  else if(screen==='tdash'){
+    document.querySelectorAll('tr.local-row').forEach(tr=>{
+      tr.onclick=()=>{ tDetailName=tr.dataset.name; screen='tdetail'; render(); };
+    });
+    document.getElementById('backSetupBtn').onclick=()=>{ screen='setup'; render(); };
+    // 구글 시트 전체 학생 목록: 캐시가 있으면 바로 표시, 없으면 불러온 뒤 캐싱
+    if(sheetStudentsCache){
+      renderSheetAllList(sheetStudentsCache);
+    } else {
+      fetchAllStudentsFromSheet().then(list=>{
+        sheetStudentsCache = list;
+        renderSheetAllList(list);
+      }).catch(()=>{
+        const el=document.getElementById('sheetAllList');
+        if(el) el.innerHTML = `<p class="small-note">⚠️ 목록을 불러오지 못했어요. 인터넷 연결을 확인해주세요.</p>`;
+      });
+    }
+    document.getElementById('sheetSearchBtn').onclick=async()=>{
+      const nm = document.getElementById('sheetSearchName').value.trim();
+      const resultEl = document.getElementById('sheetSearchResult');
+      if(!nm){ resultEl.innerHTML = `<p class="small-note">이름을 입력해주세요.</p>`; return; }
+      await showSheetStudentDetail(nm, resultEl);
+    };
+  }
+  else if(screen==='tdetail'){
+    document.querySelectorAll('.tabbtn').forEach(t=>{
+      t.onclick=()=>{
+        document.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        const tab=t.dataset.tab;
+        document.getElementById('tabHist').classList.toggle('hidden', tab!=='hist');
+        document.getElementById('tabWrong').classList.toggle('hidden', tab!=='wrong');
+      };
+    });
+    const pdfBtn=document.getElementById('pdfBtn');
+    if(pdfBtn) pdfBtn.onclick=()=>downloadLocalWrongNotePDF(tDetailName);
+    const printBtn2=document.getElementById('printBtn2');
+    if(printBtn2) printBtn2.onclick=()=>printLocalWrongNote(tDetailName);
+    document.getElementById('backTdashBtn').onclick=()=>{ screen='tdash'; render(); };
+  }
+}
+
+async function startInterview(){
+  let pool;
+  let modeLabel='부분 학습';
+  if(state.mode==='wrong'){
+    const s=getStudent(state.name);
+    const wrongIds = new Set(Object.keys(s.wrong));
+    // 다른 기기(폰·PC)에서 틀린 문제도 구글 시트에서 가져와 합침
+    try{
+      const rows = await fetchStudentFromSheet(state.name);
+      const sheetWrongList = buildWrongListFromSheetRows(rows);
+      sheetWrongList.forEach(w=>wrongIds.add(w.id));
+    }catch(e){
+      // 시트 조회 실패해도 로컬 오답만으로 계속 진행 (조용히 무시)
+    }
+    pool = QUESTIONS.filter(q=>wrongIds.has(q.id));
+    modeLabel='오답 모드';
+  } else if(state.mode==='cumwrong'){
+    const s=getStudent(state.name);
+    const everWrongIds = new Set(Object.keys(s.everWrong||{}));
+    // 다른 기기(폰·PC)에서 한 번이라도 틀렸던 문제도 구글 시트에서 가져와 합침
+    try{
+      const rows = await fetchStudentFromSheet(state.name);
+      const sheetEverWrongList = buildEverWrongListFromSheetRows(rows);
+      sheetEverWrongList.forEach(w=>everWrongIds.add(w.id));
+    }catch(e){
+      // 시트 조회 실패해도 로컬 누적 오답만으로 계속 진행 (조용히 무시)
+    }
+    pool = QUESTIONS.filter(q=>everWrongIds.has(q.id));
+    modeLabel='누적 오답 모드';
+  } else if(state.mode==='all'){
+    pool = BASIC_QUESTIONS.slice();
+    modeLabel='전체 모드';
+  } else if(state.mode==='advanced'){
+    pool = ADV_POOL.filter(q=>state.cats.includes(q.cat) && state.grades.includes(q.grade));
+    modeLabel='응용 모드(상)';
+  } else if(state.mode==='random'){
+    pool = QUESTIONS.filter(q=>state.cats.includes(q.cat) && state.grades.includes(q.grade));
+    modeLabel='랜덤 모드';
+  } else {
+    pool = BASIC_QUESTIONS.filter(q=>state.cats.includes(q.cat) && state.grades.includes(q.grade));
+  }
+  if(state.shuffle) pool = shuffleArr(pool);
+  if((state.mode==='category'||state.mode==='advanced'||state.mode==='random') && state.count!==999) pool = pool.slice(0, Math.min(state.count, pool.length));
+  if(!pool.length){ await showAlert('풀 수 있는 문제가 없어요.'); return; }
+  state.queue = pool;
+  state.idx = 0;
+  state.records = [];
+  state.answerText='';
+  state._modeLabel = modeLabel;
+  recFinalBase='';
+  screen='quiz';
+  render();
+}
+
+async function submitAnswer(){
+  const q = state.queue[state.idx];
+  const rawText = state.answerText;
+
+  // AI 채점 중 로딩 상태 표시
+  const submitBtn=document.getElementById('submitBtn');
+  const clearBtn=document.getElementById('clearBtn');
+  const skipBtn=document.getElementById('skipBtn');
+  if(submitBtn){ submitBtn.disabled=true; submitBtn.textContent='🤖 AI가 의미를 파악해서 채점하고 있어요...'; }
+  if(clearBtn) clearBtn.disabled=true;
+  if(skipBtn) skipBtn.style.pointerEvents='none';
+
+  let fb = await aiGradeAnswer(q, rawText);
+  if(!fb){
+    fb = scoreAnswer(q, rawText);
+    // 키워드 채점은 이미 기본 50점이 깔려 있어서 boostScore 미적용
+  } else {
+    fb.score = boostScore(fb.score); // AI 채점 결과만 boostScore 적용
+  }
+  if(state._timedOut){ fb.timedOut=true; state._timedOut=false; }
+
+  // 점수 구간별 트랙 분기 (꼬리질문)
+  const isAdvancedQ = q.level==='advanced';
+  fb.followUpQuestion = null;
+  fb.passMsg = null;
+  if(fb.score>=100){
+    fb.passMsg = isAdvancedQ
+      ? '🎉 완벽해요! 이 응용 문제까지 확실히 이해했어요.'
+      : '🎉 완벽해요! 심화 질문으로 넘어갈 준비가 되었구나!';
+  } else if(fb.score>=50){
+    if(submitBtn) submitBtn.textContent='🤖 꼬리질문을 준비하고 있어요...';
+    const trackType = isAdvancedQ ? 'advanced-probe' : 'basic-fill';
+    fb.followUpQuestion = await generateFollowUp(q, rawText, fb.score, trackType);
+  }
+  // score<50인 경우: 꼬리질문 없이 바로 오답 처리 (모범답안·놓친 개념은 기존 피드백 화면에 이미 표시됨)
+
+  state._followUpAnswerText='';
+  state._followUpAnswered=false;
+  state._followUpComment=null;
+
+  state.feedback = fb;
+  state.records.push({id:q.id, q:q.q, cat:q.cat, score:fb.score, answer:rawText});
+
+  // 학생별 오답노트 업데이트
+  const s = getStudent(state.name);
+  if(fb.score < WRONG_THRESHOLD){
+    s.wrong[q.id] = {lastScore:fb.score, lastAnswer:rawText, date:fmtDT(Date.now())};
+    s.everWrong[q.id] = {lastScore:fb.score, lastAnswer:rawText, date:fmtDT(Date.now())}; // 누적 오답: 나중에 맞혀도 삭제하지 않음
+  } else {
+    if(s.wrong[q.id]) delete s.wrong[q.id];
+  }
+  // 진행 상황 자동 저장: 중간에 그만두어도 다음에 이어서 풀 수 있도록 체크포인트를 남김
+  if(state.records.length < state.queue.length){
+    s.inProgress = {
+      queueIds: state.queue.map(x=>x.id),
+      records: state.records.slice(),
+      modeLabel: state._modeLabel || '',
+      savedAt: fmtDT(Date.now())
+    };
+  } else {
+    delete s.inProgress; // 마지막 문제까지 다 풀었으면 이어풀기 기록은 삭제
+  }
+  setStudent(state.name, s);
+
+  // 문제 하나 풀 때마다 바로 구글 시트에 누적 전송 (중간에 그만둬도 지금까지 기록은 남도록)
+  const wrongIdsSoFar = state.records.filter(r=>r.score<WRONG_THRESHOLD).map(r=>r.id);
+  const avgSoFar = Math.round(state.records.reduce((sum,r)=>sum+r.score,0)/state.records.length);
+  submitToSheet({
+    name: state.name,
+    modeLabel: (state._modeLabel||'') + (state.records.length<state.queue.length? ' (진행중)':''),
+    score: avgSoFar,
+    totalCount: state.records.length,
+    wrongIds: wrongIdsSoFar,
+    records: state.records
+  });
+
+  screen='feedback';
+  render();
+}
+
+function getInProgress(name){
+  if(!name || !name.trim()) return null;
+  const s = getStudent(name);
+  const ip = s.inProgress;
+  if(!ip || !ip.queueIds || !ip.queueIds.length) return null;
+  if((ip.records||[]).length >= ip.queueIds.length) return null;
+  return ip;
+}
+function resumeInterview(){
+  const s = getStudent(state.name);
+  const ip = s.inProgress;
+  if(!ip || !ip.queueIds || !ip.queueIds.length){ showAlert('이어서 풀 수 있는 면접이 없어요.'); return; }
+  const queue = ip.queueIds.map(id=>QMAP[id]).filter(Boolean);
+  if(!queue.length){ showAlert('이어서 풀 수 있는 면접이 없어요.'); return; }
+  state.queue = queue;
+  state.records = (ip.records||[]).slice();
+  state.idx = Math.min(state.records.length, queue.length-1);
+  state.answerText='';
+  state._modeLabel = (ip.modeLabel||'이어서 풀기');
+  recFinalBase='';
+  screen='quiz';
+  render();
+}
+function discardProgress(name){
+  const s = getStudent(name);
+  delete s.inProgress;
+  setStudent(name, s);
+}
+
+function printResultA4(){
+  const wrongItems = state.records.filter(r=>r.score<WRONG_THRESHOLD);
+  const avg = Math.round(state.records.reduce((s,r)=>s+r.score,0)/state.records.length);
+  const itemsHtml = wrongItems.map((r,i)=>{
+    const q = QMAP[r.id];
+    if(!q) return '';
+    return `<div class="print-item">
+      <div style="font-weight:700;margin-bottom:4px;">${i+1}. [${q.cat}] ${q.q}</div>
+      <div style="color:#b3432b;font-size:12px;">내 답변: ${escapeHtml(r.answer)||'(답변 없음)'} (${r.score}점)</div>
+      <div style="color:#2f7d5b;font-weight:700;font-size:12px;margin-top:3px;">모범 답안: ${q.a}</div>
+    </div>`;
+  }).join('');
+  const area = document.getElementById('printArea');
+  area.innerHTML = `
+    <h1 style="font-size:20px;margin:0 0 4px;">${escapeHtml(state.name)}님의 면접 결과</h1>
+    <p style="font-size:12px;color:#666;margin:0 0 14px;">중등 과학 구술면접 마스터 · GMS학원 이은정 강사 · ${new Date().toLocaleDateString('ko-KR')}</p>
+    <p style="font-size:14px;margin:0 0 14px;"><b>평균 ${avg}점</b> · 총 ${state.records.length}문항 · 오답 ${wrongItems.length}문항</p>
+    ${itemsHtml || '<p>오답이 없어요. 완벽해요!</p>'}
+  `;
+  area.classList.remove('hidden');
+  window.print();
+  area.classList.add('hidden');
+  area.innerHTML='';
+}
+function finishSession(){
+  const s = getStudent(state.name);
+  const avg = Math.round(state.records.reduce((sum,r)=>sum+r.score,0)/state.records.length);
+  s.examLogs.push({
+    date: fmtDT(Date.now()),
+    avg, count: state.records.length,
+    cats: [...new Set(state.records.map(r=>r.cat))],
+    modeLabel: state._modeLabel
+  });
+  if(s.examLogs.length>40) s.examLogs = s.examLogs.slice(-40);
+  delete s.inProgress; // 여기서 끝냈으니 이어풀기 기록은 삭제
+  setStudent(state.name, s);
+  const wrongIds = state.records.filter(r=>r.score<WRONG_THRESHOLD).map(r=>r.id);
+  submitToSheet({
+    name: state.name,
+    modeLabel: state._modeLabel,
+    score: avg,
+    totalCount: state.records.length,
+    wrongIds: wrongIds,
+    records: state.records
+  }).then(ok=>{
+    const el=document.getElementById('sheetSendStatus');
+    if(el) el.textContent = ok? '✅ 선생님께 결과가 전송됐어요.' : '⚠️ 전송에 실패했어요 (인터넷 연결을 확인해주세요).';
+  });
+  screen='result';
+  render();
+}
+async function finishEarly(){
+  if(!state.records.length){
+    await showAlert('아직 답변한 문제가 없어요. 최소 한 문제는 풀고 눌러주세요.');
+    return;
+  }
+  const remain = state.queue.length - state.records.length;
+  const ok = await showConfirm(`지금까지 ${state.records.length}문항을 풀었어요. 여기서 끝내고 점수를 볼까요?${remain>0? ` (나머지 ${remain}문항은 풀지 않은 것으로 처리돼요)`:''}`);
+  if(!ok) return;
+  finishSession();
+}
+function goNext(){
+  if(state.idx < state.queue.length-1){
+    state.idx += 1;
+    state.answerText='';
+    recFinalBase='';
+    screen='quiz';
+    render();
+  } else {
+    finishSession();
+  }
+}
+
+render();
+</script>
+</body>
+</html>
