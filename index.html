@@ -2270,10 +2270,25 @@ async function downloadLocalWrongNotePDF(name){
   await downloadWrongNotePDF(name, getLocalWrongList(name));
 }
 async function fetchStudentFromSheet(name){
-  const url = SHEET_WEBHOOK_URL + '?name=' + encodeURIComponent(name.trim());
-  const res = await fetch(url);
-  if(!res.ok) throw new Error('네트워크 오류');
-  return await res.json();
+  // 기존 Code.gs: ?name=이름 → 배열 반환
+  // 새 Code.gs: ?action=student&app=...&name=이름 → {ok, sessions:[...]} 반환
+  // 둘 다 시도해서 작동하는 쪽 사용
+  const url1 = SHEET_WEBHOOK_URL + '?name=' + encodeURIComponent(name.trim());
+  const url2 = SHEET_WEBHOOK_URL + '?action=student&app=' + encodeURIComponent(APP_ID) + '&name=' + encodeURIComponent(name.trim());
+  let data;
+  try{
+    const res = await fetch(url1);
+    if(res.ok) data = await res.json();
+  }catch(e){}
+  if(Array.isArray(data)) return data; // 기존 Code.gs 응답
+  try{
+    const res = await fetch(url2);
+    if(res.ok){
+      const d = await res.json();
+      if(d.ok && Array.isArray(d.sessions)) return d.sessions;
+    }
+  }catch(e){}
+  return [];
 }
 function buildWrongListFromSheetRows(rows){
   const map = {};
@@ -2306,9 +2321,40 @@ function buildEverWrongListFromSheetRows(rows){
 }
 let sheetStudentsCache = null;
 async function fetchAllStudentsFromSheet(){
+  // 기존 시트 구조: A=날짜, B=이름, C=예상모드, D=총점, E=문항수, F=오답ID목록, G=상세기록
+  // 파라미터 없이 GET하면 기존 Code.gs가 전체 목록 반환
   const res = await fetch(SHEET_WEBHOOK_URL);
   if(!res.ok) throw new Error('네트워크 오류');
-  return await res.json();
+  const data = await res.json();
+  // 기존 Code.gs 응답: 배열 [{date,name,modeLabel,score,totalCount,wrongIds,records}]
+  if(Array.isArray(data)){
+    const map = {};
+    data.forEach(r=>{
+      const nm = r.name||'';
+      if(!nm) return;
+      if(!map[nm]) map[nm]={name:nm, sessions:0, scoreSum:0, lastDate:null};
+      map[nm].sessions++;
+      map[nm].scoreSum += Number(r.score||0);
+      const d = r.date ? new Date(r.date) : null;
+      if(d && (!map[nm].lastDate || d > new Date(map[nm].lastDate))) map[nm].lastDate = r.date;
+    });
+    return Object.values(map).map(s=>({
+      name: s.name,
+      sessions: s.sessions,
+      avg: s.sessions ? Math.round(s.scoreSum/s.sessions) : 0,
+      lastDate: s.lastDate ? new Date(s.lastDate).toLocaleDateString('ko-KR') : '-'
+    })).sort((a,b)=> (b.lastDate > a.lastDate ? 1 : -1));
+  }
+  // 새 Code.gs 응답: {ok, students:[{name,count,avg,last}]}
+  if(data.ok && Array.isArray(data.students)){
+    return data.students.map(s=>({
+      name: s.name,
+      sessions: s.count,
+      avg: s.avg,
+      lastDate: s.last ? new Date(s.last).toLocaleDateString('ko-KR') : '-'
+    }));
+  }
+  throw new Error('알 수 없는 응답 형식');
 }
 function renderSheetAllList(list){
   const el = document.getElementById('sheetAllList');
