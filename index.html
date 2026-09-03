@@ -1132,30 +1132,27 @@ function pickNewerSnapshot(a, b){
   if(a && b) return (b.ts||0) > (a.ts||0) ? b : a;
   return a || b || null;
 }
+
+// 스킬 방식: 로그인 후 기존 Code.gs(?name=이름)로 시트에서 이 학생 전체 기록 가져와서
+// "진행중" 세션의 이어풀기 스냅샷과 오답 목록을 미리 캐싱
 async function fetchServerResumeSnapshots(name){
   const empty = {normal: null, wrong: null};
   if(!SHEET_WEBHOOK_URL || !name) return empty;
   try{
-    const res = await fetch(SHEET_WEBHOOK_URL + '?action=student&app=' + encodeURIComponent(APP_ID) + '&name=' + encodeURIComponent(name));
-    const data = await res.json();
-    if(!data.ok || !Array.isArray(data.sessions)) return empty;
-    const byGroup = {normal: null, wrong: null};
-    data.sessions.forEach(s=>{
-      if(s.finished) return;
-      const r = s.resume;
-      if(!r || !r.queueIds || !r.queueIds.length) return;
-      const g = resumeGroup(r.modeLabel||'');
-      if(!byGroup[g] || (r.ts||0) > (byGroup[g].ts||0)) byGroup[g] = r;
-    });
-    return byGroup;
+    const rows = await fetchStudentFromSheet(name);
+    if(!rows || !rows.length) return empty;
+    // 일반 모드와 오답 모드 이어풀기 스냅샷 분리
+    const normalSnap = buildServerResumeFromRows(rows.filter(r=>!(r.modeLabel||'').includes('오답')));
+    const wrongSnap = buildServerResumeFromRows(rows.filter(r=>(r.modeLabel||'').includes('오답')));
+    return {normal: normalSnap, wrong: wrongSnap};
   }catch(e){ return empty; }
 }
 async function fetchStudentSessions(name){
+  // 기존 Code.gs: ?name=이름 → 배열 반환
   if(!SHEET_WEBHOOK_URL || !name) return {ok:false, sessions:[]};
   try{
-    const res = await fetch(SHEET_WEBHOOK_URL + '?action=student&app=' + encodeURIComponent(APP_ID) + '&name=' + encodeURIComponent(name));
-    const data = await res.json();
-    return data.ok ? {ok:true, sessions: data.sessions||[]} : {ok:false, sessions:[]};
+    const rows = await fetchStudentFromSheet(name);
+    return {ok:true, sessions: rows};
   }catch(e){ return {ok:false, sessions:[]}; }
 }
 function isMobileDevice(){
@@ -1805,26 +1802,43 @@ function renderSetup(){
   const countChips = counts.map(n=>`<div class="opt-chip ${state.count===n?'active':''}" data-count="${n}">${n===999?'전체':n+'문제'}</div>`).join('');
   const wc = wrongCount(name);
   const ewc = everWrongCount(name);
-  const ip = getInProgress(name);
+  // 스킬 방식: 로컬 스냅샷과 서버 스냅샷 중 더 최신 것을 선택
+  const localNormal = getStudent(name).inProgress || null;
+  const localWrong = getStudent(name).inProgressWrong || null;
+  const snapNormal = pickNewerSnapshot(
+    (localNormal && localNormal.queueIds && localNormal.queueIds.length && (localNormal.records||[]).length < localNormal.queueIds.length) ? localNormal : null,
+    serverResumeCache && serverResumeCache.normal
+  );
+  const snapWrong = pickNewerSnapshot(
+    (localWrong && localWrong.queueIds && localWrong.queueIds.length && (localWrong.records||[]).length < localWrong.queueIds.length) ? localWrong : null,
+    serverResumeCache && serverResumeCache.wrong
+  );
+  function resumeBoxHtml(snap, group){
+    if(!snap || !snap.queueIds || !snap.queueIds.length) return '';
+    const done = (snap.records||[]).length;
+    const total = snap.queueIds.length;
+    const isServer = !snap.savedAt || (serverResumeCache && (group==='normal' ? serverResumeCache.normal===snap : serverResumeCache.wrong===snap));
+    const sourceNote = isServer ? ' (다른 기기에서 풀던 기록)' : '';
+    return `
+    <div class="card" style="border:2px solid var(--gold);margin-bottom:12px;">
+      <h2 class="card-title" style="font-size:15px;">⏸️ 이어서 풀 수 있는 ${group==='wrong'?'오답모드 ':''}면접이 있어요${sourceNote}</h2>
+      <p class="card-sub">${done} / ${total}문항까지 풀었어요 · ${snap.modeLabel||''} · ${snap.savedAt||''}</p>
+      <div class="row2">
+        <button class="btn btn-ghost discardResumeBtn" data-group="${group}">새로 시작</button>
+        <button class="btn btn-gold resumeBtn" data-group="${group}">▶ 이어풀기</button>
+      </div>
+    </div>`;
+  }
   const supportNote = SR? '' : `<div class="warnbox">⚠️ 이 브라우저는 음성 인식(Web Speech API)을 지원하지 않아요. 데스크톱 Chrome 브라우저를 권장하며, 지원되지 않으면 답변을 직접 입력해서 채점할 수 있어요.</div>`;
   return `
   ${supportNote}
   <div class="card">
-    <h2 class="card-title">👤 이름을 입력해주세요</h2>
-    <p class="card-sub">기록·오답노트는 이름별로 저장돼요.</p>
-    <input type="text" id="nameInput" placeholder="이름을 입력하세요" value="${escapeHtml(name)}">
+    <p class="card-sub" style="margin:0 0 4px;">👋 <b>${escapeHtml(name)}</b>님, 반가워요!</p>
+    <span class="giveup" id="logoutBtn" style="font-size:13px;">🚪 다른 사람으로 로그인</span>
   </div>
 
-  ${ip? `
-  <div class="card" style="border:2px solid var(--gold);">
-    <h2 class="card-title" style="font-size:15.5px;">📌 이어서 풀 면접이 있어요</h2>
-    <p class="card-sub">${(ip.records||[]).length} / ${ip.queueIds.length}문항까지 풀었어요 · ${ip.modeLabel||''} · ${ip.savedAt||''}</p>
-    <div class="row2">
-      <button class="btn btn-ghost" id="discardProgressBtn">새로 시작</button>
-      <button class="btn btn-gold" id="resumeBtn">▶ 이어서 풀기</button>
-    </div>
-  </div>
-  ` : ''}
+  ${resumeBoxHtml(snapNormal, 'normal')}
+  ${resumeBoxHtml(snapWrong, 'wrong')}
 
   <div class="card">
     <h2 class="card-title">면접 모드 선택</h2>
@@ -2270,46 +2284,43 @@ async function downloadLocalWrongNotePDF(name){
   await downloadWrongNotePDF(name, getLocalWrongList(name));
 }
 async function fetchStudentFromSheet(name){
-  // 기존 Code.gs: ?name=이름 → 배열 반환
-  // 새 Code.gs: ?action=student&app=...&name=이름 → {ok, sessions:[...]} 반환
-  // 둘 다 시도해서 작동하는 쪽 사용
-  const url1 = SHEET_WEBHOOK_URL + '?name=' + encodeURIComponent(name.trim());
-  const url2 = SHEET_WEBHOOK_URL + '?action=student&app=' + encodeURIComponent(APP_ID) + '&name=' + encodeURIComponent(name.trim());
-  let data;
-  try{
-    const res = await fetch(url1);
-    if(res.ok) data = await res.json();
-  }catch(e){}
-  if(Array.isArray(data)) return data; // 기존 Code.gs 응답
-  try{
-    const res = await fetch(url2);
-    if(res.ok){
-      const d = await res.json();
-      if(d.ok && Array.isArray(d.sessions)) return d.sessions;
-    }
-  }catch(e){}
+  // 기존 Code.gs: ?name=이름 → 그 학생 기록 배열 반환
+  const url = SHEET_WEBHOOK_URL + '?name=' + encodeURIComponent(name.trim());
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('네트워크 오류');
+  const data = await res.json();
+  if(Array.isArray(data)) return data;
   return [];
 }
 function buildWrongListFromSheetRows(rows){
-  const map = {};
-  rows.forEach(row=>{
-    let records=[];
+  // 스킬 방식: 시간순(오래된→최신)으로 재생하면서
+  // 틀리면 추가, 나중에 맞히면 제거 → "현재 시점 오답"만 남김
+  const sorted = rows.slice().sort((a,b)=>{
+    const ta = a.date ? new Date(a.date).getTime() : 0;
+    const tb = b.date ? new Date(b.date).getTime() : 0;
+    return ta - tb; // 오래된 것 먼저
+  });
+  const wrongMap = {};
+  sorted.forEach(row=>{
+    let records = [];
     try{ records = JSON.parse(row.records || '[]'); }catch(e){ records=[]; }
     records.forEach(r=>{
-      if(r.score < WRONG_THRESHOLD && QMAP[r.id]){
-        map[r.id] = {id:r.id, lastAnswer:r.answer, lastScore:r.score};
-      } else if(map[r.id] && r.score >= WRONG_THRESHOLD){
-        delete map[r.id]; // 나중에 다시 풀어서 통과했으면 오답노트에서 제외
+      if(!QMAP[r.id]) return;
+      if(r.score < WRONG_THRESHOLD){
+        wrongMap[r.id] = {id:r.id, lastAnswer:r.answer, lastScore:r.score};
+      } else {
+        // 나중에 맞혔으면 오답에서 제거 (스킬의 answers[qid]===true 처리와 동일)
+        delete wrongMap[r.id];
       }
     });
   });
-  return Object.values(map);
+  return Object.values(wrongMap);
 }
 function buildEverWrongListFromSheetRows(rows){
   // 누적 오답: 한 번이라도 틀렸으면 나중에 맞혀도 목록에서 빼지 않음
   const map = {};
   rows.forEach(row=>{
-    let records=[];
+    let records = [];
     try{ records = JSON.parse(row.records || '[]'); }catch(e){ records=[]; }
     records.forEach(r=>{
       if(r.score < WRONG_THRESHOLD && QMAP[r.id]){
@@ -2319,42 +2330,58 @@ function buildEverWrongListFromSheetRows(rows){
   });
   return Object.values(map);
 }
+
+// 스킬 방식: 시트에서 가져온 rows 중 "진행중"인 가장 최근 세션의 이어풀기 스냅샷 반환
+function buildServerResumeFromRows(rows){
+  // "진행중"인 세션 = modeLabel에 "(진행중)" 포함
+  const inProgress = rows.filter(r=>(r.modeLabel||'').includes('진행중'));
+  if(!inProgress.length) return null;
+  // 가장 최근 진행중 세션
+  const sorted = inProgress.slice().sort((a,b)=>{
+    const ta = a.date ? new Date(a.date).getTime() : 0;
+    const tb = b.date ? new Date(b.date).getTime() : 0;
+    return tb - ta; // 최신 먼저
+  });
+  const latest = sorted[0];
+  let records = [];
+  try{ records = JSON.parse(latest.records || '[]'); }catch(e){ records=[]; }
+  // queueIds가 저장돼 있으면 사용, 없으면 null (이어풀기 불가)
+  const queueIds = latest.queueIds || null;
+  if(!queueIds || !queueIds.length) return null;
+  return {
+    queueIds,
+    records,
+    modeLabel: (latest.modeLabel||'').replace(' (진행중)',''),
+    savedAt: latest.date || '',
+    ts: latest.date ? new Date(latest.date).getTime() : 0
+  };
+}
 let sheetStudentsCache = null;
 async function fetchAllStudentsFromSheet(){
-  // 기존 시트 구조: A=날짜, B=이름, C=예상모드, D=총점, E=문항수, F=오답ID목록, G=상세기록
-  // 파라미터 없이 GET하면 기존 Code.gs가 전체 목록 반환
+  // 기존 Code.gs: 파라미터 없이 GET → 전체 기록 배열 반환
+  // [{date, name, modeLabel, score, totalCount, wrongIds, records}, ...]
   const res = await fetch(SHEET_WEBHOOK_URL);
   if(!res.ok) throw new Error('네트워크 오류');
   const data = await res.json();
-  // 기존 Code.gs 응답: 배열 [{date,name,modeLabel,score,totalCount,wrongIds,records}]
-  if(Array.isArray(data)){
-    const map = {};
-    data.forEach(r=>{
-      const nm = r.name||'';
-      if(!nm) return;
-      if(!map[nm]) map[nm]={name:nm, sessions:0, scoreSum:0, lastDate:null};
-      map[nm].sessions++;
-      map[nm].scoreSum += Number(r.score||0);
-      const d = r.date ? new Date(r.date) : null;
-      if(d && (!map[nm].lastDate || d > new Date(map[nm].lastDate))) map[nm].lastDate = r.date;
-    });
-    return Object.values(map).map(s=>({
+  if(!Array.isArray(data)) throw new Error('응답 형식 오류');
+  // 이름별로 묶어서 응시횟수/평균/최근일 계산
+  const map = {};
+  data.forEach(r=>{
+    const nm = (r.name||'').trim();
+    if(!nm) return;
+    if(!map[nm]) map[nm]={name:nm, sessions:0, scoreSum:0, lastDate:''};
+    map[nm].sessions++;
+    map[nm].scoreSum += Number(r.score||0);
+    if(!map[nm].lastDate || r.date > map[nm].lastDate) map[nm].lastDate = r.date||'';
+  });
+  return Object.values(map)
+    .map(s=>({
       name: s.name,
       sessions: s.sessions,
-      avg: s.sessions ? Math.round(s.scoreSum/s.sessions) : 0,
-      lastDate: s.lastDate ? new Date(s.lastDate).toLocaleDateString('ko-KR') : '-'
-    })).sort((a,b)=> (b.lastDate > a.lastDate ? 1 : -1));
-  }
-  // 새 Code.gs 응답: {ok, students:[{name,count,avg,last}]}
-  if(data.ok && Array.isArray(data.students)){
-    return data.students.map(s=>({
-      name: s.name,
-      sessions: s.count,
-      avg: s.avg,
-      lastDate: s.last ? new Date(s.last).toLocaleDateString('ko-KR') : '-'
-    }));
-  }
-  throw new Error('알 수 없는 응답 형식');
+      avg: Math.round(s.scoreSum/s.sessions),
+      lastDate: s.lastDate ? String(s.lastDate).slice(0,16) : '-'
+    }))
+    .sort((a,b)=> b.lastDate > a.lastDate ? 1 : -1);
 }
 function renderSheetAllList(list){
   const el = document.getElementById('sheetAllList');
@@ -2429,7 +2456,7 @@ function bindEvents(){
     if(loginPwInput) loginPwInput.onkeydown=(e)=>{ if(e.key==='Enter') attemptLogin(); };
   }
   else if(screen==='setup'){
-    const nameEl=document.getElementById('nameInput');
+    const nameEl=document.getElementById('nameInput'); // 로그인 후엔 없음(읽기 전용)
     if(nameEl){
       nameEl.oninput=(e)=>{ state.name=e.target.value; };
       nameEl.onblur=()=>{ saveLastUsedName(state.name.trim()); render(); };
@@ -2471,16 +2498,32 @@ function bindEvents(){
       if(startBtn){ startBtn.disabled=false; startBtn.textContent='🎓 면접 시작하기'; }
     };
     document.getElementById('micTestBtn').onclick=()=>testMic();
-    document.getElementById('myStatsBtn').onclick=()=>{ state.name=nameEl.value.trim(); saveLastUsedName(state.name); screen='mystats'; render(); };
+    document.getElementById('myStatsBtn').onclick=()=>{ screen='mystats'; render(); };
     document.getElementById('teacherBtn').onclick=()=>{ screen='tlogin'; render(); };
-    const resumeBtn=document.getElementById('resumeBtn');
-    if(resumeBtn) resumeBtn.onclick=()=>{ state.name=nameEl.value.trim(); saveLastUsedName(state.name); resumeInterview(); };
-    const discardBtn=document.getElementById('discardProgressBtn');
-    if(discardBtn) discardBtn.onclick=async()=>{
-      state.name=nameEl.value.trim();
-      const ok=await showConfirm('진행 중이던 면접 기록을 삭제하고 새로 시작할까요?');
-      if(ok){ discardProgress(state.name); render(); }
-    };
+    const logoutBtn=document.getElementById('logoutBtn');
+    if(logoutBtn) logoutBtn.onclick=()=>{ state=newSession(); serverResumeCache={normal:null,wrong:null}; screen='login'; render(); };
+    // 스킬 방식: 이어풀기 버튼들 (일반/오답 모드 별도)
+    document.querySelectorAll('.resumeBtn').forEach(btn=>{
+      btn.onclick=()=>{
+        const group = btn.dataset.group;
+        const snap = group==='wrong'
+          ? pickNewerSnapshot(getStudent(state.name).inProgressWrong||null, serverResumeCache&&serverResumeCache.wrong)
+          : pickNewerSnapshot(getStudent(state.name).inProgress||null, serverResumeCache&&serverResumeCache.normal);
+        resumeInterview(snap);
+      };
+    });
+    document.querySelectorAll('.discardResumeBtn').forEach(btn=>{
+      btn.onclick=async()=>{
+        const group = btn.dataset.group;
+        const ok=await showConfirm('이 이어풀기 기록을 지울까요? 새로 시작해야 해요.');
+        if(!ok) return;
+        const s=getStudent(state.name);
+        if(group==='wrong') delete s.inProgressWrong; else delete s.inProgress;
+        setStudent(state.name, s);
+        if(serverResumeCache) serverResumeCache[group==='wrong'?'wrong':'normal']=null;
+        render();
+      };
+    });
   }
   else if(screen==='quiz'){
     const curQ = state.queue[state.idx];
@@ -2805,29 +2848,40 @@ async function submitAnswer(){
   } else {
     if(s.wrong[q.id]) delete s.wrong[q.id];
   }
-  // 진행 상황 자동 저장: 중간에 그만두어도 다음에 이어서 풀 수 있도록 체크포인트를 남김
+  // 진행 상황 자동 저장: 스킬 방식 - 일반/오답 모드를 별도 슬롯에 저장
+  const isWrongMode = state.mode==='wrong'||state.mode==='cumwrong';
+  const snapSlot = isWrongMode ? 'inProgressWrong' : 'inProgress';
   if(state.records.length < state.queue.length){
-    s.inProgress = {
+    const snap = {
       queueIds: state.queue.map(x=>x.id),
       records: state.records.slice(),
       modeLabel: state._modeLabel || '',
-      savedAt: fmtDT(Date.now())
+      savedAt: fmtDT(Date.now()),
+      ts: Date.now()
     };
+    s[snapSlot] = snap;
+    // 서버 캐시도 업데이트 (같은 기기의 다른 탭에서 바로 반영)
+    if(serverResumeCache) serverResumeCache[isWrongMode?'wrong':'normal'] = snap;
   } else {
-    delete s.inProgress; // 마지막 문제까지 다 풀었으면 이어풀기 기록은 삭제
+    delete s[snapSlot];
+    if(serverResumeCache) serverResumeCache[isWrongMode?'wrong':'normal'] = null;
   }
   setStudent(state.name, s);
 
   // 문제 하나 풀 때마다 바로 구글 시트에 누적 전송 (중간에 그만둬도 지금까지 기록은 남도록)
   const wrongIdsSoFar = state.records.filter(r=>r.score<WRONG_THRESHOLD).map(r=>r.id);
   const avgSoFar = Math.round(state.records.reduce((sum,r)=>sum+r.score,0)/state.records.length);
+  const isInProgress = state.records.length < state.queue.length;
   submitToSheet({
     name: state.name,
-    modeLabel: (state._modeLabel||'') + (state.records.length<state.queue.length? ' (진행중)':''),
+    modeLabel: (state._modeLabel||'') + (isInProgress? ' (진행중)':''),
     score: avgSoFar,
     totalCount: state.records.length,
     wrongIds: wrongIdsSoFar,
-    records: state.records
+    records: state.records,
+    // 이어풀기를 위해 전체 문제 목록과 현재 진행 인덱스도 함께 저장
+    queueIds: isInProgress ? state.queue.map(x=>x.id) : [],
+    resumeIdx: isInProgress ? state.records.length : -1
   });
 
   screen='feedback';
@@ -2836,24 +2890,32 @@ async function submitAnswer(){
 
 function getInProgress(name){
   if(!name || !name.trim()) return null;
+  // 로컬 스냅샷
   const s = getStudent(name);
-  const ip = s.inProgress;
-  if(!ip || !ip.queueIds || !ip.queueIds.length) return null;
-  if((ip.records||[]).length >= ip.queueIds.length) return null;
-  return ip;
+  const localSnap = (()=>{
+    const ip = s.inProgress;
+    if(!ip || !ip.queueIds || !ip.queueIds.length) return null;
+    if((ip.records||[]).length >= ip.queueIds.length) return null;
+    return ip;
+  })();
+  // 서버 스냅샷 (로그인 시 캐싱된 것)
+  const serverSnap = serverResumeCache && serverResumeCache.normal;
+  // 스킬 방식: 더 최신 것을 선택
+  return pickNewerSnapshot(localSnap, serverSnap);
 }
-function resumeInterview(){
-  const s = getStudent(state.name);
-  const ip = s.inProgress;
+function resumeInterview(snap){
+  // snap이 없으면 getInProgress로 가져옴
+  const ip = snap || getInProgress(state.name);
   if(!ip || !ip.queueIds || !ip.queueIds.length){ showAlert('이어서 풀 수 있는 면접이 없어요.'); return; }
   const queue = ip.queueIds.map(id=>QMAP[id]).filter(Boolean);
-  if(!queue.length){ showAlert('이어서 풀 수 있는 면접이 없어요.'); return; }
+  if(!queue.length){ showAlert('이어서 풀 수 있는 면접이 없어요. 문제 목록이 바뀐 것 같아요.'); return; }
   state.queue = queue;
   state.records = (ip.records||[]).slice();
   state.idx = Math.min(state.records.length, queue.length-1);
   state.answerText='';
   state._modeLabel = (ip.modeLabel||'이어서 풀기');
   recFinalBase='';
+  lastTTSQuestionId = null;
   screen='quiz';
   render();
 }
@@ -2861,6 +2923,8 @@ function discardProgress(name){
   const s = getStudent(name);
   delete s.inProgress;
   setStudent(name, s);
+  // 서버 캐시도 초기화
+  if(serverResumeCache) serverResumeCache.normal = null;
 }
 
 function printResultA4(){
@@ -2897,7 +2961,10 @@ function finishSession(){
     modeLabel: state._modeLabel
   });
   if(s.examLogs.length>40) s.examLogs = s.examLogs.slice(-40);
-  delete s.inProgress; // 여기서 끝냈으니 이어풀기 기록은 삭제
+  // 완료 시 모드별 이어풀기 슬롯 모두 정리
+  const isWrongMode = state.mode==='wrong'||state.mode==='cumwrong';
+  if(isWrongMode){ delete s.inProgressWrong; if(serverResumeCache) serverResumeCache.wrong=null; }
+  else { delete s.inProgress; if(serverResumeCache) serverResumeCache.normal=null; }
   setStudent(state.name, s);
   const wrongIds = state.records.filter(r=>r.score<WRONG_THRESHOLD).map(r=>r.id);
   submitToSheet({
