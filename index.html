@@ -32,7 +32,9 @@ body{margin:0;font-family:'Noto Sans KR',sans-serif;color:var(--ink);
 h2.card-title{font-family:'Noto Serif KR',serif;font-size:19px;margin:0 0 4px;color:var(--navy);font-weight:700;}
 .card-sub{font-size:12.5px;color:var(--sub);margin:0 0 14px;}
 label.field-label{display:block;font-size:13.5px;font-weight:700;margin:16px 0 8px;color:var(--ink);}
-input[type=text],input[type=password]{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;background:#fffdf8;font-family:inherit;}
+input[type=text],input[type=password]{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;background:#fffdf8;font-family:inherit;box-sizing:border-box;}
+.row2{min-width:0;}
+.row2 input[type=text],.row2 input[type=password]{min-width:0;}
 input[type=text]:focus,input[type=password]:focus{outline:2px solid var(--navy);}
 .chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .chip{border:1.5px solid var(--line);border-radius:14px;padding:12px;text-align:center;cursor:pointer;background:#fffdf8;transition:.15s;}
@@ -1098,29 +1100,27 @@ const DEFAULT_STUDENT_PW='1234';
 const WRONG_THRESHOLD=70; // 이 점수 미만이면 오답노트에 등록
 const SHEET_WEBHOOK_URL='https://script.google.com/macros/s/AKfycbz13PbCOXl3A-RcF-sPaFb1YTMpbqYALuBH5_0ITR3yUtbPJauXjQnnrCkZKUyvLmvv4w/exec';
 
-/* ===================== 로그인 설정 (서버에서 가져오기, 캐시) ===================== */
+/* ===================== 로그인 설정 =====================
+   Code.gs는 건드리지 않고 비밀번호를 로컬에서만 관리해요.
+   강사용 대시보드에서 비밀번호를 바꾸면 localStorage에 저장돼서
+   같은 기기에서는 유지되고, 학생들은 선생님이 알려준 번호를 입력해요. */
 let loginConfigCache = null;
 async function getLoginConfig(){
   if(loginConfigCache) return loginConfigCache;
   let password = DEFAULT_STUDENT_PW, loginEnabled = true;
-  if(SHEET_WEBHOOK_URL){
-    try{
-      const res = await fetch(SHEET_WEBHOOK_URL + '?action=getPassword&app=' + encodeURIComponent(APP_ID));
-      const j = await res.json();
-      if(j && j.ok){
-        if(j.password){ password = j.password; try{ localStorage.setItem('login_pw_'+APP_KEY, password); }catch(e){} }
-        if(typeof j.loginEnabled==='boolean'){ loginEnabled = j.loginEnabled; try{ localStorage.setItem('login_en_'+APP_KEY, loginEnabled?'Y':'N'); }catch(e){} }
-        loginConfigCache = {password, loginEnabled};
-        return loginConfigCache;
-      }
-    }catch(e){}
-  }
   try{
     const cp = localStorage.getItem('login_pw_'+APP_KEY); if(cp) password = cp;
     const ce = localStorage.getItem('login_en_'+APP_KEY); if(ce) loginEnabled = (ce==='Y');
   }catch(e){}
   loginConfigCache = {password, loginEnabled};
   return loginConfigCache;
+}
+function saveLoginConfig(password, loginEnabled){
+  loginConfigCache = {password, loginEnabled};
+  try{
+    localStorage.setItem('login_pw_'+APP_KEY, password);
+    localStorage.setItem('login_en_'+APP_KEY, loginEnabled?'Y':'N');
+  }catch(e){}
 }
 
 /* ===================== 서버 이어풀기 스냅샷 ===================== */
@@ -2108,11 +2108,26 @@ function renderTDash(){
       <td>${s.wrongCnt}</td>
       <td>${s.lastDate}</td>
     </tr>`).join('') : `<tr><td colspan="5" style="color:var(--sub);">아직 이 기기에서 응시한 학생이 없어요.</td></tr>`;
+  const curPw = (()=>{ try{ return localStorage.getItem('login_pw_ip_v2')||'1234'; }catch(e){ return '1234'; } })();
+  const loginEnabled = (()=>{ try{ return localStorage.getItem('login_en_ip_v2')!=='N'; }catch(e){ return true; } })();
   return `
   <div class="card">
     <h2 class="card-title">👩‍🏫 강사용 대시보드</h2>
     <p class="card-sub">학생이 <b>어떤 기기(폰·PC)로 풀었든</b> 구글 시트에 기록된 전체 학생이 아래에 자동으로 떠요. 이름을 누르면 오답노트를 확인·인쇄할 수 있어요.</p>
     <div id="sheetAllList"><p class="small-note">🔍 구글 시트에서 학생 목록을 불러오는 중...</p></div>
+  </div>
+  <div class="card">
+    <h2 class="card-title" style="font-size:15px;">🔑 학생 로그인 비밀번호 설정</h2>
+    <p class="card-sub">학생들이 앱에 입장할 때 쓰는 비밀번호예요. 이 기기(강사 PC)에만 저장돼요.</p>
+    <div class="toggle-row" style="margin-bottom:10px;">
+      <input type="checkbox" id="loginEnabledChk" ${loginEnabled?'checked':''}>
+      <label for="loginEnabledChk">비밀번호 입력 기능 사용</label>
+    </div>
+    <div class="row2" style="margin-bottom:6px;">
+      <input type="text" id="newPwInput" placeholder="새 비밀번호 (숫자 4자리)" value="${curPw}" style="flex:1;">
+      <button class="btn btn-primary" id="savePwBtn" style="flex:none;width:auto;white-space:nowrap;padding-left:20px;padding-right:20px;">저장</button>
+    </div>
+    <p class="small-note">저장 후 학생들에게 새 비밀번호를 알려주세요.</p>
   </div>
   <div class="card">
     <h2 class="card-title" style="font-size:15px;">🔍 이름으로 직접 검색</h2>
@@ -2129,6 +2144,15 @@ function renderTDash(){
       <tbody>${rows}</tbody>
     </table>
     <button class="btn btn-ghost" id="backSetupBtn" style="margin-top:16px;">돌아가기</button>
+  </div>
+  <div class="card">
+    <h2 class="card-title" style="font-size:15px;">📘 전체 문제 + 모범답안 PDF</h2>
+    <p class="card-sub">전체 300문항과 모범답안을 PDF로 다운받을 수 있어요. 문항 수가 많아 생성에 10~20초 걸릴 수 있어요.</p>
+    <div class="row2">
+      <button class="btn btn-outline" id="allQPrintBtn">🖨️ 인쇄하기</button>
+      <button class="btn btn-gold" id="allQPdfBtn">💾 PDF 다운로드</button>
+    </div>
+    <div id="allQStatus" style="margin-top:8px;"></div>
   </div>
   `;
 }
@@ -2265,7 +2289,9 @@ async function downloadWrongNotePDF(name, wrongList){
       y += imgH + 4;
     }
     hideLoadingModal();
-    pdf.save(`오답노트_${name||'학생'}_${fmtDate(Date.now())}.pdf`);
+    lastPdfFilename = `오답노트_${name||'학생'}_${fmtDate(Date.now())}.pdf`;
+    lastPdfBlobUrl = URL.createObjectURL(pdf.output('blob'));
+    showPdfReadyModal(`📄 ${escapeHtml(name||'학생')}님의 오답노트 PDF가 준비됐어요!<br>아래 버튼을 <b>직접 눌러서</b> 저장하거나 열어 주세요.`);
   }catch(e){
     hideLoadingModal();
     await showAlert('PDF를 만드는 중 문제가 발생했어요. 인터넷 연결을 확인하고 다시 시도해주세요.');
@@ -2364,22 +2390,30 @@ async function fetchAllStudentsFromSheet(){
   if(!res.ok) throw new Error('네트워크 오류');
   const data = await res.json();
   if(!Array.isArray(data)) throw new Error('응답 형식 오류');
-  // 이름별로 묶어서 응시횟수/평균/최근일 계산
+  // 이름별로 묶어서 응시횟수/평균/최근일 + 최근 세션 정보 계산
   const map = {};
   data.forEach(r=>{
     const nm = (r.name||'').trim();
     if(!nm) return;
-    if(!map[nm]) map[nm]={name:nm, sessions:0, scoreSum:0, lastDate:''};
+    if(!map[nm]) map[nm]={name:nm, sessions:0, scoreSum:0, lastDate:'', lastScore:0, lastCount:0, lastMode:''};
     map[nm].sessions++;
     map[nm].scoreSum += Number(r.score||0);
-    if(!map[nm].lastDate || r.date > map[nm].lastDate) map[nm].lastDate = r.date||'';
+    if(!map[nm].lastDate || r.date > map[nm].lastDate){
+      map[nm].lastDate = r.date||'';
+      map[nm].lastScore = Number(r.score||0);
+      map[nm].lastCount = Number(r.totalCount||0);
+      map[nm].lastMode = r.modeLabel||'';
+    }
   });
   return Object.values(map)
     .map(s=>({
       name: s.name,
       sessions: s.sessions,
       avg: Math.round(s.scoreSum/s.sessions),
-      lastDate: s.lastDate ? String(s.lastDate).slice(0,16) : '-'
+      lastDate: s.lastDate ? String(s.lastDate).slice(0,16) : '-',
+      lastScore: s.lastScore,
+      lastCount: s.lastCount,
+      lastMode: s.lastMode
     }))
     .sort((a,b)=> b.lastDate > a.lastDate ? 1 : -1);
 }
@@ -2394,12 +2428,19 @@ function renderSheetAllList(list){
     <tr class="clickable" data-sheetname="${escapeHtml(s.name)}">
       <td style="text-align:left;">${escapeHtml(s.name)}</td>
       <td>${s.sessions}</td>
-      <td>${s.avg}점</td>
+      <td style="color:var(--sub);font-size:12px;">${s.lastCount?s.lastCount+'문항':'—'}</td>
+      <td style="font-weight:700;">${s.lastCount?s.lastScore+'점':'—'}</td>
       <td>${s.lastDate? new Date(s.lastDate).toLocaleDateString('ko-KR') : '-'}</td>
     </tr>`).join('');
   el.innerHTML = `
     <table>
-      <thead><tr><th style="text-align:left;">이름</th><th>제출횟수</th><th>평균</th><th>최근 제출일</th></tr></thead>
+      <thead><tr>
+        <th style="text-align:left;">이름</th>
+        <th>제출횟수</th>
+        <th>최근 문항수</th>
+        <th>최근 점수</th>
+        <th>최근 제출일</th>
+      </tr></thead>
       <tbody>${rows}</tbody>
     </table>
   `;
@@ -2432,9 +2473,9 @@ async function showSheetStudentDetail(nm, resultEl){
     resultEl.innerHTML = `<p class="small-note">⚠️ 검색에 실패했어요. 인터넷 연결을 확인해주세요.</p>`;
   }
 }
-function showPdfReadyModal(){
+function showPdfReadyModal(msg){
   const ov=document.getElementById('modalOverlay');
-  document.getElementById('modalMsg').innerHTML='📄 오답노트 PDF가 준비됐어요!<br>아래 버튼을 <b>직접 눌러서</b> 저장하거나 열어 주세요.';
+  document.getElementById('modalMsg').innerHTML=msg||'📄 PDF가 준비됐어요!<br>아래 버튼을 <b>직접 눌러서</b> 저장하거나 열어 주세요.';
   const btns=document.getElementById('modalBtns');
   btns.style.flexDirection='column';
   btns.innerHTML=`
@@ -2443,7 +2484,7 @@ function showPdfReadyModal(){
     <button class="btn btn-ghost" id="modalCloseBtn">닫기</button>
   `;
   ov.classList.remove('hidden');
-  document.getElementById('modalCloseBtn').onclick=()=>{ ov.classList.add('hidden'); btns.style.flexDirection=''; };
+  document.getElementById('modalCloseBtn').onclick=()=>{ ov.classList.add('hidden'); btns.style.flexDirection=''; if(lastPdfBlobUrl){ URL.revokeObjectURL(lastPdfBlobUrl); lastPdfBlobUrl=null; } };
 }
 
 /* ===================== 이벤트 ===================== */
@@ -2683,6 +2724,19 @@ function bindEvents(){
       tr.onclick=()=>{ tDetailName=tr.dataset.name; screen='tdetail'; render(); };
     });
     document.getElementById('backSetupBtn').onclick=()=>{ screen='setup'; render(); };
+    const savePwBtn=document.getElementById('savePwBtn');
+    if(savePwBtn) savePwBtn.onclick=async()=>{
+      const pw=(document.getElementById('newPwInput').value||'').trim();
+      const enabled=document.getElementById('loginEnabledChk').checked;
+      if(!pw){ await showAlert('비밀번호를 입력해주세요.'); return; }
+      saveLoginConfig(pw, enabled);
+      loginConfigCache=null; // 캐시 초기화
+      await showAlert(`저장됐어요! 학생들에게 비밀번호 "${pw}"를 알려주세요.`);
+    };
+    const allQPrintBtn=document.getElementById('allQPrintBtn');
+    if(allQPrintBtn) allQPrintBtn.onclick=()=>printAllQuestions();
+    const allQPdfBtn=document.getElementById('allQPdfBtn');
+    if(allQPdfBtn) allQPdfBtn.onclick=()=>downloadAllQuestionsPDF();
     // 구글 시트 전체 학생 목록: 캐시가 있으면 바로 표시, 없으면 불러온 뒤 캐싱
     if(sheetStudentsCache){
       renderSheetAllList(sheetStudentsCache);
@@ -2927,6 +2981,103 @@ function discardProgress(name){
   if(serverResumeCache) serverResumeCache.normal = null;
 }
 
+function buildAllQHTML(){
+  const cats = ['지구과학','물리','화학','생물'];
+  const grade_order = ['중1','중2','중3'];
+  let html = '';
+  grade_order.forEach(grade=>{
+    cats.forEach(cat=>{
+      const qs = QUESTIONS.filter(q=>q.grade===grade && q.cat===cat);
+      if(!qs.length) return;
+      html += `<div style="font-size:13px;font-weight:800;color:#1b2a4a;margin:14px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px;">${grade} · ${cat}</div>`;
+      qs.forEach((q,i)=>{
+        const isAdv = q.level==='advanced';
+        html += `<div style="border:1px solid #ddd;border-radius:5px;padding:8px 10px;margin-bottom:6px;${isAdv?'background:#fffbe6;':''}break-inside:avoid;page-break-inside:avoid;">
+          <div style="font-size:11.5px;font-weight:700;color:#1b2a4a;margin-bottom:3px;">${isAdv?'⭐ ':''}${q.q}</div>
+          <div style="font-size:10.5px;color:#2f7d5b;"><b>모범답안:</b> ${q.a}</div>
+        </div>`;
+      });
+    });
+  });
+  return html;
+}
+function printAllQuestions(){
+  const area = document.getElementById('printArea');
+  area.innerHTML = `
+    <h1 style="font-size:18px;color:#1b2a4a;margin:0 0 4px;">중등 과학 구술면접 전체 문제 + 모범답안</h1>
+    <p style="font-size:11px;color:#666;margin:0 0 10px;">GMS학원 이은정 강사 · 총 ${QUESTIONS.length}문항 · ${new Date().toLocaleDateString('ko-KR')} · ⭐=응용(상) 문항</p>
+    ${buildAllQHTML()}
+  `;
+  area.classList.remove('hidden');
+  window.print();
+  area.classList.add('hidden');
+  area.innerHTML='';
+}
+async function downloadAllQuestionsPDF(){
+  if(!window.html2canvas || !(window.jspdf && window.jspdf.jsPDF)){
+    await showAlert('PDF 라이브러리를 불러오는 중이에요. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+  const statusEl = document.getElementById('allQStatus');
+  if(statusEl) statusEl.textContent='⏳ PDF 생성 중... 잠시만 기다려주세요.';
+  const helper = document.createElement('div');
+  helper.style.cssText='position:fixed;left:-9999px;top:0;width:700px;background:#fff;box-sizing:border-box;font-family:"Noto Sans KR",sans-serif;';
+  document.body.appendChild(helper);
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const usableW = pageW - margin*2;
+    let y = margin;
+    // 제목
+    helper.innerHTML = `<h1 style="font-size:17px;color:#1b2a4a;margin:0 0 3px;">중등 과학 구술면접 전체 문제 + 모범답안</h1><p style="font-size:10px;color:#666;margin:0;">GMS학원 이은정 강사 · 총 ${QUESTIONS.length}문항 · ${new Date().toLocaleDateString('ko-KR')} · ⭐=응용(상) 문항</p>`;
+    let canvas = await html2canvas(helper,{scale:2,backgroundColor:'#fff',windowWidth:700});
+    let imgH = canvas.height*usableW/canvas.width;
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.9),'JPEG',margin,y,usableW,imgH);
+    y += imgH+4;
+    // 문항별
+    const cats = ['지구과학','물리','화학','생물'];
+    const grade_order = ['중1','중2','중3'];
+    let qNum = 0;
+    for(const grade of grade_order){
+      for(const cat of cats){
+        const qs = QUESTIONS.filter(q=>q.grade===grade && q.cat===cat);
+        if(!qs.length) continue;
+        // 섹션 헤더
+        helper.innerHTML=`<div style="font-size:12px;font-weight:800;color:#1b2a4a;border-bottom:1px solid #ccc;padding-bottom:2px;">${grade} · ${cat}</div>`;
+        canvas = await html2canvas(helper,{scale:2,backgroundColor:'#fff',windowWidth:700});
+        imgH = canvas.height*usableW/canvas.width;
+        if(y+imgH > pageH-margin){ pdf.addPage(); y=margin; }
+        pdf.addImage(canvas.toDataURL('image/jpeg',0.9),'JPEG',margin,y,usableW,imgH);
+        y+=imgH+2;
+        for(const q of qs){
+          qNum++;
+          const isAdv = q.level==='advanced';
+          helper.innerHTML=`<div style="border:1px solid #ddd;border-radius:5px;padding:7px 9px;background:${isAdv?'#fffbe6':'#fff'};">
+            <div style="font-size:11px;font-weight:700;color:#1b2a4a;margin-bottom:2px;">${isAdv?'⭐ ':''}${q.q}</div>
+            <div style="font-size:10px;color:#2f7d5b;"><b>모범답안:</b> ${q.a}</div>
+          </div>`;
+          canvas = await html2canvas(helper,{scale:2,backgroundColor:'#fff',windowWidth:700});
+          imgH = canvas.height*usableW/canvas.width;
+          if(y+imgH > pageH-margin){ pdf.addPage(); y=margin; }
+          pdf.addImage(canvas.toDataURL('image/jpeg',0.9),'JPEG',margin,y,usableW,imgH);
+          y+=imgH+3;
+        }
+        if(statusEl) statusEl.textContent=`⏳ 생성 중... ${qNum}/${QUESTIONS.length}문항`;
+      }
+    }
+    lastPdfFilename = `중등과학_구술면접_전체문제_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').replace(/ /g,'')}.pdf`;
+    lastPdfBlobUrl = URL.createObjectURL(pdf.output('blob'));
+    if(statusEl) statusEl.textContent='✅ PDF 준비 완료!';
+    showPdfReadyModal('📘 전체 문제 + 모범답안 PDF가 준비됐어요!<br>아래 버튼을 <b>직접 눌러서</b> 저장하거나 열어 주세요.');
+  }catch(e){
+    if(statusEl) statusEl.textContent='⚠️ PDF 생성 중 오류가 발생했어요.';
+  } finally {
+    if(helper.parentNode) helper.parentNode.removeChild(helper);
+  }
+}
 function printResultA4(){
   const wrongItems = state.records.filter(r=>r.score<WRONG_THRESHOLD);
   const avg = Math.round(state.records.reduce((s,r)=>s+r.score,0)/state.records.length);
