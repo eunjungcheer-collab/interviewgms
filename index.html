@@ -2383,6 +2383,26 @@ function buildServerResumeFromRows(rows){
   };
 }
 let sheetStudentsCache = null;
+function parseSheetDateTime(v){
+  // Code.gs가 날짜를 ISO 문자열, 타임스탬프(ms), 또는 구글시트 기본 표시형식
+  // ("2026. 9. 4 오후 8:42:01") 중 무엇으로 주더라도 안전하게 Date로 변환
+  if(v==null || v==='') return null;
+  if(v instanceof Date) return isNaN(v.getTime())?null:v;
+  if(typeof v==='number'){ const d=new Date(v); return isNaN(d.getTime())?null:d; }
+  const s=String(v).trim();
+  let d=new Date(s);
+  if(!isNaN(d.getTime())) return d;
+  const m=s.match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})\D*(오전|오후)?\D*(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if(m){
+    let [,y,mo,da,ap,h,mi,se]=m;
+    y=+y; mo=+mo-1; da=+da; h=+h; mi=+mi; se=se?+se:0;
+    if(ap==='오후' && h<12) h+=12;
+    if(ap==='오전' && h===12) h=0;
+    d=new Date(y,mo,da,h,mi,se);
+    if(!isNaN(d.getTime())) return d;
+  }
+  return null;
+}
 async function fetchAllStudentsFromSheet(){
   // 기존 Code.gs: 파라미터 없이 GET → 전체 기록 배열 반환
   // [{date, name, modeLabel, score, totalCount, wrongIds, records}, ...]
@@ -2395,11 +2415,12 @@ async function fetchAllStudentsFromSheet(){
   data.forEach(r=>{
     const nm = (r.name||'').trim();
     if(!nm) return;
-    if(!map[nm]) map[nm]={name:nm, sessions:0, scoreSum:0, lastDate:'', lastScore:0, lastCount:0, lastMode:''};
+    if(!map[nm]) map[nm]={name:nm, sessions:0, scoreSum:0, lastDate:null, lastScore:0, lastCount:0, lastMode:''};
     map[nm].sessions++;
     map[nm].scoreSum += Number(r.score||0);
-    if(!map[nm].lastDate || r.date > map[nm].lastDate){
-      map[nm].lastDate = r.date||'';
+    const dt = parseSheetDateTime(r.date);
+    if(!map[nm].lastDate || (dt && dt.getTime() > map[nm].lastDate.getTime())){
+      map[nm].lastDate = dt;
       map[nm].lastScore = Number(r.score||0);
       map[nm].lastCount = Number(r.totalCount||0);
       map[nm].lastMode = r.modeLabel||'';
@@ -2410,12 +2431,12 @@ async function fetchAllStudentsFromSheet(){
       name: s.name,
       sessions: s.sessions,
       avg: Math.round(s.scoreSum/s.sessions),
-      lastDate: s.lastDate ? String(s.lastDate).slice(0,16) : '-',
+      lastDate: s.lastDate,
       lastScore: s.lastScore,
       lastCount: s.lastCount,
       lastMode: s.lastMode
     }))
-    .sort((a,b)=> b.lastDate > a.lastDate ? 1 : -1);
+    .sort((a,b)=> (b.lastDate?b.lastDate.getTime():0) - (a.lastDate?a.lastDate.getTime():0));
 }
 function renderSheetAllList(list){
   const el = document.getElementById('sheetAllList');
@@ -2530,7 +2551,7 @@ function bindEvents(){
     });
     document.getElementById('shuffleChk').onchange=(e)=>{ state.shuffle=e.target.checked; };
     document.getElementById('startBtn').onclick=async()=>{
-      state.name=nameEl.value.trim();
+      if(nameEl) state.name=nameEl.value.trim(); // 로그인 후에는 nameInput이 없으므로 기존 state.name(로그인 시 입력한 이름)을 그대로 사용
       if(!state.name){ await showAlert('이름을 먼저 입력해주세요!'); return; }
       saveLastUsedName(state.name);
       const startBtn=document.getElementById('startBtn');
