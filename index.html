@@ -1094,6 +1094,7 @@ const CATS = ['지구과학','물리','화학','생물'];
 const CAT_ICON = {'지구과학':'🌍','물리':'⚡','화학':'🧪','생물':'🌱'};
 const QMAP = {}; QUESTIONS.forEach(q=>QMAP[q.id]=q);
 const APP_KEY='ip_v2';
+function genSessionId(){ return Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8); }
 const APP_ID='interview_gms_v2'; // 구글 시트에서 이 앱의 기록을 구분하는 고유 ID
 const TEACHER_PW='0000';
 const DEFAULT_STUDENT_PW='1234';
@@ -2380,7 +2381,8 @@ function buildServerResumeFromRows(rows){
     records,
     modeLabel: (latest.modeLabel||'').replace(' (진행중)',''),
     savedAt: latest.date || '',
-    ts: latest.date ? new Date(latest.date).getTime() : 0
+    ts: latest.date ? new Date(latest.date).getTime() : 0,
+    sessionId: latest.sessionId || ''
   };
 }
 let sheetStudentsCache = null;
@@ -2417,7 +2419,7 @@ function getTDashCheckpoint(){
 }
 function saveTDashCheckpoint(list){
   const data = {};
-  (list||[]).forEach(s=>{ data[s.name] = s.sessions; });
+  (list||[]).forEach(s=>{ data[s.name] = s.totalQuestions; });
   const cp = { savedAt: new Date().toISOString(), data };
   try{ localStorage.setItem(TDASH_CHECKPOINT_KEY, JSON.stringify(cp)); }catch(e){}
   return cp;
@@ -2442,10 +2444,10 @@ function renderTDashSummary(list){
   if(!cp){
     topDeltaHtml = `<div class="infobox">📌 아래 '체크포인트 저장'을 누르면, 그 이후 학생별로 몇 문제를 더 풀었는지 확인할 수 있어요.</div>`;
   } else {
-    const withDelta = list.map(s=>({...s, delta: s.sessions - (cp.data[s.name]||0)})).filter(s=>s.delta>0);
+    const withDelta = list.map(s=>({...s, delta: s.totalQuestions - (cp.data[s.name]||0)})).filter(s=>s.delta>0);
     if(withDelta.length){
       const topDelta = withDelta.reduce((a,b)=> b.delta>a.delta ? b : a);
-      topDeltaHtml = `<div class="infobox">🔥 체크포인트(${fmtCheckpointTime(cp.savedAt)}) 이후 최다 제출 · <b>${escapeHtml(topDelta.name)}</b> (+${topDelta.delta}회)</div>`;
+      topDeltaHtml = `<div class="infobox">🔥 체크포인트(${fmtCheckpointTime(cp.savedAt)}) 이후 최다 제출 · <b>${escapeHtml(topDelta.name)}</b> (+${topDelta.delta}문제)</div>`;
     } else {
       topDeltaHtml = `<div class="infobox">🔥 체크포인트(${fmtCheckpointTime(cp.savedAt)}) 이후 아직 새로 제출한 학생이 없어요.</div>`;
     }
@@ -2466,7 +2468,8 @@ async function fetchAllStudentsFromSheet(){
       avg: Math.round(Number(r.avg||0)),
       lastDate: parseSheetDateTime(r.lastDate),
       todayCount: Number(r.todayCount||0),
-      todayAvg: (r.todayAvg==null || r.todayAvg==='') ? null : Math.round(Number(r.todayAvg))
+      todayAvg: (r.todayAvg==null || r.todayAvg==='') ? null : Math.round(Number(r.todayAvg)),
+      totalQuestions: Number(r.totalQuestions||0)
     }))
     .filter(s=>s.name)
     .sort((a,b)=> (b.lastDate?b.lastDate.getTime():0) - (a.lastDate?a.lastDate.getTime():0));
@@ -2481,9 +2484,9 @@ function renderSheetAllList(list){
   }
   const cp = getTDashCheckpoint();
   const rows = list.map(s=>{
-    const delta = cp ? (s.sessions - (cp.data[s.name]||0)) : null;
+    const delta = cp ? (s.totalQuestions - (cp.data[s.name]||0)) : null;
     const deltaHtml = cp
-      ? (delta>0 ? `<span style="color:var(--navy);font-weight:800;">+${delta}</span>` : `<span style="color:var(--sub);">-</span>`)
+      ? (delta>0 ? `<span style="color:var(--navy);font-weight:800;">+${delta}문제</span>` : `<span style="color:var(--sub);">-</span>`)
       : `<span style="color:var(--sub);">—</span>`;
     const todayHtml = s.todayCount
       ? `<span style="color:var(--navy);font-weight:800;">${s.todayCount}회</span><br><span style="color:var(--sub);font-size:11px;">평균 ${s.todayAvg}점</span>`
@@ -2492,6 +2495,7 @@ function renderSheetAllList(list){
     <tr class="clickable" data-sheetname="${escapeHtml(s.name)}">
       <td style="text-align:left;">${escapeHtml(s.name)}</td>
       <td>${s.sessions}</td>
+      <td>${s.totalQuestions}문제</td>
       <td style="font-weight:700;">${s.sessions?s.avg+'점':'—'}</td>
       <td>${todayHtml}</td>
       <td>${deltaHtml}</td>
@@ -2508,6 +2512,7 @@ function renderSheetAllList(list){
       <thead><tr>
         <th style="text-align:left;">이름</th>
         <th>제출횟수</th>
+        <th>총 문제수</th>
         <th>평균 점수</th>
         <th>오늘</th>
         <th>체크포인트 이후</th>
@@ -2543,6 +2548,21 @@ function buildDailyStatsFromSheetRows(rows){
     .map(d=>({date:d.date, count:d.count, avg:Math.round(d.scoreSum/d.count)}))
     .sort((a,b)=> (byDate[b.date]?byDate[b.date].ts:0) - (byDate[a.date]?byDate[a.date].ts:0));
 }
+function buildSessionLogFromSheetRows(rows){
+  // 날짜별 집계가 아니라, 제출 건(세션) 하나하나를 시간까지 그대로 보여주기 위한 목록
+  return rows
+    .filter(r=>!(r.modeLabel||'').includes('진행중') && r.score!=='' && r.score!=null)
+    .map(r=>{
+      const dt = parseSheetDateTime(r.date);
+      return {
+        dt, ts: dt?dt.getTime():0,
+        count: Number(r.totalCount||0),
+        score: Number(r.score||0),
+        modeLabel: r.modeLabel||''
+      };
+    })
+    .sort((a,b)=>b.ts-a.ts);
+}
 async function showSheetStudentDetail(nm, resultEl){
   if(!resultEl) return;
   resultEl.innerHTML = `<p class="small-note">🔍 '${escapeHtml(nm)}' 기록을 불러오는 중...</p>`;
@@ -2559,6 +2579,15 @@ async function showSheetStudentDetail(nm, resultEl){
     const dailyRows = daily.map(d=>`
       <tr><td style="text-align:left;">${escapeHtml(d.date)}</td><td>${d.count}회</td><td style="font-weight:700;">${d.avg}점</td></tr>
     `).join('');
+    const sessionLog = buildSessionLogFromSheetRows(rows).slice(0, 30);
+    const sessionRows = sessionLog.map(s=>`
+      <tr>
+        <td style="text-align:left;">${s.dt ? s.dt.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '-'}</td>
+        <td>${s.count}문항</td>
+        <td style="font-weight:700;">${s.score}점</td>
+        <td style="color:var(--sub);font-size:12px;">${escapeHtml(s.modeLabel)}</td>
+      </tr>
+    `).join('');
     resultEl.innerHTML = `
       <div class="infobox">✅ <b>${escapeHtml(nm)}</b> · ${rows.length}개 세션 발견 · 전체 평균 ${avgAll}점 · 오답 ${wrongList.length}문항</div>
       ${daily.length ? `
@@ -2566,6 +2595,14 @@ async function showSheetStudentDetail(nm, resultEl){
         <thead><tr><th style="text-align:left;">날짜</th><th>제출 횟수</th><th>평균 점수</th></tr></thead>
         <tbody>${dailyRows}</tbody>
       </table>` : ''}
+      ${sessionLog.length ? `
+      <p class="small-note" style="text-align:left;margin-top:14px;margin-bottom:4px;">📋 제출 건별 기록 (최근 ${sessionLog.length}건)</p>
+      <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th style="text-align:left;">제출 시각</th><th>문항수</th><th>점수</th><th>모드</th></tr></thead>
+        <tbody>${sessionRows}</tbody>
+      </table>
+      </div>` : ''}
       <div class="row2" style="margin-top:8px;">
         <button class="btn btn-outline" id="sheetPrintBtn">🖨️ 인쇄하기</button>
         <button class="btn btn-gold" id="sheetPdfBtn">💾 PDF로 저장</button>
@@ -2779,7 +2816,7 @@ function bindEvents(){
       mobileBtn.disabled=true; mobileBtn.textContent='📤 전송 중...';
       const wrongIds = state.records.filter(r=>r.score<WRONG_THRESHOLD).map(r=>r.id);
       const avg = Math.round(state.records.reduce((s,r)=>s+r.score,0)/state.records.length);
-      const ok = await submitToSheet({ name:state.name, modeLabel:state._modeLabel, score:avg, totalCount:state.records.length, wrongIds, records:state.records });
+      const ok = await submitToSheet({ name:state.name, modeLabel:state._modeLabel, score:avg, totalCount:state.records.length, wrongIds, records:state.records, sessionId: state.sessionId });
       mobileBtn.disabled=false;
       mobileBtn.textContent = ok? '✅ 선생님께 제출 완료!' : '⚠️ 전송 실패 (다시 눌러보세요)';
     };
@@ -2950,6 +2987,7 @@ async function startInterview(){
   state.records = [];
   state.answerText='';
   state._modeLabel = modeLabel;
+  state.sessionId = genSessionId(); // 이 세션 전용 id - 서버에 저장할 때 매번 새 줄이 아니라 이 id의 줄 하나만 계속 갱신
   recFinalBase='';
   screen='quiz';
   render();
@@ -3015,7 +3053,8 @@ async function submitAnswer(){
       records: state.records.slice(),
       modeLabel: state._modeLabel || '',
       savedAt: fmtDT(Date.now()),
-      ts: Date.now()
+      ts: Date.now(),
+      sessionId: state.sessionId
     };
     s[snapSlot] = snap;
     // 서버 캐시도 업데이트 (같은 기기의 다른 탭에서 바로 반영)
@@ -3039,7 +3078,8 @@ async function submitAnswer(){
     records: state.records,
     // 이어풀기를 위해 전체 문제 목록과 현재 진행 인덱스도 함께 저장
     queueIds: isInProgress ? state.queue.map(x=>x.id) : [],
-    resumeIdx: isInProgress ? state.records.length : -1
+    resumeIdx: isInProgress ? state.records.length : -1,
+    sessionId: state.sessionId
   });
 
   screen='feedback';
@@ -3080,6 +3120,9 @@ function resumeInterview(snap){
   state.idx = Math.min(state.records.length, state.queue.length-1);
   state.answerText='';
   state._modeLabel = (ip.modeLabel||'이어서 풀기');
+  // 기존 세션과 같은 sessionId를 이어서 써야, 앞으로 저장할 때 새 줄이 아니라
+  // 그 세션의 줄 하나만 계속 갱신돼요. (옛날 기록처럼 sessionId가 없으면 새로 발급)
+  state.sessionId = ip.sessionId || genSessionId();
   recFinalBase='';
   lastTTSQuestionId = null;
   screen='quiz';
@@ -3236,7 +3279,8 @@ function finishSession(){
     score: avg,
     totalCount: state.records.length,
     wrongIds: wrongIds,
-    records: state.records
+    records: state.records,
+    sessionId: state.sessionId
   }).then(ok=>{
     const el=document.getElementById('sheetSendStatus');
     if(el) el.textContent = ok? '✅ 선생님께 결과가 전송됐어요.' : '⚠️ 전송에 실패했어요 (인터넷 연결을 확인해주세요).';
