@@ -1697,6 +1697,7 @@ function isIOSDevice(){
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 function speakQuestion(text){
+  const ttsTargetId = lastTTSQuestionId; // 이 발화가 어떤 문제를 위한 것인지 기억해둠
   if(!window.speechSynthesis){ startPrepCountdown(); return; } // TTS 미지원이면 바로 카운트다운으로
   try{
     window.speechSynthesis.cancel();
@@ -1717,6 +1718,10 @@ function speakQuestion(text){
     utter.onstart = ()=>{ const el=document.getElementById('qtext'); if(el) el.classList.add('reading'); };
     const finish = ()=>{
       const el=document.getElementById('qtext'); if(el) el.classList.remove('reading');
+      // 이 음성 재생이 끝나기 전에 이미 다음 문제로 넘어갔거나 면접이 끝났다면
+      // (=lastTTSQuestionId가 바뀌었거나 더 이상 quiz 화면이 아니라면) 뒤늦게 도착한
+      // 이 종료 이벤트로 불필요한 새 카운트다운(비프음)을 시작하지 않음
+      if(lastTTSQuestionId !== ttsTargetId || screen !== 'quiz') return;
       startPrepCountdown();
     };
     utter.onend = finish;
@@ -3416,6 +3421,7 @@ function printResultA4(){
   area.innerHTML='';
 }
 function finishSession(){
+  cancelQuestionAudio(); // 혹시 남아있을 음성/카운트다운 타이머를 확실히 정리
   const s = getStudent(state.name);
   const avg = Math.round(state.records.reduce((sum,r)=>sum+r.score,0)/state.records.length);
   s.examLogs.push({
