@@ -52,6 +52,8 @@ input[type=text]:focus,input[type=password]:focus{outline:2px solid var(--navy);
 .mode-card .mt{font-weight:800;font-size:15px;}
 .mode-card .md{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.5;}
 .btn{display:block;width:100%;text-align:center;padding:15px;border-radius:14px;font-weight:800;font-size:15.5px;border:none;cursor:pointer;box-sizing:border-box;}
+.btn-icon-del{background:none;border:none;cursor:pointer;font-size:15px;padding:2px 6px;border-radius:8px;opacity:0.7;}
+.btn-icon-del:hover{opacity:1;background:#fbeaea;}
 .btn-primary{background:linear-gradient(90deg,var(--navy),var(--navy2));color:#fff;box-shadow:0 10px 20px rgba(15,24,48,.28);}
 .btn-gold{background:linear-gradient(90deg,#c9a53c,var(--gold));color:#3a2c05;box-shadow:0 8px 16px rgba(184,144,47,.3);}
 .btn-outline{background:#fff;border:1.6px solid var(--navy);color:var(--navy);}
@@ -1185,6 +1187,20 @@ async function deleteStudentFromSheet(name){
       mode:'no-cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify({action:'deleteByName', name})
+    });
+    return true;
+  }catch(e){
+    console.error('삭제 요청 실패', e);
+    return false;
+  }
+}
+async function deleteSessionFromSheet(name, dateISO){
+  try{
+    await fetch(SHEET_WEBHOOK_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({action:'deleteByNameAndDate', name, date: dateISO})
     });
     return true;
   }catch(e){
@@ -2604,7 +2620,7 @@ function groupSessionsFromRows(rows){
       const tb = b.date ? new Date(b.date).getTime() : 0;
       return ta - tb;
     });
-    let prevTotalCount = -1, curGroup = null;
+    let prevTotalCount = -1, curGroup = null, curGroupDates = [];
     for(let e=0; e<=entries.length; e++){
       const row = e<entries.length ? entries[e] : null;
       const tc = row ? Number(row.totalCount||0) : 0;
@@ -2616,11 +2632,14 @@ function groupSessionsFromRows(rows){
           totalCount: Number(curGroup.totalCount||0),
           score: Number(curGroup.score||0),
           modeLabel: curGroup.modeLabel||'',
-          isCompleted: (curGroup.modeLabel||'').indexOf('진행중')===-1
+          isCompleted: (curGroup.modeLabel||'').indexOf('진행중')===-1,
+          rowDates: curGroupDates
         });
+        curGroupDates = [];
       }
       if(row===null) break;
       curGroup = row;
+      curGroupDates.push(row.date);
       prevTotalCount = tc;
     }
   });
@@ -2631,19 +2650,20 @@ function buildDailyStatsFromSheetRows(rows){
   const byDate = {};
   sessions.forEach(s=>{
     const key = s.dt ? s.dt.toLocaleDateString('ko-KR') : '날짜 미상';
-    if(!byDate[key]) byDate[key] = {date:key, ts:s.ts, count:0, scoreSum:0};
+    if(!byDate[key]) byDate[key] = {date:key, ts:s.ts, count:0, questionCount:0, weightedScoreSum:0};
     byDate[key].count++;
-    byDate[key].scoreSum += s.score;
+    byDate[key].questionCount += s.totalCount;
+    byDate[key].weightedScoreSum += s.score * s.totalCount; // 문항 수로 가중 평균 (세션별 평균을 그냥 평균내면 안 됨)
   });
   return Object.values(byDate)
-    .map(d=>({date:d.date, count:d.count, avg:Math.round(d.scoreSum/d.count)}))
+    .map(d=>({date:d.date, count:d.count, avg: d.questionCount ? Math.round(d.weightedScoreSum/d.questionCount) : 0}))
     .sort((a,b)=> (byDate[b.date]?byDate[b.date].ts:0) - (byDate[a.date]?byDate[a.date].ts:0));
 }
 function buildSessionLogFromSheetRows(rows){
   // 날짜별 집계가 아니라, 실제 세션 하나하나를 시간까지 그대로 보여주기 위한 목록
   return groupSessionsFromRows(rows)
     .filter(s=>s.isCompleted)
-    .map(s=>({dt:s.dt, ts:s.ts, count:s.totalCount, score:s.score, modeLabel:s.modeLabel}));
+    .map(s=>({dt:s.dt, ts:s.ts, count:s.totalCount, score:s.score, modeLabel:s.modeLabel, rowDates:s.rowDates}));
 }
 async function showSheetStudentDetail(nm, resultEl){
   if(!resultEl) return;
@@ -2657,7 +2677,10 @@ async function showSheetStudentDetail(nm, resultEl){
     }
     const wrongList = buildWrongListFromSheetRows(rows);
     const allSessions = groupSessionsFromRows(rows); // 대시보드 목록의 "제출횟수/평균 점수"와 똑같은 계산(완료 안 된 세션도 포함)
-    const avgAll = allSessions.length ? Math.round(allSessions.reduce((s,x)=>s+x.score,0)/allSessions.length) : 0;
+    const totalQForAvg = allSessions.reduce((s,x)=>s+x.totalCount,0);
+    // 세션별 평균을 그냥 평균내면 안 되고, 문항 수로 가중 평균해야 정확함
+    // (예: 73문항 87점 세션과 1문항 0점 세션이 같은 비중이면 안 됨)
+    const avgAll = totalQForAvg ? Math.round(allSessions.reduce((s,x)=>s+x.score*x.totalCount,0)/totalQForAvg) : 0;
     const daily = buildDailyStatsFromSheetRows(rows);
     const dailyRows = daily.map(d=>`
       <tr><td style="text-align:left;">${escapeHtml(d.date)}</td><td>${d.count}회</td><td style="font-weight:700;">${d.avg}점</td></tr>
@@ -2669,6 +2692,7 @@ async function showSheetStudentDetail(nm, resultEl){
         <td>${s.count}문항</td>
         <td style="font-weight:700;">${s.score}점</td>
         <td style="color:var(--sub);font-size:12px;">${escapeHtml(s.modeLabel)}</td>
+        <td><button class="btn-icon-del sessionDeleteBtn" data-date="${escapeHtml(s.date||'')}" title="이 세션만 삭제">🗑️</button></td>
       </tr>
     `).join('');
     resultEl.innerHTML = `
@@ -2679,10 +2703,10 @@ async function showSheetStudentDetail(nm, resultEl){
         <tbody>${dailyRows}</tbody>
       </table>` : ''}
       ${sessionLog.length ? `
-      <p class="small-note" style="text-align:left;margin-top:14px;margin-bottom:4px;">📋 제출 건별 기록 (최근 ${sessionLog.length}건)</p>
+      <p class="small-note" style="text-align:left;margin-top:14px;margin-bottom:4px;">📋 제출 건별 기록 (최근 ${sessionLog.length}건) · 🗑 눌러서 개별 삭제 가능</p>
       <div class="scrollable-table">
       <table>
-        <thead><tr><th style="text-align:left;">제출 시각</th><th>문항수</th><th>점수</th><th>모드</th></tr></thead>
+        <thead><tr><th style="text-align:left;">제출 시각</th><th>문항수</th><th>점수</th><th>모드</th><th></th></tr></thead>
         <tbody>${sessionRows}</tbody>
       </table>
       </div>` : ''}
@@ -2694,6 +2718,22 @@ async function showSheetStudentDetail(nm, resultEl){
     `;
     document.getElementById('sheetPrintBtn').onclick=()=>printWrongNote(nm, wrongList);
     document.getElementById('sheetPdfBtn').onclick=()=>downloadWrongNotePDF(nm, wrongList);
+    document.querySelectorAll('.sessionDeleteBtn').forEach(btn=>{
+      btn.onclick=async(ev)=>{
+        ev.stopPropagation();
+        const dateVal = btn.dataset.date;
+        if(!dateVal) return;
+        const ok = await showConfirm('이 세션 기록 1건만 삭제할까요?\n이 작업은 되돌릴 수 없어요.');
+        if(!ok) return;
+        btn.disabled = true;
+        await deleteSessionFromSheet(nm, dateVal);
+        showSheetStudentDetail(nm, resultEl);
+        const listEl2 = document.getElementById('sheetAllList');
+        if(listEl2){
+          try{ renderSheetAllList(await fetchAllStudentsFromSheet()); }catch(e){}
+        }
+      };
+    });
     document.getElementById('sheetDeleteBtn').onclick=async()=>{
       const ok1 = await showConfirm(`'${nm}' 학생의 구글 시트 기록 ${rows.length}건을 정말 삭제할까요?\n이 작업은 되돌릴 수 없어요.`);
       if(!ok1) return;
