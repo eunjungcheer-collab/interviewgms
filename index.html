@@ -1173,6 +1173,20 @@ async function submitToSheet(payload){
     return false;
   }
 }
+async function deleteStudentFromSheet(name){
+  try{
+    await fetch(SHEET_WEBHOOK_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({action:'deleteByName', name})
+    });
+    return true;
+  }catch(e){
+    console.error('삭제 요청 실패', e);
+    return false;
+  }
+}
 
 /* ===================== 로컬 저장소 (학생별) ===================== */
 function studentKey(name){ return APP_KEY+'_student_'+encodeURIComponent((name||'').trim()); }
@@ -2440,6 +2454,11 @@ function renderTDashSummary(list){
     const topAvg = withCounts.reduce((a,b)=> b.avg>a.avg ? b : a);
     topAvgHtml = `<div class="infobox">🏆 평균 점수 최고 · <b>${escapeHtml(topAvg.name)}</b> (${topAvg.avg}점, 총 ${topAvg.sessions}회)</div>`;
   }
+  let topTotalHtml = '';
+  if(withCounts.length){
+    const topTotal = withCounts.reduce((a,b)=> b.totalQuestions>a.totalQuestions ? b : a);
+    topTotalHtml = `<div class="infobox">📚 총 문제수 최다 · <b>${escapeHtml(topTotal.name)}</b> (${topTotal.totalQuestions}문제, 총 ${topTotal.sessions}회)</div>`;
+  }
   let topDeltaHtml = '';
   if(!cp){
     topDeltaHtml = `<div class="infobox">📌 아래 '체크포인트 저장'을 누르면, 그 이후 학생별로 몇 문제를 더 풀었는지 확인할 수 있어요.</div>`;
@@ -2452,7 +2471,7 @@ function renderTDashSummary(list){
       topDeltaHtml = `<div class="infobox">🔥 체크포인트(${fmtCheckpointTime(cp.savedAt)}) 이후 아직 새로 제출한 학생이 없어요.</div>`;
     }
   }
-  el.innerHTML = topAvgHtml + topDeltaHtml;
+  el.innerHTML = topAvgHtml + topTotalHtml + topDeltaHtml;
 }
 async function fetchAllStudentsFromSheet(){
   // 실제 Code.gs 응답: 이름별로 이미 집계된 배열 + 오늘자 통계
@@ -2607,9 +2626,27 @@ async function showSheetStudentDetail(nm, resultEl){
         <button class="btn btn-outline" id="sheetPrintBtn">🖨️ 인쇄하기</button>
         <button class="btn btn-gold" id="sheetPdfBtn">💾 PDF로 저장</button>
       </div>
+      <button class="btn btn-outline" id="sheetDeleteBtn" style="margin-top:8px;width:auto;color:#b3261e;border-color:#b3261e;padding-left:16px;padding-right:16px;font-size:13px;">🗑️ 이 학생 기록 전체 삭제</button>
     `;
     document.getElementById('sheetPrintBtn').onclick=()=>printWrongNote(nm, wrongList);
     document.getElementById('sheetPdfBtn').onclick=()=>downloadWrongNotePDF(nm, wrongList);
+    document.getElementById('sheetDeleteBtn').onclick=async()=>{
+      const ok1 = await showConfirm(`'${nm}' 학생의 구글 시트 기록 ${rows.length}건을 정말 삭제할까요?\n이 작업은 되돌릴 수 없어요.`);
+      if(!ok1) return;
+      const ok2 = await showConfirm(`정말로 확실한가요?\n삭제하면 '${nm}' 학생의 모든 제출 기록·오답 기록이 사라져요.`);
+      if(!ok2) return;
+      resultEl.innerHTML = `<p class="small-note">🗑️ 삭제 중...</p>`;
+      await deleteStudentFromSheet(nm);
+      resultEl.innerHTML = `<p class="small-note">✅ '${escapeHtml(nm)}' 학생의 기록을 삭제했어요.</p>`;
+      // 강사용 대시보드 목록도 새로고침
+      const listEl = document.getElementById('sheetAllList');
+      if(listEl){
+        try{
+          const freshList = await fetchAllStudentsFromSheet();
+          renderSheetAllList(freshList);
+        }catch(e){}
+      }
+    };
   }catch(e){
     resultEl.innerHTML = `<p class="small-note">⚠️ 검색에 실패했어요. 인터넷 연결을 확인해주세요.</p>`;
   }
