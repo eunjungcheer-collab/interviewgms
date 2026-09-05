@@ -2269,8 +2269,11 @@ function printWrongNote(name, wrongList){
     ${itemsHtml}
   `;
   area.classList.remove('hidden');
+  const prevTitle = document.title;
+  document.title = `${name}님의 오답노트`; // 인쇄 대화상자에서 "PDF로 저장" 시 이 이름이 파일명으로 제안됨
   // 모바일 브라우저는 클릭 이벤트 직후 동기적으로 호출해야 인쇄가 정상적으로 열림 (지연 호출 시 막히는 경우가 있음)
   window.print();
+  document.title = prevTitle;
   area.classList.add('hidden');
   area.innerHTML='';
 }
@@ -2322,7 +2325,7 @@ async function downloadWrongNotePDF(name, wrongList){
       y += imgH + 4;
     }
     hideLoadingModal();
-    lastPdfFilename = `오답노트_${name||'학생'}_${fmtDate(Date.now())}.pdf`;
+    lastPdfFilename = `${name||'학생'}님의 오답노트.pdf`;
     lastPdfBlobUrl = URL.createObjectURL(pdf.output('blob'));
     showPdfReadyModal(`📄 ${escapeHtml(name||'학생')}님의 오답노트 PDF가 준비됐어요!<br>아래 버튼을 <b>직접 눌러서</b> 저장하거나 열어 주세요.`);
   }catch(e){
@@ -2668,7 +2671,7 @@ function buildSessionLogFromSheetRows(rows){
   // 날짜별 집계가 아니라, 실제 세션 하나하나를 시간까지 그대로 보여주기 위한 목록
   return groupSessionsFromRows(rows)
     .filter(s=>s.isCompleted)
-    .map(s=>({dt:s.dt, ts:s.ts, count:s.totalCount, score:s.score, modeLabel:s.modeLabel, rowDates:s.rowDates}));
+    .map(s=>({date:s.date, dt:s.dt, ts:s.ts, count:s.totalCount, score:s.score, modeLabel:s.modeLabel, rowDates:s.rowDates}));
 }
 async function showSheetStudentDetail(nm, resultEl){
   if(!resultEl) return;
@@ -2697,7 +2700,7 @@ async function showSheetStudentDetail(nm, resultEl){
         <td>${s.count}문항</td>
         <td style="font-weight:700;">${s.score}점</td>
         <td style="color:var(--sub);font-size:12px;">${escapeHtml(s.modeLabel)}</td>
-        <td><button class="btn-icon-del sessionDeleteBtn" data-date="${escapeHtml(s.date||'')}" title="이 세션만 삭제">🗑️</button></td>
+        <td><button class="btn-icon-del sessionDeleteBtn" data-date="${escapeHtml(s.date||'')}" data-label="${escapeHtml(s.dt ? s.dt.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '')} · ${s.count}문항 · ${s.score}점" title="이 세션만 삭제">🗑️</button></td>
       </tr>
     `).join('');
     resultEl.innerHTML = `
@@ -2727,8 +2730,9 @@ async function showSheetStudentDetail(nm, resultEl){
       btn.onclick=async(ev)=>{
         ev.stopPropagation();
         const dateVal = btn.dataset.date;
-        if(!dateVal) return;
-        const ok = await showConfirm('이 세션 기록 1건만 삭제할까요?\n이 작업은 되돌릴 수 없어요.');
+        if(!dateVal){ await showAlert('이 세션은 삭제할 날짜 정보를 찾지 못했어요.'); return; }
+        const label = btn.dataset.label || '이 세션';
+        const ok = await showConfirm(`다음 세션 1건만 삭제할까요?\n\n${label}\n\n(다른 세션이나 이 학생의 나머지 기록은 그대로 남아요. 이 작업은 되돌릴 수 없어요.)`);
         if(!ok) return;
         btn.disabled = true;
         await deleteSessionFromSheet(nm, dateVal);
