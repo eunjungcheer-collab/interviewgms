@@ -151,6 +151,9 @@ textarea.answer-box:focus{outline:2px solid var(--navy);}
 .tabbtn{flex:1;text-align:center;padding:10px 4px;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;}
 .tabbtn.active{color:var(--navy);border-color:var(--gold);}
 table{width:100%;border-collapse:collapse;font-size:13px;}
+.scrollable-table{overflow-x:auto;}
+.scrollable-table table{width:auto;min-width:100%;}
+.scrollable-table th,.scrollable-table td{white-space:nowrap;padding-left:10px;padding-right:10px;}
 th,td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--line);}
 th{color:var(--sub);font-weight:700;background:#fbf9f3;}
 tr.clickable{cursor:pointer;}
@@ -2109,20 +2112,6 @@ function renderTLogin(){
 }
 
 function renderTDash(){
-  const students = getAllStudents().map(({name,data})=>{
-    const logs=data.examLogs||[];
-    const last=logs.length? logs[logs.length-1]: null;
-    const avgAll = logs.length? Math.round(logs.reduce((s,l)=>s+l.avg,0)/logs.length) : 0;
-    return {name, sessions:logs.length, avgAll, lastDate: last? last.date:'-', wrongCnt:Object.keys(data.wrong||{}).length};
-  }).sort((a,b)=> (b.lastDate>a.lastDate?1:-1));
-  const rows = students.length? students.map(s=>`
-    <tr class="clickable local-row" data-name="${escapeHtml(s.name)}">
-      <td style="text-align:left;">${escapeHtml(s.name)}</td>
-      <td>${s.sessions}</td>
-      <td>${s.avgAll}점</td>
-      <td>${s.wrongCnt}</td>
-      <td>${s.lastDate}</td>
-    </tr>`).join('') : `<tr><td colspan="5" style="color:var(--sub);">아직 이 기기에서 응시한 학생이 없어요.</td></tr>`;
   const curPw = (()=>{ try{ return localStorage.getItem('login_pw_ip_v2')||'1234'; }catch(e){ return '1234'; } })();
   const loginEnabled = (()=>{ try{ return localStorage.getItem('login_en_ip_v2')!=='N'; }catch(e){ return true; } })();
   return `
@@ -2153,15 +2142,6 @@ function renderTDash(){
     <div id="sheetSearchResult" style="margin-top:12px;"></div>
   </div>
   <div class="card">
-    <h2 class="card-title" style="font-size:15.5px;">📱 이 기기에서 직접 응시한 기록</h2>
-    <p class="card-sub">학생을 눌러 상세 기록과 오답노트를 확인하세요.</p>
-    <table>
-      <thead><tr><th style="text-align:left;">이름</th><th>응시</th><th>평균</th><th>오답</th><th>최근 응시일</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    <button class="btn btn-ghost" id="backSetupBtn" style="margin-top:16px;">돌아가기</button>
-  </div>
-  <div class="card">
     <h2 class="card-title" style="font-size:15px;">📘 전체 문제 + 모범답안 PDF</h2>
     <p class="card-sub">전체 300문항과 모범답안을 PDF로 다운받을 수 있어요. 문항 수가 많아 생성에 10~20초 걸릴 수 있어요.</p>
     <div class="row2">
@@ -2170,6 +2150,7 @@ function renderTDash(){
     </div>
     <div id="allQStatus" style="margin-top:8px;"></div>
   </div>
+  <button class="btn btn-ghost" id="backSetupBtn" style="margin-top:16px;">돌아가기</button>
   `;
 }
 
@@ -2526,7 +2507,7 @@ function renderSheetAllList(list){
       <button class="btn btn-outline" id="tdashCheckpointBtn" style="flex:none;width:auto;white-space:nowrap;padding-left:16px;padding-right:16px;font-size:13px;">📌 지금 시점 체크포인트 저장</button>
       <span class="small-note" id="tdashCheckpointInfo" style="margin:0;align-self:center;">${cp? `현재 체크포인트: ${fmtCheckpointTime(cp.savedAt)}` : '체크포인트가 아직 없어요'}</span>
     </div>
-    <div style="overflow-x:auto;">
+    <div class="scrollable-table">
     <table>
       <thead><tr>
         <th style="text-align:left;">이름</th>
@@ -2552,35 +2533,64 @@ function renderSheetAllList(list){
     renderSheetAllList(list);
   };
 }
+function groupSessionsFromRows(rows){
+  // Code.gs와 완전히 동일한 로직: 이름+모드별로 나눠서, 문항수가 실제로 줄어들 때만
+  // 새 세션으로 봄 (라벨의 "진행중" 표시는 신뢰하지 않음 - 실제 데이터에 라벨이
+  // 붙은 채로도 계속 이어지는 세션이 있었기 때문). 대시보드 목록과 학생 상세보기가
+  // 항상 같은 숫자를 보여주도록, 두 화면 모두 이 함수 하나만 사용함.
+  const byMode = {};
+  rows.forEach(r=>{
+    const baseMode = (r.modeLabel||'').replace(' (진행중)','').trim();
+    if(!byMode[baseMode]) byMode[baseMode] = [];
+    byMode[baseMode].push(r);
+  });
+  const sessions = [];
+  Object.keys(byMode).forEach(mode=>{
+    const entries = byMode[mode].slice().sort((a,b)=>{
+      const ta = a.date ? new Date(a.date).getTime() : 0;
+      const tb = b.date ? new Date(b.date).getTime() : 0;
+      return ta - tb;
+    });
+    let prevTotalCount = -1, curGroup = null;
+    for(let e=0; e<=entries.length; e++){
+      const row = e<entries.length ? entries[e] : null;
+      const tc = row ? Number(row.totalCount||0) : 0;
+      const isBoundary = (row===null) || (curGroup===null) || (tc < prevTotalCount);
+      if(isBoundary && curGroup!==null){
+        const dt = parseSheetDateTime(curGroup.date);
+        sessions.push({
+          date: curGroup.date, dt, ts: dt?dt.getTime():0,
+          totalCount: Number(curGroup.totalCount||0),
+          score: Number(curGroup.score||0),
+          modeLabel: curGroup.modeLabel||'',
+          isCompleted: (curGroup.modeLabel||'').indexOf('진행중')===-1
+        });
+      }
+      if(row===null) break;
+      curGroup = row;
+      prevTotalCount = tc;
+    }
+  });
+  return sessions.sort((a,b)=>b.ts-a.ts);
+}
 function buildDailyStatsFromSheetRows(rows){
-  // "진행중"이 아닌(=완료된) 제출만 집계 — 문제 하나 풀 때마다 저장되는 중간 자동저장은 제외
-  const completed = rows.filter(r=>!(r.modeLabel||'').includes('진행중') && r.score!=='' && r.score!=null);
+  const sessions = groupSessionsFromRows(rows).filter(s=>s.isCompleted);
   const byDate = {};
-  completed.forEach(r=>{
-    const dt = parseSheetDateTime(r.date);
-    const key = dt ? dt.toLocaleDateString('ko-KR') : '날짜 미상';
-    if(!byDate[key]) byDate[key] = {date:key, ts: dt?dt.getTime():0, count:0, scoreSum:0};
+  sessions.forEach(s=>{
+    const key = s.dt ? s.dt.toLocaleDateString('ko-KR') : '날짜 미상';
+    if(!byDate[key]) byDate[key] = {date:key, ts:s.ts, count:0, scoreSum:0};
     byDate[key].count++;
-    byDate[key].scoreSum += Number(r.score)||0;
+    byDate[key].scoreSum += s.score;
   });
   return Object.values(byDate)
     .map(d=>({date:d.date, count:d.count, avg:Math.round(d.scoreSum/d.count)}))
     .sort((a,b)=> (byDate[b.date]?byDate[b.date].ts:0) - (byDate[a.date]?byDate[a.date].ts:0));
 }
 function buildSessionLogFromSheetRows(rows){
-  // 날짜별 집계가 아니라, 제출 건(세션) 하나하나를 시간까지 그대로 보여주기 위한 목록
-  return rows
-    .filter(r=>!(r.modeLabel||'').includes('진행중') && r.score!=='' && r.score!=null)
-    .map(r=>{
-      const dt = parseSheetDateTime(r.date);
-      return {
-        dt, ts: dt?dt.getTime():0,
-        count: Number(r.totalCount||0),
-        score: Number(r.score||0),
-        modeLabel: r.modeLabel||''
-      };
-    })
-    .sort((a,b)=>b.ts-a.ts);
+  // 날짜별 집계가 아니라, 실제 세션 하나하나를 시간까지 그대로 보여주기 위한 목록
+  return groupSessionsFromRows(rows)
+    .filter(s=>s.isCompleted)
+    .map(s=>({dt:s.dt, ts:s.ts, count:s.totalCount, score:s.score, modeLabel:s.modeLabel}));
 }
 async function showSheetStudentDetail(nm, resultEl){
   if(!resultEl) return;
@@ -2593,7 +2603,8 @@ async function showSheetStudentDetail(nm, resultEl){
       return;
     }
     const wrongList = buildWrongListFromSheetRows(rows);
-    const avgAll = Math.round(rows.reduce((s,r)=>s+Number(r.score||0),0)/rows.length);
+    const allSessions = groupSessionsFromRows(rows); // 대시보드 목록의 "제출횟수/평균 점수"와 똑같은 계산(완료 안 된 세션도 포함)
+    const avgAll = allSessions.length ? Math.round(allSessions.reduce((s,x)=>s+x.score,0)/allSessions.length) : 0;
     const daily = buildDailyStatsFromSheetRows(rows);
     const dailyRows = daily.map(d=>`
       <tr><td style="text-align:left;">${escapeHtml(d.date)}</td><td>${d.count}회</td><td style="font-weight:700;">${d.avg}점</td></tr>
@@ -2608,7 +2619,7 @@ async function showSheetStudentDetail(nm, resultEl){
       </tr>
     `).join('');
     resultEl.innerHTML = `
-      <div class="infobox">✅ <b>${escapeHtml(nm)}</b> · ${rows.length}개 세션 발견 · 전체 평균 ${avgAll}점 · 오답 ${wrongList.length}문항</div>
+      <div class="infobox">✅ <b>${escapeHtml(nm)}</b> · ${allSessions.length}개 세션 발견 · 전체 평균 ${avgAll}점 · 오답 ${wrongList.length}문항</div>
       ${daily.length ? `
       <table style="margin-top:10px;">
         <thead><tr><th style="text-align:left;">날짜</th><th>제출 횟수</th><th>평균 점수</th></tr></thead>
@@ -2616,7 +2627,7 @@ async function showSheetStudentDetail(nm, resultEl){
       </table>` : ''}
       ${sessionLog.length ? `
       <p class="small-note" style="text-align:left;margin-top:14px;margin-bottom:4px;">📋 제출 건별 기록 (최근 ${sessionLog.length}건)</p>
-      <div style="overflow-x:auto;">
+      <div class="scrollable-table">
       <table>
         <thead><tr><th style="text-align:left;">제출 시각</th><th>문항수</th><th>점수</th><th>모드</th></tr></thead>
         <tbody>${sessionRows}</tbody>
@@ -2898,9 +2909,6 @@ function bindEvents(){
     document.getElementById('pwCancel').onclick=()=>{ screen='setup'; render(); };
   }
   else if(screen==='tdash'){
-    document.querySelectorAll('tr.local-row').forEach(tr=>{
-      tr.onclick=()=>{ tDetailName=tr.dataset.name; screen='tdetail'; render(); };
-    });
     document.getElementById('backSetupBtn').onclick=()=>{ screen='setup'; render(); };
     const savePwBtn=document.getElementById('savePwBtn');
     if(savePwBtn) savePwBtn.onclick=async()=>{
